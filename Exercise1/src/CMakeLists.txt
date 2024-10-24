@@ -7,6 +7,7 @@ project(numsim)
 # Also specify the source files.
 add_executable(${PROJECT_NAME}
    helloWorld.cpp
+   Settings/Settings.cpp
    # output_writer/write_paraview_output.cpp
 )
 

@@ -2,8 +2,11 @@
 
 
 #include <iostream>
+#include <ifstream>
+#include <exception>
 #include <sstream>
 #include <array>
+#include <cstdlib>
 
 
 /** All settings that parametrize a simulation run.
@@ -39,13 +42,13 @@ struct Settings
   double alpha = 0.5;                //< factor for donor-cell scheme
 
 
-  std::array<double,2> dirichletBcBottom;  //< prescribed values of u,v at bottom of domain
+  std::array<double,2> dirichletBottom;  //< prescribed values of u,v at bottom of domain
 
-  std::array<double,2> dirichletBcTop;     //< prescribed values of u,v at top of domain
+  std::array<double,2> dirichletTop;     //< prescribed values of u,v at top of domain
 
-  std::array<double,2> dirichletBcLeft;    //< prescribed values of u,v at left of domain
+  std::array<double,2> dirichletLeft;    //< prescribed values of u,v at left of domain
 
-  std::array<double,2> dirichletBcRight;   //< prescribed values of u,v at right of domain
+  std::array<double,2> dirichletRight;   //< prescribed values of u,v at right of domain
 
 
   std::string pressureSolver = "SOR";      //< which pressure solver to use, "GaussSeidel" or "SOR"

@@ -1,19 +1,10 @@
 cmake_minimum_required(VERSION 3.8)
-
-set(${PROJECT_NAME} "NumSim_Exc1")
-# Define the project name.
-set(${PROJECT_SOURCE_DIR} "src")
-# Define the src directory
-
-project(${PROJECT_NAME})
-
-# Specify the name of the executable (${PROJECT_NAME} which is equal to what was set in the project() command).
-
-# Also specify the source files.
+project(NumSim_Exc1)
+add_subdirectory(src)
 
 add_executable(${PROJECT_NAME}
 
-   main.cpp
+   ${PROJECT_SOURCE_DIR}/src/helloWorld.cpp
 
 )
 
@@ -25,7 +16,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
 
 # install numsim executable in build directory
 
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/../build)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/build)
 
 # Add additonial compile options to enable more warnings
 

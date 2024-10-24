@@ -1,2 +1,4 @@
 *.exe
-*/CMakeFiles
+*/CMakeFiles/*
+*/build/*
+*.o

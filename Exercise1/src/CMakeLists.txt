@@ -6,7 +6,7 @@ project(numsim)
 # Specify the name of the executable (${PROJECT_NAME} which is equal to what was set in the project() command).
 # Also specify the source files.
 add_executable(${PROJECT_NAME}
-   helloWorld.cpp
+   main.cpp
    Settings/Settings.cpp
    # output_writer/write_paraview_output.cpp
 )
@@ -39,3 +39,18 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 message("CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
+# add unit-tests at some point
+add_executable(testSettings
+   test/testSettings.cpp
+   Settings/Settings.cpp
+   # output_writer/write_paraview_output.cpp
+)
+target_include_directories(testSettings PUBLIC ${PROJECT_SOURCE_DIR})
+
+# Add additonial compile options to enable more warnings
+add_compile_options(-Wall -Wextra)
+
+# Set the version of the C++ standard to use, we use C++14, published in 2014
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)

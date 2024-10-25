@@ -1,4 +1,5 @@
 *.exe
-*/CMakeFiles/*
+*CMakeFiles/*
 */build/*
 *.o
+*/.vscode/*

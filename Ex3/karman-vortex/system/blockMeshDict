@@ -1,0 +1,350 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale 1;
+
+vertices
+(
+	// lower points
+	name lfl_1  (0   0   0)
+	name fl_12  (0.4 0   0)
+	name fl_23  (0.6 0   0)
+	name fl_34  (1   0   0)
+	name rfl_4  (5   0   0)
+	name lbl_1  (0   0   0.1)
+	name bl_12  (0.4 0   0.1)
+	name bl_23  (0.6 0   0.1)
+	name bl_34  (1   0   0.1)
+	name rbl_4  (5   0   0.1)
+	// mid lower points
+	name lf_15  (0   0.4 0)
+	name f_125  (0.4 0.4 0)
+	name f_236  (0.6 0.4 0)
+	name f_3467 (1   0.4 0)
+	name rf_47  (5   0.4 0)
+	name lb_15  (0   0.4 0.1)
+	name b_125  (0.4 0.4 0.1)
+	name b_236  (0.6 0.4 0.1)
+	name b_3467 (1   0.4 0.1)
+	name rb_47  (5   0.4 0.1)
+	// mid upper points
+	name lf_58  (0   0.6 0)
+	name f_589  (0.4 0.6 0)
+	name f_69a  (0.6 0.6 0)		// hex-counting -> a=10
+	name f_67ab (1   0.6 0)
+	name rf_7b  (5   0.6 0)
+	name lb_58  (0   0.6 0.1)
+	name b_589  (0.4 0.6 0.1)
+	name b_69a  (0.6 0.6 0.1)
+	name b_67ab (1   0.6 0.1)
+	name rb_7b  (5   0.6 0.1)
+	// upper points
+	name lfu_8  (0   1   0)
+	name fu_89  (0.4 1   0)
+	name fu_9a  (0.6 1   0)
+	name fu_ab  (1   1   0)
+	name rfu_b  (5   1   0)
+	name lbu_8  (0   1   0.1)
+	name bu_89  (0.4 1   0.1)
+	name bu_9a  (0.6 1   0.1)
+	name bu_ab  (1   1   0.1)
+	name rbu_b  (5   1   0.1)
+);
+
+// radius of sqrt(0.2^2+0.2^2)/2 = 0.1414
+r 0.1414;
+edges
+(
+	// b2
+	arc f_125 f_236 (0.5 #eval{0.5-$r} 0)
+	arc b_125 b_236 (0.5 #eval{0.5-$r} 0.1)
+	// b5
+	arc f_125 f_589 (#eval{0.5-$r} 0.5 0)
+	arc b_125 b_589 (#eval{0.5-$r} 0.5 0.1)
+	// b6
+	arc f_236 f_69a (#eval{0.5+$r} 0.5 0)
+	arc b_236 b_69a (#eval{0.5+$r} 0.5 0.1)
+	// b9
+	arc f_589 f_69a (0.5 #eval{0.5+$r} 0)
+	arc b_589 b_69a (0.5 #eval{0.5+$r} 0.1)
+);
+
+blocks
+(
+	// counter clock wise
+	// lower blocks
+    name b1 hex (lfl_1  fl_12  f_125  lf_15  lbl_1  bl_12  b_125  lb_15)  (8 8 1)  simpleGrading (1 1 1)
+    name b2 hex (fl_12  fl_23  f_236  f_125  bl_12  bl_23  b_236  b_125)  (4 8 1)  simpleGrading (1 1 1)
+    name b3 hex (fl_23  fl_34  f_3467 f_236  bl_23  bl_34  b_3467 b_236)  (8  8 1) simpleGrading (1 1 1)
+    name b4 hex (fl_34  rfl_4  rf_47  f_3467 bl_34  rbl_4  rb_47  b_3467) (80 8 1) simpleGrading (1 1 1)
+    // middle blocks
+    name b5 hex (lf_15  f_125  f_589  lf_58  lb_15  b_125  b_589  lb_58)  (8  4 1) simpleGrading (1 1 1)
+    name b6 hex (f_236  f_3467 f_67ab f_69a  b_236  b_3467 b_67ab b_69a)  (8  4 1) simpleGrading (1 1 1)
+    name b7 hex (f_3467 rf_47  rf_7b  f_67ab b_3467 rb_47  rb_7b  b_67ab) (80 4 1) simpleGrading (1 1 1)
+    // upper blocks
+    name b8 hex (lf_58  f_589  fu_89  lfu_8  lb_58  b_589  bu_89  lbu_8)  (8  8 1) simpleGrading (1 1 1)
+    name b9 hex (f_589  f_69a  fu_9a  fu_89  b_589  b_69a  bu_9a  bu_89)  (4  8 1) simpleGrading (1 1 1)
+    name ba hex (f_69a  f_67ab fu_ab  fu_9a  b_69a  b_67ab bu_ab  bu_9a)  (8  8 1) simpleGrading (1 1 1)
+    name bb hex (f_67ab rf_7b  rfu_b  fu_ab  b_67ab rb_7b  rbu_b  bu_ab)  (80 8 1) simpleGrading (1 1 1)
+);
+
+// In hindsight, all the different faces could have been merged
+// instead of using regex later on. Well, at least it is a little more clear, what is what.
+boundary
+(
+	// b1
+	frontAndBack1
+	{
+		type empty;
+		faces
+		(
+			(lfl_1  fl_12  f_125  lf_15)
+			(lbl_1  bl_12  b_125  lb_15)
+		);
+	}
+	inlet1
+	{
+		type patch;
+		faces
+		(
+			(lfl_1  lf_15 lb_15  lbl_1)
+		);
+	}
+	wallBottom1
+	{
+		type wall;
+		faces
+		(
+			(lfl_1  fl_12  bl_12  lbl_1)
+		);
+	}
+	// b2
+	frontAndBack2
+	{
+		type empty;
+		faces
+		(
+			(fl_12  fl_23  f_236  f_125)
+			(bl_12  bl_23  b_236  b_125)
+		);
+	}
+	wallTopAndBottom2
+	{
+		type wall;
+		faces
+		(
+			(f_125  f_236  b_236  b_125)
+			(fl_12  fl_23  bl_23  bl_12)
+		);
+	}
+	// b3
+	frontAndBack3
+	{
+		type empty;
+		faces
+		(
+			(fl_23  fl_34  f_3467 f_236)
+			(bl_23  bl_34  b_3467 b_236)
+		);
+	}
+	wallBottom3
+	{
+		type wall;
+		faces
+		(
+			(fl_23  fl_34  bl_34  bl_23)
+		);
+	}
+	// b4
+	frontAndBack4
+	{
+		type empty;
+		faces
+		(
+			(fl_34  rfl_4  rf_47  f_3467)
+			(bl_34  rbl_4  rb_47  b_3467)
+		);
+	}
+	outlet4
+	{
+		type patch;
+		faces
+		(
+			(rfl_4  rbl_4  rb_47  rf_47)
+		);
+	}
+	wallBottom4
+	{
+		type wall;
+		faces
+		(
+			(fl_34  rfl_4  rbl_4  bl_34)
+		);
+	}
+	// b5
+	frontAndBack5
+	{
+		type empty;
+		faces
+		(
+			(lf_15  f_125  f_589  lf_58)
+			(lb_15  b_125  b_589  lb_58)
+		);
+	}
+	inlet5
+	{
+		type patch;
+		faces
+		(
+			(lf_15  lf_58  lb_58  lb_15)
+		);
+	}
+	wallRight5
+	{
+		type wall;
+		faces
+		(
+			(f_125  b_125  b_589  f_589)
+		);
+	}
+	// b6
+	frontAndBack6
+	{
+		type empty;
+		faces
+		(
+			(f_236  f_3467 f_67ab f_69a)
+			(b_236  b_3467 b_67ab b_69a)
+		);
+	}
+	wallLeft6
+	{
+		type wall;
+		faces
+		(
+			(f_236  f_69a  b_69a  b_236)
+		);
+	}
+	// b7
+	frontAndBack7
+	{
+		type empty;
+		faces
+		(
+			(f_3467 rf_47  rf_7b  f_67ab)
+			(b_3467 rb_47  rb_7b  b_67ab)
+		);
+	}
+	outlet7
+	{
+		type patch;
+		faces
+		(
+			(rf_47  rb_47  rb_7b  rf_7b)
+		);
+	}
+	// 8
+	frontAndBack8
+	{
+		type empty;
+		faces
+		(
+			(lf_58  f_589  fu_89  lfu_8)
+			(lb_58  b_589  bu_89  lbu_8)
+		);
+	}
+	inlet8
+	{
+		type patch;
+		faces
+		(
+			(lf_58  lfu_8  lbu_8  lb_58)
+		);
+	}
+	wallTop8
+	{
+		type wall;
+		faces
+		(
+			(lfu_8  fu_89  bu_89  lbu_8)
+		);
+	}
+	// b9
+	frontAndBack9
+	{
+		type empty;
+		faces
+		(
+			(f_589  f_69a  fu_9a  fu_89)
+			(b_589  b_69a  bu_9a  bu_89)
+		);
+	}
+	wallTopAndBottom9
+	{
+		type wall;
+		faces
+		(
+			(fu_89  fu_9a  bu_9a  bu_89)
+			(f_589  f_69a  b_69a  b_589)
+		);
+	}
+	// ba
+	frontAndBackA
+	{
+		type empty;
+		faces
+		(
+			(f_69a  f_67ab fu_ab  fu_9a)
+			(b_69a  b_67ab bu_ab  bu_9a)
+		);
+	}
+	wallTopA
+	{
+		type wall;
+		faces
+		(
+			(fu_9a  fu_ab  bu_ab  bu_9a)
+		);
+	}
+	// bb
+	frontAndBackB
+	{
+		type empty;
+		faces
+		(
+			(f_67ab  rf_7b  rfu_b  fu_ab)
+			(b_67ab  rb_7b  rbu_b  bu_ab)
+		);
+	}
+	outletB
+	{
+		type patch;
+		faces
+		(
+			(rf_7b  rb_7b  rbu_b  rfu_b)
+		);
+	}
+	wallTopB
+	{
+		type wall;
+		faces
+		(
+			(fu_ab  rfu_b  rbu_b  bu_ab)
+		);
+	}
+);
+
+
+// ************************************************************************* //

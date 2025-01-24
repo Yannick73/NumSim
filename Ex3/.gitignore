@@ -1,0 +1,7 @@
+
+# ignore any of openfoams results, besides the initial conditions
+# arbitrarly set to max of 1000s sims
+[1-999]*
+0.*
+*.foam
+polyMesh*

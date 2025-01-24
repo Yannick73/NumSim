@@ -1,0 +1,168 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale 1;
+
+vertices
+(
+	// box 1 left front upper corner
+	name lfu_1 (0   1   0)
+	// front upper common corner of 1 and 2
+	name fu_12 (0.5 1   0)
+	name f_123 (0.5 0.5 0)
+	name lfl_1 (0   0.5 0)
+	name lbu_1 (0   1   0.1)
+	name bu_12 (0.5 1   0.1)
+	name b_123 (0.5 0.5 0.1)
+	name lbl_1 (0   0.5 0.1)
+	
+	name rfu_2 (5   1   0)
+	name rf_23 (5   0.5 0)
+	name rbu_2 (5   1   0.1)
+	name rb_23 (5   0.5 0.1)
+	
+	name lfl_3 (0.5 0   0)
+	name rfl_3 (5   0   0)
+	// right back lower corner
+	name lbl_3 (0.5 0   0.1)
+	name rbl_3 (5   0   0.1)
+);
+
+blocks
+(
+	// counter clock wise
+    name b1 hex (lfl_1 f_123 fu_12 lfu_1 lbl_1 b_123 bu_12 lbu_1) (5 5 1) simpleGrading (1 1 1)
+    name b2 hex (f_123 rf_23 rfu_2 fu_12 b_123 rb_23 rbu_2 bu_12) (45 5 1) simpleGrading (1 1 1)
+    name b3 hex (lfl_3 rfl_3 rf_23 f_123 lbl_3 rbl_3 rb_23 b_123) (45 5 1) simpleGrading (1 1 1)
+    
+);
+
+boundary
+(
+	// block 1 boundaries
+	inlet1
+	{
+		type patch;
+		faces
+		(
+			(lfu_1 lbu_1 lbl_1 lfl_1)
+		);
+	}
+    frontAndBack1
+    {
+        type empty;
+        faces
+        (
+            (lfu_1 fu_12 f_123 lfl_1)
+            (lbu_1 bu_12 b_123 lbl_1)
+        );
+    }
+    top1    {
+        type wall;
+        faces
+        (
+            (lfu_1 fu_12 bu_12 lbu_1)
+        );
+    }
+    bottom1    {
+        type wall;
+        faces
+        (
+            (lfl_1 f_123 b_123 lbl_1)
+        );
+    }
+    // boundaries between block 1 and 2
+    // I think, internal boundaries are not required to be defined explicitely
+    /*boundary12
+    {
+		type processor;
+		faces
+		(
+			(fu_12 bu_12 b_123 f_123)
+		);
+	}*/
+	// block 2 boundaries
+	top2
+	{
+		type wall;
+		faces
+		(
+			(fu_12 rfu_2 rbu_2 bu_12)
+		);
+	}
+    frontAndBack2
+    {
+        type empty;
+        faces
+        (
+            (fu_12 rfu_2 rf_23 f_123)
+            (bu_12 rbu_2 rb_23 b_123)
+        );
+    }
+    outlet2
+    {
+		type patch;
+		faces
+		(
+			(rfu_2 rbu_2 rb_23 rf_23)
+		);
+	}
+	// boundaries between block 2 and 3
+	/*boundary23
+    {
+		type processor;
+		faces
+		(
+			(f_123 b_123 rb_23 rf_23)
+		);
+	}*/
+	// boundaries of block3
+	left3
+	{
+		type wall;
+		faces
+		(
+			(f_123 b_123 lbl_3 lfl_3)
+		);
+	}
+	bottom3
+	{
+		type wall;
+		faces
+		(
+			(lfl_3 rfl_3 rbl_3 lbl_3)
+		);
+	}
+	frontAndBack3
+	{
+		type empty;
+		faces
+		(
+			(f_123 rf_23 rfl_3 lfl_3)
+			(b_123 rb_23 rbl_3 lbl_3)
+		);
+	}
+	outlet3
+	{
+		type patch;
+		faces
+		(
+			(rf_23 rb_23 rbl_3 rfl_3)
+		);
+	}
+);
+
+
+// ************************************************************************* //

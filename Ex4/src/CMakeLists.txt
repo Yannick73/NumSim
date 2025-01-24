@@ -11,11 +11,11 @@ add_executable(${PROJECT_NAME}
    storage/array2D.cpp
    storage/array3D.cpp
    storage/field_variable.cpp
-   #discretization/staggered_grid.cpp
+   discretization/staggered_grid.cpp
    #discretization/discretization.cpp
    #discretization/donor_cell.cpp
    #discretization/central_differences.cpp
-   #discretization/partition_information.cpp
+   discretization/partition_information.cpp
    #discretization/partition.cpp
    #discretization/async_partition.cpp
    #boundary/boundary.cpp
@@ -111,7 +111,7 @@ if(GEOMETRY)
 endif()
 
 # Wall and Wextra for warings & some for optimization
-add_compile_options(-Wall -Wextra -O3 -Ofast -march=native)
+add_compile_options(-Wall -Wextra -O3 -Ofast -lto -march=native)
 
 # install numsim executable in build directory
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/../build)

@@ -9,29 +9,32 @@ add_executable(${PROJECT_NAME}
 
    settings.cpp
    storage/array2D.cpp
+   storage/array3D.cpp
    storage/field_variable.cpp
    discretization/staggered_grid.cpp
-   discretization/discretization.cpp
-   discretization/donor_cell.cpp
-   discretization/central_differences.cpp
+   #discretization/discretization.cpp
+   #discretization/donor_cell.cpp
+   #discretization/central_differences.cpp
    discretization/partition_information.cpp
-   discretization/partition.cpp
-   discretization/async_partition.cpp
-   boundary/boundary.cpp
-   boundary/dirichlet.cpp
-   boundary/neighbour_boundary.cpp
-   boundary/async_neighbour_boundary.cpp
-   output_writer/output_writer.cpp
-   output_writer/output_writer_text.cpp
-   output_writer/output_writer_paraview.cpp
-   output_writer/output_writer_paraview_parallel.cpp
-   pressure_solver/pressure_solver.cpp
-   pressure_solver/gauss_seidel.cpp
-   pressure_solver/sor.cpp
-   pressure_solver/checkerboard.cpp
-   pressure_solver/cg.cpp
-   computation.cpp
-   main.cpp
+   #discretization/partition.cpp
+   #discretization/async_partition.cpp
+   #boundary/boundary.cpp
+   #boundary/dirichlet.cpp
+   #boundary/neighbour_boundary.cpp
+   #boundary/async_neighbour_boundary.cpp
+   #output_writer/output_writer.cpp
+   #output_writer/output_writer_text.cpp
+   #output_writer/output_writer_paraview.cpp
+   #output_writer/output_writer_paraview_parallel.cpp
+   #pressure_solver/pressure_solver.cpp
+   #pressure_solver/gauss_seidel.cpp
+   #pressure_solver/sor.cpp
+   #pressure_solver/checkerboard.cpp
+   #pressure_solver/cg.cpp
+   #computation.cpp
+   #main.cpp
+
+   testmain.cpp
    
 )
 
@@ -108,7 +111,7 @@ if(GEOMETRY)
 endif()
 
 # Wall and Wextra for warings & some for optimization
-add_compile_options(-Wall -Wextra -O3 -Ofast -march=native)
+add_compile_options(-Wall -Wextra -O3 -Ofast -lto -march=native)
 
 # install numsim executable in build directory
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${PROJECT_SOURCE_DIR}/../build)

@@ -89,6 +89,8 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     sscanf(value.c_str(), "%d", &nCells[0]);
   } else if (name == "nCellsY") {
     sscanf(value.c_str(), "%d", &nCells[1]);
+  } else if (name == "nCellsZ") {
+    sscanf(value.c_str(), "%d", &nCells[2]);
   } else if (name == "endTime") {
     endTime = std::stod(value);
   } else if (name == "re") {
@@ -105,18 +107,26 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     sscanf(value.c_str(), "%lf", &dirichletBcBottom[0]);
   } else if (name == "dirichletBottomY") {
     sscanf(value.c_str(), "%lf", &dirichletBcBottom[1]);
+  } else if (name == "dirichtletBottomZ") {
+    sscanf(value.c_str(), "%lf", &dirichletBcBottom[2]);
   } else if (name == "dirichletTopX") {
     sscanf(value.c_str(), "%lf", &dirichletBcTop[0]);
   } else if (name == "dirichletTopY") {
     sscanf(value.c_str(), "%lf", &dirichletBcTop[1]);
+  } else if(name == "dirichletTopZ") {
+    sscanf(value.c_str(), "%lf", &dirichletBcTop[2]);
   } else if (name == "dirichletLeftX") {
     sscanf(value.c_str(), "%lf", &dirichletBcLeft[0]);
   } else if (name == "dirichletLeftY") {
     sscanf(value.c_str(), "%lf", &dirichletBcLeft[1]);
+  } else if(name == "dirichletLeftZ") {
+    sscanf(value.c_str(), "%lf", &dirichletBcLeft[2]);
   } else if (name == "dirichletRightX") {
     sscanf(value.c_str(), "%lf", &dirichletBcRight[0]);
   } else if (name == "dirichletRightY") {
     sscanf(value.c_str(), "%lf", &dirichletBcRight[1]);
+  } else if(name == "dirichletRightZ") {
+    sscanf(value.c_str(), "%lf", &dirichletBcRight[2]);
   } else if (name == "useDonorCell") {
     useDonorCell = (value == "true" || value == "1");
   } else if (name == "alpha") {

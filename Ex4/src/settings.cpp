@@ -85,6 +85,8 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     sscanf(value.c_str(), "%lf", &physicalSize[0]);
   } else if (name == "physicalSizeY") {
     sscanf(value.c_str(), "%lf", &physicalSize[1]);
+  } else if(name == "physicalSizeZ") {
+    sscanf(value.c_str(), "%lf", &physicalSize[2]);
   } else if (name == "nCellsX") {
     sscanf(value.c_str(), "%d", &nCells[0]);
   } else if (name == "nCellsY") {
@@ -99,6 +101,8 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     sscanf(value.c_str(), "%lf", &g[0]);
   } else if (name == "gY") {
     sscanf(value.c_str(), "%lf", &g[1]);
+  } else if(name == "gZ") {
+    sscanf(value.c_str(), "%lf", &g[2]);
   } else if (name == "tau") {
     tau = std::stod(value);
   } else if (name == "maximumDt") {

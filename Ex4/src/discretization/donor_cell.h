@@ -9,27 +9,28 @@ class DonorCell : public Discretization
 {
 public:
   //! use the constructor of the base class
-  DonorCell(std::array<int, 2> nCells, std::array<double, 2> meshWidth,
+  /*DonorCell(std::array<int, 2> nCells, std::array<double, 2> meshWidth,
             const Settings &settings) : 
             Discretization(nCells, meshWidth, settings),
-            alpha_(settings.alpha) { assert(alpha_ > 0); }
+            alpha_(settings.alpha) { assert(alpha_ > 0); }*/
 
   //! same constructor, but using partition information
-  DonorCell(PartitionInformation pi, const Settings &settings) : 
+  DonorCell(PartitionInformation &pi, const Settings &settings) : 
             Discretization(pi, settings),
             alpha_(settings.alpha) { assert(alpha_ > 0); }
 
-  //! compute the 1st derivative ∂ u^2 / ∂x
-  double computeDu2Dx(int i, int j) const override;
+  double computeDuvDx(int i, int j, int k) const override;
+  double computeDuvDy(int i, int j, int k) const override;
 
-  //! compute the 1st derivative ∂ v^2 / ∂x
-  double computeDv2Dy(int i, int j) const override;
+  double computeDuwDx(int i, int j, int k) const override;
+  double computeDuwDz(int i, int j, int k) const override;
 
-  //! compute the 1st derivative ∂ (uv) / ∂x
-  double computeDuvDx(int i, int j) const override;
+  double computeDvwDy(int i, int j, int k) const override;
+  double computeDvwDz(int i, int j, int k) const override;
 
-  //! compute the 1st derivative ∂ (uv) / ∂y
-  double computeDuvDy(int i, int j) const override;
+  double computeDu2Dx(int i, int j, int k) const override;
+  double computeDv2Dy(int i, int j, int k) const override;
+  double computeDw2Dz(int i, int j, int k) const override;
 
 private:
   double alpha_;

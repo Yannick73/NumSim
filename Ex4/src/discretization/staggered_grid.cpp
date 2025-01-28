@@ -39,17 +39,17 @@ inline std::array<double, 3> getOrigin(PartitionInformation &pi, int ind)
    switch (ind)
    {
    case field::u:
-      return {pi.meshWidth()[0],
+      return {    pi.meshWidth()[0],
               3 * pi.meshWidth()[1] / 2.,
               3 * pi.meshWidth()[2] / 2.};
    case field::v:
       return {3 * pi.meshWidth()[0] / 2.,
-              pi.meshWidth()[1],
+                  pi.meshWidth()[1],
               3 * pi.meshWidth()[2] / 2.};
    case field::w:
       return {3 * pi.meshWidth()[0] / 2.,
               3 * pi.meshWidth()[1] / 2.,
-              pi.meshWidth()[2]};
+                  pi.meshWidth()[2]};
    
    case field::p:
       return {3 * pi.meshWidth()[0] / 2.,
@@ -61,14 +61,14 @@ inline std::array<double, 3> getOrigin(PartitionInformation &pi, int ind)
 }
 
 StaggeredGrid::StaggeredGrid(PartitionInformation &pi)
-    : u_(   getCells(pi, field::u), getOrigin(pi, field::u), pi.meshWidth(), "u"),
-      v_(   getCells(pi, field::v), getOrigin(pi, field::v), pi.meshWidth(), "v"),
-      w_(   getCells(pi, field::w), getOrigin(pi, field::w), pi.meshWidth(), "w"),
-      f_(   getCells(pi, field::u), getOrigin(pi, field::u), pi.meshWidth(), "f"),
-      g_(   getCells(pi, field::v), getOrigin(pi, field::v), pi.meshWidth(), "g"),
-      h_(   getCells(pi, field::w), getOrigin(pi, field::w), pi.meshWidth(), "h"),
-      p_(   getCells(pi, field::p), getOrigin(pi, field::p), pi.meshWidth(), "p"),
-      rhs_( getCells(pi, field::p), getOrigin(pi, field::p), pi.meshWidth(), "rhs"),
+    :   u_(getCells(pi, field::u), getOrigin(pi, field::u), pi.meshWidth(), "u"),
+        v_(getCells(pi, field::v), getOrigin(pi, field::v), pi.meshWidth(), "v"),
+        w_(getCells(pi, field::w), getOrigin(pi, field::w), pi.meshWidth(), "w"),
+        f_(getCells(pi, field::u), getOrigin(pi, field::u), pi.meshWidth(), "f"),
+        g_(getCells(pi, field::v), getOrigin(pi, field::v), pi.meshWidth(), "g"),
+        h_(getCells(pi, field::w), getOrigin(pi, field::w), pi.meshWidth(), "h"),
+        p_(getCells(pi, field::p), getOrigin(pi, field::p), pi.meshWidth(), "p"),
+      rhs_(getCells(pi, field::p), getOrigin(pi, field::p), pi.meshWidth(), "rhs"),
       meshWidth_(pi.meshWidth()), nCells_(pi.nCellsLocal()),
       ui0_(1), uj0_(1), uk0_(1),
       vi0_(1), vj0_(1), vk0_(1),

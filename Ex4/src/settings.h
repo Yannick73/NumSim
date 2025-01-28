@@ -11,24 +11,29 @@
  */
 struct Settings 
 {
-    std::array<int, 2> nCells{20, 20};          //< number of cells in x and y direction
-    std::array<double, 2> physicalSize{2, 2}; //< physical size of the domain
+    std::array<int, 3> nCells{20, 20, 20};          //< number of cells in x, y and z direction
+    std::array<double, 3> physicalSize{2, 2, 2}; //< physical size of the domain
     double re = 1000;                   //< reynolds number
     double endTime = 10.0;              //< end time of the simulation
     double tau = 0.5;                   //< safety factor for time step width
     double maximumDt = 0.1;             //< maximum time step width
     bool disableAdaptiveDt = false;     //< if set true, dt will not be dependent on the fluid velocities
-    std::array<double, 2> g{0., 0.};    //< external forces
+    std::array<double, 3> g{0., 0., 0.};    //< external forces
     bool useDonorCell = true; //< if the donor cell scheme schould be used
     double alpha = 0.5;        //< factor for donor-cell scheme
-    std::array<double, 2>
-        dirichletBcBottom{0., 0.}; //< prescribed values of u,v at bottom of domain
-    std::array<double, 2>
-        dirichletBcTop{1., 0.}; //< prescribed values of u,v at top of domain
-    std::array<double, 2>
-        dirichletBcLeft{0., 0.}; //< prescribed values of u,v at left of domain
-    std::array<double, 2>
-        dirichletBcRight{0., 0.}; //< prescribed values of u,v at right of domain
+
+    std::array<double, 3>
+        dirichletBcBottom{0., 0., 0.}; //< prescribed values of u,v at bottom of domain
+    std::array<double, 3>
+        dirichletBcTop{1., 0., 0.}; //< prescribed values of u,v at top of domain
+    std::array<double, 3>
+        dirichletBcLeft{0., 0., 0.}; //< prescribed values of u,v at left of domain
+    std::array<double, 3>
+        dirichletBcRight{0., 0., 0.}; //< prescribed values of u,v at right of domain
+    std::array<double, 3>
+        dirichletBcFront{0., 0., 0.};
+    std::array<double, 3>
+        dirichtletBcBack{0., 0., 0.};
     std::string pressureSolver =
         "Checkerboard";          //< which pressure solver to use, "GaussSeidel" or "SOR"
     double omega = 1.6; //< overrelaxation factor

@@ -50,9 +50,6 @@ protected:
     const int maximumNumberOfIterations_;
     const int rank_;
 
-    #ifndef NDEBUG
-    std::shared_ptr<OutputWriterText> pressureDebug;
-    #endif
     #ifdef SOLVER_STATISTICS
     //! overall step of simulation
     std::vector<int> solverStepStatistics_;

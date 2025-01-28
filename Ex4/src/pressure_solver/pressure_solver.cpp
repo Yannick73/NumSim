@@ -13,10 +13,6 @@ PressureSolver::PressureSolver(std::shared_ptr<PartitionShell> partition,
         throw std::out_of_range("epsilon must be strictly positive\n");
     if(maximumNumberOfIterations <= 0)
         throw std::out_of_range("maximumNumberOfIterations must be strictly positive!");
-    #ifndef NDEBUG
-    // shared-ptr takes care of later object destruction, when pressure-solver is destructed
-    pressureDebug = std::make_shared<OutputWriterText>(discretization_, rank_);
-    #endif
 }
 
 bool PressureSolver::solve()
@@ -66,18 +62,23 @@ double PressureSolver::calculateResiduum2()
     double partitionResiduum = 0;
     const double dx2 = discretization_->dx2();
     const double dy2 = discretization_->dy2();
+    const double dz2 = discretization_->dz2();
 
-    #pragma omp simd collapse(2) reduction(+:partitionResiduum)
-    for(int j = 0; j < discretization_->pjN(); j++)
+    #pragma omp simd collapse(3) reduction(+:partitionResiduum)
+    for(int k = 0; k < discretization_->pkN(); k++)
     {
-        for(int i = 0; i < discretization_->piN(); i++)
+        for(int j = 0; j < discretization_->pjN(); j++)
         {
-            const double rhs    = discretization_->rhs(i,j);            
-            const double D2px2  = discretization_->computeD2pDx2(i,j);
-            const double D2py2  = discretization_->computeD2pDy2(i,j);
-            const double res_ij = rhs - D2px2 - D2py2;
+            for(int i = 0; i < discretization_->piN(); i++)
+            {
+                const double rhs   = discretization_->rhs(i,j,k);            
+                const double D2px2 = discretization_->computeD2pDx2(i,j,k);
+                const double D2py2 = discretization_->computeD2pDy2(i,j,k);
+                const double D2pz2 = discretization_->computeD2pDz2(i,j,k);
+                const double res_ij = rhs - D2px2 - D2py2 - D2pz2;
 
-            partitionResiduum += res_ij*res_ij;
+                partitionResiduum += res_ij*res_ij;
+            }
         }
     }
 

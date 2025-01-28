@@ -12,9 +12,9 @@ add_executable(${PROJECT_NAME}
    storage/array3D.cpp
    storage/field_variable.cpp
    discretization/staggered_grid.cpp
-   #discretization/discretization.cpp
-   #discretization/donor_cell.cpp
-   #discretization/central_differences.cpp
+   discretization/discretization.cpp
+   discretization/donor_cell.cpp
+   discretization/central_differences.cpp
    discretization/partition_information.cpp
    #discretization/partition.cpp
    #discretization/async_partition.cpp

@@ -3,8 +3,9 @@
 
 void runComputation(const Settings &settings, int rank, int nRanks)
 {    
-    std::array<double, 2> meshWidth{settings.physicalSize[0]/settings.nCells[0],
-                                    settings.physicalSize[1]/settings.nCells[1]};
+    std::array<double, 3> meshWidth{settings.physicalSize[0]/settings.nCells[0],
+                                    settings.physicalSize[1]/settings.nCells[1],
+                                    settings.physicalSize[2]/settings.nCells[2]};
     // generate partition information
     PartitionInformation pi(settings.nCells, meshWidth, rank, nRanks);
     
@@ -15,17 +16,19 @@ void runComputation(const Settings &settings, int rank, int nRanks)
         discretization = std::make_shared<CentralDifferences>(pi, settings);
     
     std::shared_ptr<PartitionShell> partition;
-    if(settings.useAsyncComm)
+    partition = std::make_shared<AsyncPartition>(discretization, settings, pi);
+    /*if(settings.useAsyncComm)
         partition = std::make_shared<AsyncPartition>(discretization, settings, pi);
     else
-        partition = std::make_shared<Partition>(discretization, settings, pi);
+        partition = std::make_shared<Partition>(discretization, settings, pi);*/
         
     std::shared_ptr<PressureSolver> pressureSolver = newPressureSolver(partition, settings, nRanks);
 
+    #pragma message("Output writer missing")
     #ifndef NDEBUG
-    OutputWriterText debugOut(discretization, rank);
+    //OutputWriterText debugOut(discretization, rank);
     #endif
-    OutputWriterParaviewParallel paraviewOut(partition);
+    //OutputWriterParaviewParallel paraviewOut(partition);
 
     DtCalculator dt(settings.maximumDt, settings.endTime, partition);
 
@@ -50,20 +53,21 @@ void runComputation(const Settings &settings, int rank, int nRanks)
         
         simulationTime = simulationTime + deltaT;
         
-         partition->calculateFG(deltaT);
+        partition->calculateFGH(deltaT);
 
-         partition->setBoundaryFGH();
+        partition->setBoundaryFGH();
 
-         partition->calculateRHS(deltaT);
+        partition->calculateRHS(deltaT);
 
         pressureSolver->solve();
 
-         partition->calculateUV(deltaT);
+        partition->calculateUVW(deltaT);
 
         // necassary for correct output files
-         partition->exchangeUVW();
+        #pragma message("Missing")
+        //partition->exchangeUVW();
 
-        if(outputParaview)
+        /*if(outputParaview)
         {
             paraviewOut.writeFile(simulationTime);
             // diagnostic debug data
@@ -74,7 +78,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
             #ifndef NDEBUG
             debugOut.writeFile(simulationTime);
             #endif
-        }
+        }*/
         simTimestep++;
     }
 
@@ -116,8 +120,10 @@ void runComputation(const Settings &settings, int rank, int nRanks)
 
 std::shared_ptr<PressureSolver> newPressureSolver(std::shared_ptr<PartitionShell> partition, const Settings &settings, int nRanks)
 {
+    #pragma message("Missing pressure solvers")
+    return std::make_shared<GaussSeidel>(partition, settings.epsilon, settings.maximumNumberOfIterations);
     // for a single rank, any solver works
-    if(nRanks == 1)
+    /*if(nRanks == 1)
     {
         if(settings.pressureSolver == "SOR")
             return std::make_shared<SOR>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
@@ -135,7 +141,7 @@ std::shared_ptr<PressureSolver> newPressureSolver(std::shared_ptr<PartitionShell
     {
         // for multiple ranks, as of now, only the checkerboards is hardcoded (although other algorithms work as well)
         return std::make_shared<Checkerboard>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
-    }
+    }*/
 }
 
 std::pair<double, bool> DtCalculator::calculate(double simulationTime)

@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
 
   MPI_Finalize();
   // sim is, when it is, debug is printed only on one rank
-  if(world_rank == 0)
-    std::cout << "\nSimulation with " << world_size << " ranks finished in " << std::setprecision(4) << getDurationS(t0) << "s\n\n";
+  //if(world_rank == 0)
+  //  std::cout << "\nSimulation with " << world_size << " ranks finished in " << std::setprecision(4) << getDurationS(t0) << "s\n\n";
   // For the timeout issues in parallel2, it was very likely caused by the fact,
   // that the partitioning scheme code was faulty.
     

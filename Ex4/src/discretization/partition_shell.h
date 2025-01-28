@@ -24,20 +24,21 @@ public:
     virtual void setBoundaryFGH() = 0;
     virtual void setBoundaryP() = 0;
     //! only exchange the pressure values with the respective neighbours w/o setting dirichlet
-    virtual void exchangeP() = 0;
+    #pragma message("Missing exchange")
+    //virtual void exchangeP() = 0;
     //! also only used in pressure solver, but specifically only for CG
-    virtual void exchangeRA() = 0;
+    //virtual void exchangeRA() = 0;
     //! used before paraview output
-    virtual void exchangeUVW() = 0;
+    //virtual void exchangeUVW() = 0;
 
     //! getter for the discretization, to make access in pressure-solver simpler
     inline std::shared_ptr<Discretization> getDiscretization() const { return discretization_; };
 
     //! wrapper for the relevant public discretization methods
     inline double calculateVelocityDelta() const { return discretization_->calculateVelocityDelta(); }
-    inline void calculateFG(double deltaT) const { discretization_->calculateFGH(deltaT); }
+    inline void calculateFGH(double deltaT) const { discretization_->calculateFGH(deltaT); }
     inline void calculateRHS(double deltaT) const { discretization_->calculateRHS(deltaT); }
-    inline void calculateUV(double deltaT) const { discretization_->calculateUVW(deltaT); }
+    inline void calculateUVW(double deltaT) const { discretization_->calculateUVW(deltaT); }
     inline double calculateReynoldsDelta() const { return discretization_->calculateReynoldsDelta(); }
 
     inline void fixDirichletBoundary()

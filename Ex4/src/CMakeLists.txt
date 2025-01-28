@@ -17,7 +17,7 @@ add_executable(${PROJECT_NAME}
    discretization/central_differences.cpp
    discretization/partition_information.cpp
    #discretization/partition.cpp
-   #discretization/async_partition.cpp
+   discretization/async_partition.cpp
    boundary/boundary.cpp
    boundary/dirichlet.cpp
    #boundary/neighbour_boundary.cpp

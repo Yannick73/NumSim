@@ -8,7 +8,7 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
                                            meshWidth_(meshWidth),
                                            totalNoOfCellsGlobal_(nCellsGlobal[0]*nCellsGlobal[1]*nCellsGlobal[2])
 {
-
+    #pragma message("Partinoning scheme still missing")
     if(nRanks > 1)
     {
         throw std::runtime_error("No multithreading implemented as of yet!");

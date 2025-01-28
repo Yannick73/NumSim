@@ -35,9 +35,9 @@ public:
 
     //! wrapper for the relevant public discretization methods
     inline double calculateVelocityDelta() const { return discretization_->calculateVelocityDelta(); }
-    inline void calculateFG(double deltaT) const { discretization_->calculateFG(deltaT); }
+    inline void calculateFG(double deltaT) const { discretization_->calculateFGH(deltaT); }
     inline void calculateRHS(double deltaT) const { discretization_->calculateRHS(deltaT); }
-    inline void calculateUV(double deltaT) const { discretization_->calculateUV(deltaT); }
+    inline void calculateUV(double deltaT) const { discretization_->calculateUVW(deltaT); }
     inline double calculateReynoldsDelta() const { return discretization_->calculateReynoldsDelta(); }
 
     inline void fixDirichletBoundary()

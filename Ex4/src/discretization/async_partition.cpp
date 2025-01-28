@@ -13,7 +13,8 @@ AsyncPartition::AsyncPartition(const std::shared_ptr<Discretization> discretizat
     fixBoundaries_.push_back(std::make_shared<DirichletTop>   (discretization, settings.dirichletBcTop));
     fixBoundaries_.push_back(std::make_shared<DirichletLeft>  (discretization, settings.dirichletBcLeft));
     fixBoundaries_.push_back(std::make_shared<DirichletRight> (discretization, settings.dirichletBcRight));
-    fixBoundaries_.push_back(std::make_shared<DirichletBack>  (discretization, settings.))
+    fixBoundaries_.push_back(std::make_shared<DirichletBack>  (discretization, settings.dirichtletBcBack));
+    fixBoundaries_.push_back(std::make_shared<DirichletFront> (discretization, settings.dirichletBcFront));
     /*if(pi.getPartPosY() & 0b1)
     {
         if(pi.ownPartitionContainsBottomBoundary())
@@ -89,35 +90,35 @@ AsyncPartition::AsyncPartition(const std::shared_ptr<Discretization> discretizat
 // then it sets the dirichlet boundary, finally setting the first incoming ghost data
 void AsyncPartition::setBoundaryUVW()
 {
-    std::vector<std::shared_ptr<AsyncNeighbourBoundary>> neighbourRecvQueue;
-    setupExchange(neighbourRecvQueue, &AsyncNeighbourBoundary::exchangeUV);
+    //std::vector<std::shared_ptr<AsyncNeighbourBoundary>> neighbourRecvQueue;
+    //setupExchange(neighbourRecvQueue, &AsyncNeighbourBoundary::exchangeUV);
     for(std::shared_ptr<Dirichlet> fixBoundary : fixBoundaries_)
     {
         fixBoundary->setUVW();
     }
-    setFirstIncomingData(neighbourRecvQueue, &AsyncNeighbourBoundary::setRecvUV);
+    //setFirstIncomingData(neighbourRecvQueue, &AsyncNeighbourBoundary::setRecvUV);
 }
 
 void AsyncPartition::setBoundaryFGH()
 {
-    std::vector<std::shared_ptr<AsyncNeighbourBoundary>> neighbourRecvQueue;
-    setupExchange(neighbourRecvQueue, &AsyncNeighbourBoundary::exchangeFG);
+    //std::vector<std::shared_ptr<AsyncNeighbourBoundary>> neighbourRecvQueue;
+    //setupExchange(neighbourRecvQueue, &AsyncNeighbourBoundary::exchangeFG);
     for(std::shared_ptr<Dirichlet> fixBoundary : fixBoundaries_)
     {
         fixBoundary->setFGH();
     }
-    setFirstIncomingData(neighbourRecvQueue, &AsyncNeighbourBoundary::setRecvFG);
+    //setFirstIncomingData(neighbourRecvQueue, &AsyncNeighbourBoundary::setRecvFG);
 }
 
 void AsyncPartition::setBoundaryP()
 {
-    std::vector<std::shared_ptr<AsyncNeighbourBoundary>> neighbourRecvQueue;
-    setupExchange(neighbourRecvQueue, &AsyncNeighbourBoundary::exchangeP);
+    //std::vector<std::shared_ptr<AsyncNeighbourBoundary>> neighbourRecvQueue;
+    //setupExchange(neighbourRecvQueue, &AsyncNeighbourBoundary::exchangeP);
     for(std::shared_ptr<Dirichlet> fixBoundary : fixBoundaries_)
     {
         fixBoundary->setP();
     }
-    setFirstIncomingData(neighbourRecvQueue, &AsyncNeighbourBoundary::setRecvP);
+    //setFirstIncomingData(neighbourRecvQueue, &AsyncNeighbourBoundary::setRecvP);
 }
 
 /*void AsyncPartition::exchangeP()

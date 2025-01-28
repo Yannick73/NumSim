@@ -76,7 +76,7 @@ public:
     //! It is north, so they are sliced in x-direction.
     //! north and south neighbours have the quirk, that they may not override the edge values of their partitions' east/west neighbours
     AsyncNeighbourNorth(std::shared_ptr<Discretization> discretization, int neighbourRank, bool westNeighbour, bool eastNeighbour) :
-                   AsyncNeighbourBoundary(discretization, BoundaryEdge::NORTH, neighbourRank,
+                   AsyncNeighbourBoundary(discretization, BoundaryEdge::TOP, neighbourRank,
                    discretization->u().size()[0] + discretization->v().size()[0], discretization->p().size()[0]),
                    westOffset_(westNeighbour ? 1 : 0), eastOffset_(eastNeighbour ? 1 : 0) {  };
                    // ? means, if westNeighbour is true, then assign 1, else assign 0
@@ -100,7 +100,7 @@ class AsyncNeighbourEast : public AsyncNeighbourBoundary
 {
 public:
     AsyncNeighbourEast(std::shared_ptr<Discretization> discretization, int neighbourRank) :
-                   AsyncNeighbourBoundary(discretization, BoundaryEdge::EAST, neighbourRank,
+                   AsyncNeighbourBoundary(discretization, BoundaryEdge::RIGHT, neighbourRank,
                    discretization->u().size()[1] + discretization->v().size()[1],
                    discretization->p().size()[1]) { };
 
@@ -119,7 +119,7 @@ class AsyncNeighbourSouth : public AsyncNeighbourBoundary
 {
 public:
     AsyncNeighbourSouth(std::shared_ptr<Discretization> discretization, int neighbourRank, bool westNeighbour, bool eastNeighbour) :
-                   AsyncNeighbourBoundary(discretization, BoundaryEdge::SOUTH, neighbourRank,
+                   AsyncNeighbourBoundary(discretization, BoundaryEdge::BOTTOM, neighbourRank,
                    discretization->u().size()[0] + discretization->v().size()[0], discretization->p().size()[0]),
                    westOffset_(westNeighbour ? 1 : 0), eastOffset_(eastNeighbour ? 1 : 0) {  };
 
@@ -142,7 +142,7 @@ class AsyncNeighbourWest : public AsyncNeighbourBoundary
 {
 public:
     AsyncNeighbourWest(std::shared_ptr<Discretization> discretization, int neighbourRank) :
-                   AsyncNeighbourBoundary(discretization, BoundaryEdge::WEST, neighbourRank,
+                   AsyncNeighbourBoundary(discretization, BoundaryEdge::LEFT, neighbourRank,
                    discretization->u().size()[1] + discretization->v().size()[1],
                    discretization->p().size()[1]) { };
                    

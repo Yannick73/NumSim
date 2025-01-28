@@ -7,10 +7,12 @@
 //! Enum class to simply encode all four directions. Char means, that if serialized, it is human readible.
 enum BoundaryEdge : char
 {
-    NORTH = 'N',
-    EAST  = 'E',
-    SOUTH = 'S',
-    WEST  = 'W'
+    TOP    = 'T',
+    RIGHT  = 'R',
+    BOTTOM = 'B',
+    LEFT   = 'L',
+    FRONT  = 'F',
+    BACK   = 'B'
 };
 
 //! Boundary base-class. This has two layer of abstraction: 
@@ -33,16 +35,26 @@ protected:
     //! For simple access, each field-variable is saved as reference
     FieldVariable &u_;
     FieldVariable &v_;
+    FieldVariable &w_;
     FieldVariable &f_;
     FieldVariable &g_;
+    FieldVariable &h_;
     FieldVariable &p_;
 
     //! Length information used for indexing
     const int uiLen_;
     const int viLen_;
+    const int wiLen_;
+
     const int ujLen_;
     const int vjLen_;
+    const int wjLen_;
+
+    const int ukLen_;
+    const int vkLen_;
+    const int wkLen_;
+
     const int piLen_;
     const int pjLen_;
-
+    const int pkLen_;
 };

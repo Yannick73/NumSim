@@ -12,13 +12,13 @@ AsyncPartition::AsyncPartition(const std::shared_ptr<Discretization> discretizat
     if(pi.getPartPosY() & 0b1)
     {
         if(pi.ownPartitionContainsBottomBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletSouth>(discretization, settings.dirichletBcBottom));
+            fixBoundaries_.push_back(std::make_shared<DirichletBottom>(discretization, settings.dirichletBcBottom));
         else
             asyncNeighbours_.push_back(std::make_shared<AsyncNeighbourSouth>(discretization, pi.bottomNeighbourRankNo(),
                                 !pi.ownPartitionContainsLeftBoundary(), !pi.ownPartitionContainsRightBoundary()));
 
         if(pi.ownPartitionContainsTopBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletNorth>(discretization, settings.dirichletBcTop));
+            fixBoundaries_.push_back(std::make_shared<DirichletTop>(discretization, settings.dirichletBcTop));
         else
             asyncNeighbours_.push_back(std::make_shared<AsyncNeighbourNorth>(discretization, pi.topNeighbourRankNo(),
                                 !pi.ownPartitionContainsLeftBoundary(), !pi.ownPartitionContainsRightBoundary()));
@@ -26,13 +26,13 @@ AsyncPartition::AsyncPartition(const std::shared_ptr<Discretization> discretizat
     else
     {
         if(pi.ownPartitionContainsTopBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletNorth>(discretization, settings.dirichletBcTop));
+            fixBoundaries_.push_back(std::make_shared<DirichletTop>(discretization, settings.dirichletBcTop));
         else
             asyncNeighbours_.push_back(std::make_shared<AsyncNeighbourNorth>(discretization, pi.topNeighbourRankNo(),
                                 !pi.ownPartitionContainsLeftBoundary(), !pi.ownPartitionContainsRightBoundary()));
 
         if(pi.ownPartitionContainsBottomBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletSouth>(discretization, settings.dirichletBcBottom));
+            fixBoundaries_.push_back(std::make_shared<DirichletBottom>(discretization, settings.dirichletBcBottom));
         else
             asyncNeighbours_.push_back(std::make_shared<AsyncNeighbourSouth>(discretization, pi.bottomNeighbourRankNo(),
                                 !pi.ownPartitionContainsLeftBoundary(), !pi.ownPartitionContainsRightBoundary()));
@@ -41,24 +41,24 @@ AsyncPartition::AsyncPartition(const std::shared_ptr<Discretization> discretizat
     if(pi.getPartPosY() & 0b1)
     {
         if(pi.ownPartitionContainsLeftBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletWest> (discretization, settings.dirichletBcLeft));
+            fixBoundaries_.push_back(std::make_shared<DirichletLeft> (discretization, settings.dirichletBcLeft));
         else
             asyncNeighbours_.push_back(std::make_shared<AsyncNeighbourWest> (discretization, pi.leftNeighbourRankNo()));
 
         if(pi.ownPartitionContainsRightBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletEast> (discretization, settings.dirichletBcRight));
+            fixBoundaries_.push_back(std::make_shared<DirichletRight> (discretization, settings.dirichletBcRight));
         else
             asyncNeighbours_.push_back(std::make_shared<AsyncNeighbourEast> (discretization, pi.rightNeighbourRankNo()));
     }
     else
     {
         if(pi.ownPartitionContainsRightBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletEast> (discretization, settings.dirichletBcRight));
+            fixBoundaries_.push_back(std::make_shared<DirichletRight> (discretization, settings.dirichletBcRight));
         else
             asyncNeighbours_.push_back(std::make_shared<AsyncNeighbourEast> (discretization, pi.rightNeighbourRankNo()));
 
         if(pi.ownPartitionContainsLeftBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletWest> (discretization, settings.dirichletBcLeft));
+            fixBoundaries_.push_back(std::make_shared<DirichletLeft> (discretization, settings.dirichletBcLeft));
         else
             asyncNeighbours_.push_back(std::make_shared<AsyncNeighbourWest> (discretization, pi.leftNeighbourRankNo()));
     }
@@ -88,7 +88,7 @@ void AsyncPartition::setBoundaryUV()
     setupExchange(neighbourRecvQueue, &AsyncNeighbourBoundary::exchangeUV);
     for(std::shared_ptr<Dirichlet> fixBoundary : fixBoundaries_)
     {
-        fixBoundary->setUV();
+        fixBoundary->setUVW();
     }
     setFirstIncomingData(neighbourRecvQueue, &AsyncNeighbourBoundary::setRecvUV);
 }
@@ -99,7 +99,7 @@ void AsyncPartition::setBoundaryFG()
     setupExchange(neighbourRecvQueue, &AsyncNeighbourBoundary::exchangeFG);
     for(std::shared_ptr<Dirichlet> fixBoundary : fixBoundaries_)
     {
-        fixBoundary->setFG();
+        fixBoundary->setFGH();
     }
     setFirstIncomingData(neighbourRecvQueue, &AsyncNeighbourBoundary::setRecvFG);
 }

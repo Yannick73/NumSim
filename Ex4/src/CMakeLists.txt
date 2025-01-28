@@ -18,8 +18,8 @@ add_executable(${PROJECT_NAME}
    discretization/partition_information.cpp
    #discretization/partition.cpp
    #discretization/async_partition.cpp
-   #boundary/boundary.cpp
-   #boundary/dirichlet.cpp
+   boundary/boundary.cpp
+   boundary/dirichlet.cpp
    #boundary/neighbour_boundary.cpp
    #boundary/async_neighbour_boundary.cpp
    #output_writer/output_writer.cpp

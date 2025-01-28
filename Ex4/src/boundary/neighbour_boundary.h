@@ -57,7 +57,7 @@ public:
     //! It is north, so they are sliced in x-direction.
     //! north and south neighbours have the quirk, that they may not override the edge values of their partitions' east/west neighbours
     NeighbourNorth(std::shared_ptr<Discretization> discretization, int neighbourRank, bool westNeighbour, bool eastNeighbour) :
-                   NeighbourBoundary(discretization, BoundaryEdge::NORTH, neighbourRank,
+                   NeighbourBoundary(discretization, BoundaryEdge::TOP, neighbourRank,
                    discretization->u().size()[0] + discretization->v().size()[0], discretization->p().size()[0]),
                    westOffset_(westNeighbour ? 1 : 0), eastOffset_(eastNeighbour ? 1 : 0) {  };
                    // ? means, if westNeighbour is true, then assign 1 as offeset index, else assign 0
@@ -76,7 +76,7 @@ class NeighbourEast : public NeighbourBoundary
 {
 public:
     NeighbourEast(std::shared_ptr<Discretization> discretization, int neighbourRank) :
-                   NeighbourBoundary(discretization, BoundaryEdge::EAST, neighbourRank,
+                   NeighbourBoundary(discretization, BoundaryEdge::RIGHT, neighbourRank,
                    discretization->u().size()[1] + discretization->v().size()[1],
                    discretization->p().size()[1]) { };
 
@@ -90,7 +90,7 @@ class NeighbourSouth : public NeighbourBoundary
 {
 public:
     NeighbourSouth(std::shared_ptr<Discretization> discretization, int neighbourRank, bool westNeighbour, bool eastNeighbour) :
-                   NeighbourBoundary(discretization, BoundaryEdge::SOUTH, neighbourRank,
+                   NeighbourBoundary(discretization, BoundaryEdge::BOTTOM, neighbourRank,
                    discretization->u().size()[0] + discretization->v().size()[0], discretization->p().size()[0]),
                    westOffset_(westNeighbour ? 1 : 0), eastOffset_(eastNeighbour ? 1 : 0) {  };
 
@@ -108,7 +108,7 @@ class NeighbourWest : public NeighbourBoundary
 {
 public:
     NeighbourWest(std::shared_ptr<Discretization> discretization, int neighbourRank) :
-                   NeighbourBoundary(discretization, BoundaryEdge::WEST, neighbourRank,
+                   NeighbourBoundary(discretization, BoundaryEdge::LEFT, neighbourRank,
                    discretization->u().size()[1] + discretization->v().size()[1],
                    discretization->p().size()[1]) { };
                    

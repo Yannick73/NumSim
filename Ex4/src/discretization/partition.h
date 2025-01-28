@@ -21,15 +21,15 @@ public:
               const PartitionInformation &pi);
 
     //! set applies all boundary conditions on fix boundary an on neighbours
-    virtual void setBoundaryUV();
-    virtual void setBoundaryFG();
+    virtual void setBoundaryUVW();
+    virtual void setBoundaryFGH();
     virtual void setBoundaryP();
     //! only exchange the pressure values with the respective neighbours w/o setting dirichlet
     virtual void exchangeP();
     //! also only used in pressure solver, but specifically only for CG
     virtual void exchangeRA();
     //! used before paraview output
-    virtual void exchangeUV();
+    virtual void exchangeUVW();
 
     //! getter for the discretization, to make access in pressure-solver simpler
     inline std::shared_ptr<Discretization> getDiscretization() const { return discretization_; };

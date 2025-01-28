@@ -42,7 +42,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
 
     while(simulationTime < settings.endTime)
     {
-         partition->setBoundaryUV();
+         partition->setBoundaryUVW();
 
         std::pair<double, bool> dtValues = dt.calculate(simulationTime);
         double deltaT = dtValues.first;
@@ -52,7 +52,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
         
          partition->calculateFG(deltaT);
 
-         partition->setBoundaryFG();
+         partition->setBoundaryFGH();
 
          partition->calculateRHS(deltaT);
 
@@ -61,7 +61,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
          partition->calculateUV(deltaT);
 
         // necassary for correct output files
-         partition->exchangeUV();
+         partition->exchangeUVW();
 
         if(outputParaview)
         {

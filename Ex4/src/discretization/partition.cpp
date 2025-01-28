@@ -80,13 +80,13 @@ Partition::Partition(const std::shared_ptr<Discretization> discretization,
     assert(directions.size()  == 4);
 }
 
-void Partition::setBoundaryUV()
+void Partition::setBoundaryUVW()
 {
     fixDirichletBoundary();
-    exchangeUV();
+    exchangeUVW();
 }
 
-void Partition::setBoundaryFG()
+void Partition::setBoundaryFGH()
 {
     for(std::shared_ptr<Dirichlet> fixBoundary : fixBoundaries_)
     {
@@ -128,7 +128,7 @@ void Partition::exchangeP()
     #endif
 }
 
-void Partition::exchangeUV()
+void Partition::exchangeUVW()
 {
     #ifdef TIMER
     timer_.setT0();

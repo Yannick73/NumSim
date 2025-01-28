@@ -9,7 +9,7 @@
 #include "discretization/partition_information.h"
 #include "boundary/boundary.h"
 #include "boundary/dirichlet.h"
-#include "boundary/neighbour_boundary.h"
+//#include "boundary/neighbour_boundary.h"
 
 //! Class to encapsulate the discretization and its boundaries
 class PartitionShell
@@ -20,15 +20,15 @@ public:
                    discretization_(discretization), pi_(pi) { }
 
     //! set applies all boundary conditions on fix boundary an on neighbours
-    virtual void setBoundaryUV() = 0;
-    virtual void setBoundaryFG() = 0;
+    virtual void setBoundaryUVW() = 0;
+    virtual void setBoundaryFGH() = 0;
     virtual void setBoundaryP() = 0;
     //! only exchange the pressure values with the respective neighbours w/o setting dirichlet
     virtual void exchangeP() = 0;
     //! also only used in pressure solver, but specifically only for CG
     virtual void exchangeRA() = 0;
     //! used before paraview output
-    virtual void exchangeUV() = 0;
+    virtual void exchangeUVW() = 0;
 
     //! getter for the discretization, to make access in pressure-solver simpler
     inline std::shared_ptr<Discretization> getDiscretization() const { return discretization_; };

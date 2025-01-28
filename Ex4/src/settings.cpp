@@ -131,6 +131,18 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     sscanf(value.c_str(), "%lf", &dirichletBcRight[1]);
   } else if(name == "dirichletRightZ") {
     sscanf(value.c_str(), "%lf", &dirichletBcRight[2]);
+  } else if(name == "dirichtletFrontX") {
+    sscanf(value.c_str(), "%lf", &dirichletBcFront[0]);
+  } else if(name == "dirichtletFrontY") {
+    sscanf(value.c_str(), "%lf", &dirichletBcFront[1]);
+  } else if(name == "dirichtletFrontZ") {
+    sscanf(value.c_str(), "%lf", &dirichletBcFront[2]);
+  } else if(name == "dirichtletBackX") {
+    sscanf(value.c_str(), "%lf", &dirichletBcFront[0]);
+  } else if(name == "dirichtletBackY") {
+    sscanf(value.c_str(), "%lf", &dirichletBcFront[1]);
+  } else if(name == "dirichtletBackZ") {
+    sscanf(value.c_str(), "%lf", &dirichletBcFront[2]);
   } else if (name == "useDonorCell") {
     useDonorCell = (value == "true" || value == "1");
   } else if (name == "alpha") {

@@ -21,6 +21,7 @@ struct Settings
     std::array<double, 3> g{0., 0., 0.};    //< external forces
     bool useDonorCell = true; //< if the donor cell scheme schould be used
     double alpha = 0.5;        //< factor for donor-cell scheme
+
     std::array<double, 3>
         dirichletBcBottom{0., 0., 0.}; //< prescribed values of u,v at bottom of domain
     std::array<double, 3>
@@ -29,6 +30,10 @@ struct Settings
         dirichletBcLeft{0., 0., 0.}; //< prescribed values of u,v at left of domain
     std::array<double, 3>
         dirichletBcRight{0., 0., 0.}; //< prescribed values of u,v at right of domain
+    std::array<double, 3>
+        dirichletBcFront{0., 0., 0.};
+    std::array<double, 3>
+        dirichtletBcBack{0., 0., 0.};
     std::string pressureSolver =
         "Checkerboard";          //< which pressure solver to use, "GaussSeidel" or "SOR"
     double omega = 1.6; //< overrelaxation factor

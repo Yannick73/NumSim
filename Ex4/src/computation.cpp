@@ -45,7 +45,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
 
     while(simulationTime < settings.endTime)
     {
-         partition->setBoundaryUVW();
+        partition->setBoundaryUVW();
 
         std::pair<double, bool> dtValues = dt.calculate(simulationTime);
         double deltaT = dtValues.first;

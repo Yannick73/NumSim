@@ -49,11 +49,12 @@ double Discretization::calculateVelocityDelta() const
     {
         for(int i = -1; i < wiN()+1; i++)
         {
-            max_w = std::max(max_v, w(i,j,k));
+          // max_v instead of max_w
+            max_w = std::max(max_w, w(i,j,k));
         }
     }
   }
-  //std::cout << "max-vel \t" << max_vel << std::endl;
+  std::cout << "max-vel \t" << std::max(max_u, std::max(max_v, max_w)) << std::endl;
   double dTx = dx() / max_u;
   double dTy = dy() / max_v;
   double dTz = dz() / max_w;
@@ -125,8 +126,9 @@ void Discretization::calculateFGH(double deltaT)
             const double DuwDx  = computeDuwDx (i,j,k);
             const double DvwDy  = computeDvwDy (i,j,k);
             const double Dw2Dz  = computeDw2Dz (i,j,k);
-            g(i,j,k) = v(i,j,k) + deltaT*((D2wDx2+D2wDy2+D2wDz2)/settings_.re
-              - DuwDx - DvwDy - Dw2Dz + settings_.g[1]);
+            // h!!! instead of g and w instead of v
+            h(i,j,k) = w(i,j,k) + deltaT*((D2wDx2+D2wDy2+D2wDz2)/settings_.re
+              - DuwDx - DvwDy - Dw2Dz + settings_.g[2]);
         }
     }
   }
@@ -145,8 +147,8 @@ void Discretization::calculateRHS(double deltaT)
       {
         const double DfDx = (f(i,j,k)-f(i-1,j,k))/dx();
         const double DgDy = (g(i,j,k)-g(i,j-1,k))/dy();
-        const double DhDy = (h(i,j,k)-h(i,j,k-1))/dz();
-        rhs(i,j,k) = (DfDx + DgDy + DhDy) / deltaT;
+        const double DhDz = (h(i,j,k)-h(i,j,k-1))/dz();
+        rhs(i,j,k) = (DfDx + DgDy + DhDz) / deltaT;
       }
     }
   }

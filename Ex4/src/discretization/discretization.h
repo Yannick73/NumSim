@@ -58,13 +58,13 @@ public:
   inline double computeDpDz(int i, int j, int k) const { return (p(i,j,k+1) - p(i,j,k)) / dz(); };
 
   //! compute the 2st derivative ∂^2p / ∂x^2
-  inline double computeD2pDx2(int i, int j, int k) const { return (p(i-1,j,k) - 2*p(i,j,k) + p(i+1,j,k)) / dx2(); };
+  inline double computeD2pDx2(int i, int j, int k) const { return (p(i+1,j,k) - 2*p(i,j,k) + p(i-1,j,k)) / dx2(); };
 
   //! compute the 2st derivative ∂^2p / ∂y^2
-  inline double computeD2pDy2(int i, int j, int k) const { return (p(i,j-1,k) - 2*p(i,j,k) + p(i,j+1,k)) / dy2(); };
+  inline double computeD2pDy2(int i, int j, int k) const { return (p(i,j+1,k) - 2*p(i,j,k) + p(i,j-1,k)) / dy2(); };
 
   //! compute the 2st derivative ∂^2p / ∂z^2
-  inline double computeD2pDz2(int i, int j, int k) const { return (p(i,j,k-1) - 2*p(i,j,k) + p(i,j,k+1)) / dz2(); };
+  inline double computeD2pDz2(int i, int j, int k) const { return (p(i,j,k+1) - 2*p(i,j,k) + p(i,j,k-1)) / dz2(); };
 
   //! compute the 2st derivative ∂^2a / ∂x^2
   inline double computeD2aDx2(int i, int j, int k) const { return (a(i-1,j,k) - 2*a(i,j,k) + a(i+1,j,k)) / dx2(); };

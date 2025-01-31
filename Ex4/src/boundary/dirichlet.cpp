@@ -309,7 +309,8 @@ void DirichletFront::setFGH()
     {
         for(int i = 1; i < uiLen_-1; i++)
         {
-            f_(i,j,ukLen_-1) = u_(i,j,ukLen_-2);
+            // changed to same indices
+            f_(i,j,ukLen_-1) = u_(i,j,ukLen_-1);
         }
     }
     #pragma omp simd collapse(2)
@@ -317,7 +318,7 @@ void DirichletFront::setFGH()
     {
         for(int i = 1; i < viLen_-1; i++)
         {
-            g_(i,j,vkLen_-1) = v_(i,j,vkLen_-2);
+            g_(i,j,vkLen_-1) = v_(i,j,vkLen_-1);
         }
     }
     #pragma omp simd collapse(2)
@@ -325,7 +326,7 @@ void DirichletFront::setFGH()
     {
         for(int i = 1; i < wiLen_; i++)
         {
-            h_(i,j,wkLen_-1) = w_(i,j,wkLen_-2);
+            h_(i,j,wkLen_-1) = w_(i,j,wkLen_-1);
         }
     }
 }
@@ -377,7 +378,7 @@ void DirichletHind::setFGH()
     {
         for(int i = 1; i < uiLen_-1; i++)
         {
-            f_(i,j,0) = u_(i,j,1);
+            f_(i,j,0) = u_(i,j,0);
         }
     }
     #pragma omp simd collapse(2)
@@ -385,7 +386,7 @@ void DirichletHind::setFGH()
     {
         for(int i = 1; i < viLen_-1; i++)
         {
-            g_(i,j,0) = v_(i,j,1);
+            g_(i,j,0) = v_(i,j,0);
         }
     }
     #pragma omp simd collapse(2)
@@ -393,7 +394,7 @@ void DirichletHind::setFGH()
     {
         for(int i = 1; i < wiLen_; i++)
         {
-            h_(i,j,0) = w_(i,j,1);
+            h_(i,j,0) = w_(i,j,0);
         }
     }
 }

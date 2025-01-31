@@ -70,11 +70,11 @@ double CentralDifferences::computeDuwDz(int i, int j, int k) const
 //! compute the 1st derivative ∂ (vw) / ∂y on the w points
 double CentralDifferences::computeDvwDy(int i, int j, int k) const 
 {
-  const double vTop    = (v(i,  j,  k+1) + v(i,j,  k)) / 2.; // v i,j,k+1/2
-  const double wTop    = (w(i+1,j,  k)   + w(i,j,  k)) / 2.; // w i+1/2,j,k
-  const double vBottom = (v(i,  j-1,k+1) + v(i,j-1,k)) / 2.; // v i,j-1,k+1/2
+  const double vTop    = (v(i,j,  k+1) + v(i,j,  k)) / 2.; // v i,j,k+1/2
+  const double wTop    = (w(i,j+1,  k) + w(i,j,  k)) / 2.; // w i,j+1/2,k (1/2 from i to j)
+  const double vBottom = (v(i,j-1,k+1) + v(i,j-1,k)) / 2.; // v i,j-1,k+1/2
   //2nd was w!!!
-  const double wBottom = (w(i,  j-1,k)   + w(i,j,  k)) / 2.; // w i,j-1/2,k
+  const double wBottom = (w(i,j-1,k)   + w(i,j,  k)) / 2.; // w i,j-1/2,k
   return (vTop*wTop - vBottom*wBottom) / dy();  // wrong order!
 }
 

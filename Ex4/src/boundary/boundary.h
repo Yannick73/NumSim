@@ -12,7 +12,7 @@ enum BoundaryEdge : char
     BOTTOM = 'B',
     LEFT   = 'L',
     FRONT  = 'F',
-    BACK   = 'B'
+    HIND   = 'H'
 };
 
 //! Boundary base-class. This has two layer of abstraction: 

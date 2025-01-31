@@ -25,7 +25,7 @@ double CentralDifferences::computeDw2Dz(int i, int j, int k) const
 }
 
 // Assumption: In the uv plane, the discretization should remain unchanged
-//! compute the 1st derivative ∂ (uv) / ∂x
+//! compute the 1st derivative ∂ (uv) / ∂x on the v points
 double CentralDifferences::computeDuvDx(int i, int j, int k) const 
 {
   const double vRight = (v(i+1,j,k)   + v(i,j,k))   / 2.; // v at top right corner of cell
@@ -35,7 +35,7 @@ double CentralDifferences::computeDuvDx(int i, int j, int k) const
   return (vRight*uRight - vLeft*uLeft) / dx();
 }
 
-//! compute the 1st derivative ∂ (uv) / ∂y
+//! compute the 1st derivative ∂ (uv) / ∂y on the u points
 double CentralDifferences::computeDuvDy(int i, int j, int k) const 
 {
   const double vTop    = (v(i,j,k)   + v(i+1,j,k))   / 2.; // v at top right corner of cell
@@ -46,43 +46,43 @@ double CentralDifferences::computeDuvDy(int i, int j, int k) const
 }
 
 
-//! compute the 1st derivative ∂ (uw) / ∂x
+//! compute the 1st derivative ∂ (uw) / ∂x on the w points
 double CentralDifferences::computeDuwDx(int i, int j, int k) const 
 {
-  const double uLeft  = (u(i-1,j,k)   + u(i,  j,k)) / 2.;
-  const double wLeft  = (w(i-1,j,k+1) + w(i-1,j,k)) / 2.;
-  const double uRight = (u(i+1,j,k)   + u(i,  j,k)) / 2.;
-  const double wRight = (w(i,  j,k+1) + w(i,  j,k)) / 2.; 
+  const double uLeft  = (u(i-1,j,k+1) + u(i-1,j,k)) / 2.;
+  const double wLeft  = (w(i-1,j,k)   + w(i,  j,k)) / 2.;
+  const double uRight = (u(i,  j,k+1) + u(i,  j,k)) / 2.;
+  const double wRight = (w(i+1,j,k+1) + w(i,  j,k)) / 2.; 
   return (uLeft*wLeft - uRight*wRight) / dx();
 }
 
-//! compute the 1st derivative ∂ (uw) / ∂z
+//! compute the 1st derivative ∂ (uw) / ∂z on the u points
 double CentralDifferences::computeDuwDz(int i, int j, int k) const 
 {
   // back to front z increases
-  const double wBack  = (w(i,  j,k-1) + w(i,j,k))   / 2.;
-  const double uBack  = (u(i+1,j,k-1) + u(i,j,k-1)) / 2.;
-  const double wFront = (w(i,  j,k+1) + w(i,j,k))   / 2.;
+  const double wBack  = (w(i+1,j,k-1) + w(i,j,k-1)) / 2.;
+  const double uBack  = (u(i,j,k-1)   + u(i,j,k))   / 2.;
+  const double wFront = (w(i+1,j,k)   + w(i,j,k))   / 2.;
   const double uFront = (u(i+1,j,k)   + u(i,j,k))   / 2.;
   return (wBack*uBack - wFront*uFront) / dz();
 }
 
-//! compute the 1st derivative ∂ (vw) / ∂y
+//! compute the 1st derivative ∂ (vw) / ∂y on the w points
 double CentralDifferences::computeDvwDy(int i, int j, int k) const 
 {
-  const double vTop    = (v(i,j+1,k)   + v(i,j,  k)) / 2.;
-  const double wTop    = (w(i,j,  k+1) + w(i,j,  k)) / 2.;
-  const double vBottom = (v(i,j,  k-1) + w(i,j,  k)) / 2.;
-  const double wBottom = (w(i,j-1,k+1) + w(i,j-1,k)) / 2.;
+  const double vTop    = (v(i,j,k+1)   + v(i,j,  k)) / 2.;
+  const double wTop    = (w(i+1,j,k)   + w(i,j,  k)) / 2.;
+  const double vBottom = (v(i,j-1,k+1) + w(i,j-1,k)) / 2.;
+  const double wBottom = (w(i,j-1,k)   + w(i,j,k))   / 2.;
   return (vBottom*wBottom - vTop*wTop) / dy();
 }
 
-//! compute the 1st derivative ∂ (vw) / ∂z
+//! compute the 1st derivative ∂ (vw) / ∂z on the v points
 double CentralDifferences::computeDvwDz(int i, int j, int k) const
 {
-  const double wBack  = (w(i,j,  k-1) + w(i,j,k))   / 2.;
-  const double vBack  = (v(i,j+1,k-1) + v(i,j,k-1)) / 2.;
-  const double wFront = (w(i,j,  k+1) + w(i,j,k))   / 2.;
-  const double vFront = (v(i,j+1,k)   + v(i,j,k))   / 2.;
+  const double wBack  = (w(i,j+1,k-1) + w(i,j,k-1)) / 2.;
+  const double vBack  = (v(i,j,  k-1) + v(i,j,k))   / 2.;
+  const double wFront = (w(i,j+1,k)   + w(i,j,k))   / 2.;
+  const double vFront = (v(i,j,  k+1) + v(i,j,k))   / 2.;
   return (vBack*wBack - vFront*wFront) / dz();
 }

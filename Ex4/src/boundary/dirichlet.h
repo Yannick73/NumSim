@@ -82,11 +82,11 @@ public:
     void setP() override;
 };
 
-class DirichletBack : public Dirichlet
+class DirichletHind : public Dirichlet
 {
 public:
-    DirichletBack(std::shared_ptr<Discretization> discretization, std::array<double, 3> vel) :
-                   Dirichlet(discretization, BoundaryEdge::FRONT, vel) { };
+    DirichletHind(std::shared_ptr<Discretization> discretization, std::array<double, 3> vel) :
+                   Dirichlet(discretization, BoundaryEdge::HIND, vel) { };
                    
     void setUVW() override;
     void setFGH() override;

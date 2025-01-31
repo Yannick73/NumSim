@@ -342,7 +342,7 @@ void DirichletFront::setP()
     }
 }
 
-void DirichletBack::setUVW()
+void DirichletHind::setUVW()
 {
     #pragma omp simd collapse(2)
     for(int j = 0; j < ujLen_; j++)
@@ -370,7 +370,7 @@ void DirichletBack::setUVW()
     }
 }
 
-void DirichletBack::setFGH()
+void DirichletHind::setFGH()
 {
     #pragma omp simd collapse(2)
     for(int j = 0; j < ujLen_; j++)
@@ -398,7 +398,7 @@ void DirichletBack::setFGH()
     }
 }
 
-void DirichletBack::setP()
+void DirichletHind::setP()
 {
     #pragma omp simd collapse(2)
     for(int j = 0; j < pjLen_; j++)

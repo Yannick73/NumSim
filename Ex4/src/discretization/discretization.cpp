@@ -122,11 +122,11 @@ void Discretization::calculateFGH(double deltaT)
             const double D2wDx2 = computeD2wDx2(i,j,k);
             const double D2wDy2 = computeD2wDy2(i,j,k);
             const double D2wDz2 = computeD2wDz2(i,j,k);
-            const double DwuDx  = computeDuvDx (i,j,k);
-            const double DwvDy  = computeDv2Dy (i,j,k);
-            const double Dw2Dz  = computeDvwDz (i,j,k);
+            const double DuwDx  = computeDuwDx (i,j,k);
+            const double DvwDy  = computeDvwDy (i,j,k);
+            const double Dw2Dz  = computeDw2Dz (i,j,k);
             g(i,j,k) = v(i,j,k) + deltaT*((D2wDx2+D2wDy2+D2wDz2)/settings_.re
-              - DwuDx - DwvDy - Dw2Dz + settings_.g[1]);
+              - DuwDx - DvwDy - Dw2Dz + settings_.g[1]);
         }
     }
   }

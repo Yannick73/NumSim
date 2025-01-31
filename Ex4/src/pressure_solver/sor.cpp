@@ -25,25 +25,30 @@ inline void SOR::step()
 
     const double dx2 = discretization_->dx2();
     const double dy2 = discretization_->dy2();
-    const double factor = (dx2 * dy2) / (2. * (dx2 + dy2));
+    const double dz2 = discretization_->dz2();
+    const double factor = (dx2 * dy2 * dz2) / (2. * (dy2*dz2+dx2*dz2+dx2*dy2));   // diffusion factor
 
-    #pragma omp collapse(2)
-    for(int j = 0; j < discretization_->pjN(); j++)
+    for(int k = 0; k < discretization_->pkN(); k++)
     {
-        for(int i = 0; i < discretization_->piN(); i++)
+        for(int j = 0; j < discretization_->pjN(); j++)
         {
-            // store all variables with short name for readibilty
-            const double p_last = discretization_->p(i,j);
-            const double p_xm   = discretization_->p(i-1,j);
-            const double p_xp   = discretization_->p(i+1,j);
-            const double p_ym   = discretization_->p(i,j-1);
-            const double p_yp   = discretization_->p(i,j+1);
-            const double rhs    = discretization_->rhs(i,j);
+            for(int i = 0; i < discretization_->piN(); i++)
+            {
+                // store all variables with short name for readibilty
+                const double p_last = discretization_->p(i,j,k);
+                const double p_xm   = discretization_->p(i-1,j,k);
+                const double p_xp   = discretization_->p(i+1,j,k);
+                const double p_ym   = discretization_->p(i,j-1,k);
+                const double p_yp   = discretization_->p(i,j+1,k);
+                const double p_zm   = discretization_->p(i,j,k-1);
+                const double p_zp   = discretization_->p(i,j,k+1);
+                const double rhs    = discretization_->rhs(i,j,k);
 
-            const double p_corretion = factor * ((p_xm+p_xp)/dx2 + (p_ym+p_yp)/dy2 - rhs) - p_last;
+                const double p_corretion = factor * ((p_xm+p_xp)/dx2 + (p_ym+p_yp)/dy2 + (p_zm+p_zp)/dz2 - rhs) - p_last;
 
-            const double p_new = p_last + omega_ * p_corretion;
-            discretization_->p(i, j) = p_new;
+                const double p_new = p_last + omega_ * p_corretion;
+                discretization_->p(i,j,k) = p_new;
+            }
         }
     }
 }

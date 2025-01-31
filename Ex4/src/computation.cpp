@@ -39,9 +39,9 @@ void runComputation(const Settings &settings, int rank, int nRanks)
     if(rank == 0)
         std::cout << "\nSimulation setup, start loop\n\n";
 
-    #ifdef TIMER
     const auto t0 = timestamp();
-    #endif
+
+    std::vector<double> p_tmp(discretization->p().length(), 0.0);
 
     while(simulationTime < settings.endTime)
     {
@@ -67,6 +67,11 @@ void runComputation(const Settings &settings, int rank, int nRanks)
         #pragma message("Missing")
         //partition->exchangeUVW();
 
+        #ifndef NDEBUG
+        std::cout << "Sim timestep " << simTimestep << "\tat sim-time " << simulationTime << "\twith dt " << deltaT 
+                  << "\tat runtime " << std::setprecision(4) << getDurationS(t0) << "s\n";
+        #endif
+
         /*if(outputParaview)
         {
             paraviewOut.writeFile(simulationTime);
@@ -79,6 +84,10 @@ void runComputation(const Settings &settings, int rank, int nRanks)
             debugOut.writeFile(simulationTime);
             #endif
         }*/
+
+
+        // for outputParaview, small timesteps may occur, in which case the p for the next time step may be not well set
+
         simTimestep++;
     }
 
@@ -121,15 +130,14 @@ void runComputation(const Settings &settings, int rank, int nRanks)
 std::shared_ptr<PressureSolver> newPressureSolver(std::shared_ptr<PartitionShell> partition, const Settings &settings, int nRanks)
 {
     #pragma message("Missing pressure solvers")
-    return std::make_shared<GaussSeidel>(partition, settings.epsilon, settings.maximumNumberOfIterations);
     // for a single rank, any solver works
-    /*if(nRanks == 1)
-    {
-        if(settings.pressureSolver == "SOR")
-            return std::make_shared<SOR>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
-        else if(settings.pressureSolver == "GaussSeidel")
-            return std::make_shared<GaussSeidel>(partition, settings.epsilon, settings.maximumNumberOfIterations);
-        else if(settings.pressureSolver == "Checkerboard")
+    if(settings.pressureSolver == "SOR")
+        return std::make_shared<SOR>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
+    else if(settings.pressureSolver == "GaussSeidel")
+        return std::make_shared<GaussSeidel>(partition, settings.epsilon, settings.maximumNumberOfIterations);
+    else
+        throw std::invalid_argument("Invalid or non-implemented pressure solver: " + settings.pressureSolver + ", stop simulation\n.");
+    /*    else if(settings.pressureSolver == "Checkerboard")
             return std::make_shared<Checkerboard>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
         else if(settings.pressureSolver == "CG")
             // Unfortunately, CG could not be implemented in time. Oh well!

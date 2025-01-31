@@ -2,6 +2,8 @@
 
 #include <array>
 #include <memory>
+#include <vector>
+#include <algorithm>
 #include <exception>
 #include <limits>
 #include <utility>
@@ -22,7 +24,7 @@
 #include "boundary/neighbour_boundary.h"
 #include "pressure_solver/pressure_solver.h"
 #include "pressure_solver/gauss_seidel.h"
-//#include "pressure_solver/sor.h"
+#include "pressure_solver/sor.h"
 //#include "pressure_solver/checkerboard.h"
 //#include "pressure_solver/cg.h"
 
@@ -69,4 +71,4 @@ private:
 void runComputation(const Settings &settings, int rank, int nRanks);
 
 //! Generates and returns the appropriate pressure-solver
-//std::shared_ptr<PressureSolver> newPressureSolver(std::shared_ptr<PartitionShell> partition, const Settings &settings, int nRanks);
+std::shared_ptr<PressureSolver> newPressureSolver(std::shared_ptr<PartitionShell> partition, const Settings &settings, int nRanks);

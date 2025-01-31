@@ -13,7 +13,7 @@ AsyncPartition::AsyncPartition(const std::shared_ptr<Discretization> discretizat
     fixBoundaries_.push_back(std::make_shared<DirichletTop>   (discretization, settings.dirichletBcTop));
     fixBoundaries_.push_back(std::make_shared<DirichletLeft>  (discretization, settings.dirichletBcLeft));
     fixBoundaries_.push_back(std::make_shared<DirichletRight> (discretization, settings.dirichletBcRight));
-    fixBoundaries_.push_back(std::make_shared<DirichletBack>  (discretization, settings.dirichtletBcBack));
+    fixBoundaries_.push_back(std::make_shared<DirichletHind>  (discretization, settings.dirichletBcHind));
     fixBoundaries_.push_back(std::make_shared<DirichletFront> (discretization, settings.dirichletBcFront));
     /*if(pi.getPartPosY() & 0b1)
     {

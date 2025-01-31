@@ -28,7 +28,7 @@ add_executable(${PROJECT_NAME}
    #output_writer/output_writer_paraview_parallel.cpp
    pressure_solver/pressure_solver.cpp
    pressure_solver/gauss_seidel.cpp
-   #pressure_solver/sor.cpp
+   pressure_solver/sor.cpp
    #pressure_solver/checkerboard.cpp
    #pressure_solver/cg.cpp
    computation.cpp

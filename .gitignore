@@ -37,6 +37,7 @@
 # ignore data
 */main
 build/
+build.zip
 referenceOut*
 
 # remove the output files

@@ -54,7 +54,7 @@ double Discretization::calculateVelocityDelta() const
         }
     }
   }
-  std::cout << "max-vel \t" << std::max(max_u, std::max(max_v, max_w)) << std::endl;
+  std::cout << "max-u " << max_u << "\tmax-v " << max_v << "\tmax-w " << max_w << std::endl;
   double dTx = dx() / max_u;
   double dTy = dy() / max_v;
   double dTz = dz() / max_w;

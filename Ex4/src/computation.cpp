@@ -24,11 +24,11 @@ void runComputation(const Settings &settings, int rank, int nRanks)
         
     std::shared_ptr<PressureSolver> pressureSolver = newPressureSolver(partition, settings, nRanks);
 
-    #pragma message("Output writer missing")
+    //#pragma message("Output writer missing")
     #ifndef NDEBUG
     //OutputWriterText debugOut(discretization, rank);
     #endif
-    //OutputWriterParaviewParallel paraviewOut(partition);
+    OutputWriterParaviewParallel paraviewOut(partition);
 
     DtCalculator dt(settings.maximumDt, settings.endTime, partition);
 
@@ -72,7 +72,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
                   << "\tat runtime " << std::setprecision(4) << getDurationS(t0) << "s\n";
         #endif
 
-        /*if(outputParaview)
+        if(outputParaview)
         {
             paraviewOut.writeFile(simulationTime);
             // diagnostic debug data
@@ -81,9 +81,9 @@ void runComputation(const Settings &settings, int rank, int nRanks)
                     << " at sim-time " << simulationTime << " with dt " << deltaT 
                     << " last solver needed " << pressureSolver->getLastIterations() << " steps\n";
             #ifndef NDEBUG
-            debugOut.writeFile(simulationTime);
+            //debugOut.writeFile(simulationTime);
             #endif
-        }*/
+        }
 
 
         // for outputParaview, small timesteps may occur, in which case the p for the next time step may be not well set

@@ -8,7 +8,7 @@
 #include <vtkDoubleArray.h>
 #include <vtkPointData.h>
 #include "output_writer/output_writer.h"
-#include "discretization/partition.h"
+#include "discretization/partition_shell.h"
 #include "discretization/partition_information.h"
 #include "discretization/discretization.h"
 #include "storage/field_variable.h"
@@ -37,14 +37,16 @@ private:
 
   vtkSmartPointer<vtkXMLImageDataWriter> vtkWriter_;   //< vtk writer to write ImageData
 
-  std::array<int,2> nCellsGlobal_;   //< global number of cells
-  std::array<int,2> nPointsGlobal_;  //< global number of points
+  std::array<int,3> nCellsGlobal_;   //< global number of cells
+  std::array<int,3> nPointsGlobal_;  //< global number of points
 
   FieldVariable uLocal_;    // field variable for u with global size, contains only the local values, other entries are 0
   FieldVariable vLocal_;    // field variable for v with global size, contains only the local values, other entries are 0
+  FieldVariable wLocal_;    // field variable for w with global size, contains only the local values, other entries are 0
   FieldVariable pLocal_;    // field variable for p with global size, contains only the local values, other entries are 0
 
   FieldVariable uGlobal_;    // on rank 0: field variable for u that gathers values from all ranks, on other ranks: nullptr
   FieldVariable vGlobal_;    // on rank 0: field variable for v that gathers values from all ranks, on other ranks: nullptr
+  FieldVariable wGlobal_;    // on rank 0: field variable for w that gathers values from all ranks, on other ranks: nullptr
   FieldVariable pGlobal_;    // on rank 0: field variable for p that gathers values from all ranks, on other ranks: nullptr
 };

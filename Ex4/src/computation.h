@@ -11,7 +11,7 @@
 #include "settings.h"
 #include "timekeeper.h"
 //#include "output_writer/output_writer_text.h"
-//#include "output_writer/output_writer_paraview_parallel.h"
+#include "output_writer/output_writer_paraview_parallel.h"
 #include "discretization/discretization.h"
 #include "discretization/partition_shell.h"
 #include "discretization/partition.h"

@@ -22,10 +22,10 @@ add_executable(${PROJECT_NAME}
    boundary/dirichlet.cpp
    #boundary/neighbour_boundary.cpp
    #boundary/async_neighbour_boundary.cpp
-   #output_writer/output_writer.cpp
+   output_writer/output_writer.cpp
    #output_writer/output_writer_text.cpp
    #output_writer/output_writer_paraview.cpp
-   #output_writer/output_writer_paraview_parallel.cpp
+   output_writer/output_writer_paraview_parallel.cpp
    pressure_solver/pressure_solver.cpp
    pressure_solver/gauss_seidel.cpp
    pressure_solver/sor.cpp

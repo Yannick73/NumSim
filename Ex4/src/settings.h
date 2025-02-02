@@ -17,6 +17,8 @@ struct Settings
     double endTime = 10.0;              //< end time of the simulation
     double tau = 0.5;                   //< safety factor for time step width
     double maximumDt = 0.1;             //< maximum time step width
+    double minimumDt = 0.0;             //< minimum time step width for stability
+    double outputDt = 1.0;              //< time interval for output
     bool disableAdaptiveDt = false;     //< if set true, dt will not be dependent on the fluid velocities
     std::array<double, 3> g{0., 0., 0.};    //< external forces
     bool useDonorCell = false; //< if the donor cell scheme schould be used

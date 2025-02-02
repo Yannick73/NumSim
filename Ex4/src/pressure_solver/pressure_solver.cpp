@@ -15,7 +15,7 @@ PressureSolver::PressureSolver(std::shared_ptr<PartitionShell> partition,
         throw std::out_of_range("maximumNumberOfIterations must be strictly positive!");
 }
 
-bool PressureSolver::solve()
+bool PressureSolver::solve(double debugDt)
 {
     // set the initial residuum to max, it is updated in each step
     double residuum2;
@@ -43,8 +43,10 @@ bool PressureSolver::solve()
             std::cout << "The pressure-solver converged after \t" << iteration_ << " steps\n";
         else
         {
-            std::cerr << "The pressure-solver did not converged after \t" << iteration_  << 
+            std::cerr << "\nThe pressure-solver did not converged after \t" << iteration_  << 
             " steps, the residuum left is \t" << residuum2 << " > " << epsilon2_ << std::endl;
+            if(debugDt > 0.0)
+                std::cerr << "dt: \t" << debugDt << std::endl;
             throw std::runtime_error("Pressure-Solver did not converge!\n");
         }
     }

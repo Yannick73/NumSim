@@ -107,6 +107,10 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     tau = std::stod(value);
   } else if (name == "maximumDt") {
     maximumDt = std::stod(value);
+  } else if (name == "minimumDt") {
+    minimumDt = std::stod(value);
+  } else if (name == "outputDt") {
+    outputDt = std::stod(value);
   } else if (name == "dirichletBottomX") {
     sscanf(value.c_str(), "%lf", &dirichletBcBottom[0]);
   } else if (name == "dirichletBottomY") {
@@ -175,7 +179,7 @@ void Settings::printSettings()
             << ", nCells: " << nCells[0] << " x " << nCells[1] << " x " << nCells[2] << std::endl
 
             << "  endTime: " << endTime << " s, re: " << re << ", g: (" << g[0]
-            << "," << g[1] << "," << g[2] << "), tau: " << tau << ", maximum dt: " << maximumDt
+            << "," << g[1] << "," << g[2] << "), tau: " << tau << ", minimum dt: " << minimumDt << ", maximum dt: " << maximumDt << ", output dt: " << outputDt
             << std::endl
 
             << "  dirichletBC: bottom: (" << dirichletBcBottom[0] << ","

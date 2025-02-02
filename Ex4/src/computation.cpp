@@ -30,7 +30,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
     #endif
     OutputWriterParaviewParallel paraviewOut(partition);
 
-    DtCalculator dt(settings.maximumDt, settings.endTime, partition);
+    DtCalculator dt(settings, partition);
 
     double simulationTime = 0;
     // used for debugging
@@ -43,7 +43,8 @@ void runComputation(const Settings &settings, int rank, int nRanks)
 
     std::vector<double> p_tmp(discretization->p().length(), 0.0);
 
-    while(simulationTime < settings.endTime)
+    // if the next sim step would be only minDt, then stop right there
+    while(simulationTime+settings.minimumDt < settings.endTime)
     {
         partition->setBoundaryUVW();
 
@@ -59,7 +60,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
 
         partition->calculateRHS(deltaT);
 
-        pressureSolver->solve();
+        pressureSolver->solve(deltaT);
 
         partition->calculateUVW(deltaT);
 
@@ -170,8 +171,24 @@ std::pair<double, bool> DtCalculator::calculate(double simulationTime)
     {
         outputParaview = true;
         //! next output is either at the exact next whole number, or the end of the sim
-        nextParaviewTime_ = std::min(nextParaviewTime_+1.0, endTime_);
+        nextParaviewTime_ = std::min(nextParaviewTime_+dtOut_, endTime_);
         deltaT = deltaOut;
+    }
+    else if(dtMin_ > 0.0 && deltaOut < deltaT + dtMin_)
+    {
+        if(rank_ == 0)
+            std::cerr << "DeltaT was rounded up to the next output time\n";
+        outputParaview = true;
+        //! next output is either at the exact next whole number, or the end of the sim
+        nextParaviewTime_ = std::min(nextParaviewTime_+dtOut_, endTime_);
+        deltaT = deltaOut;
+    }
+
+    if(dtMin_ > 0.0 && deltaT < dtMin_)
+    {
+        if(rank_)
+            std::cerr << "\nDeltaT is smaller than the minimum deltaT, setting to minimum!\n\n";
+        deltaT = dtMin_;
     }
 
     #ifndef NDEBUG

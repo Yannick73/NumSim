@@ -73,7 +73,7 @@ double DonorCell::computeDuwDx(int i, int j, int k) const
   const double wRight = (w(i+1,j,k)   + w(i,  j,k)) / 2.; // w i+1/2,k
   const double centralDiff = (uRight*wRight - uLeft*wLeft) / dx();
 
-  const double uwDonorRight = std::abs(uRight) * (w(i+1,j,k) - w(i,j,k)) / 2.; 
+  const double uwDonorRight = std::abs(uRight) * (w(i,j,k) - w(i+1,j,k)) / 2.; 
   const double uwDonorLeft  = std::abs(uLeft)  * (w(i-1,j,k) - w(i,j,k)) / 2.;
   return centralDiff + alpha_ * (uwDonorRight - uwDonorLeft) / dx();
 }
@@ -88,7 +88,7 @@ double DonorCell::computeDuwDz(int i, int j, int k) const
   const double uFront = (u(i,  j,k+1) + u(i,j,k))   / 2.; // u i,j,k+1/2
   const double centralDiff = (wFront*uFront - wBack*uBack) / dz();
 
-  const double uwDonorFront = std::abs(wFront) * (u(i,j,k+1) - u(i,j,k)) / 2.;
+  const double uwDonorFront = std::abs(wFront) * (u(i,j,k)   - u(i,j,k+1)) / 2.;
   const double uwDonorBack  = std::abs(wBack)  * (u(i,j,k-1) + u(i,j,k)) / 2.;
   return centralDiff + alpha_ * (uwDonorFront - uwDonorBack) / dz();
 }
@@ -97,13 +97,13 @@ double DonorCell::computeDuwDz(int i, int j, int k) const
 double DonorCell::computeDvwDy(int i, int j, int k) const 
 {
   const double vTop    = (v(i,  j,  k+1) + v(i,j,  k)) / 2.; // v i,j,k+1/2
-  const double wTop    = (w(i+1,j,  k)   + w(i,j,  k)) / 2.; // w i+1/2,j,k
+  const double wTop    = (w(i,  j+1,k)   + w(i,j,  k)) / 2.; // w i,j+1/2,k (i instead of j)
   const double vBottom = (v(i,  j-1,k+1) + v(i,j-1,k)) / 2.; // v i,j-1,k+1/2
   const double wBottom = (w(i,  j-1,k)   + w(i,j,  k)) / 2.; // w i,j-1/2,k
   const double centralDiff = (vTop*wTop - vBottom*wBottom) / dy();
 
-  const double vwDonorTop    = std::abs(vTop)    * (w(i+1,j,  k) - w(i,j,k)) / 2.;
-  const double vwDonorBottom = std::abs(vBottom) * (w(i,  j-1,k) - w(i,j,k)) / 2.;
+  const double vwDonorTop    = std::abs(vTop)    * (w(i,j,  k) - w(i,j+1,k)) / 2.;
+  const double vwDonorBottom = std::abs(vBottom) * (w(i,j-1,k) - w(i,j,k)) / 2.;
   return centralDiff + alpha_ * (vwDonorTop - vwDonorBottom) / dy();
 }
 
@@ -111,12 +111,12 @@ double DonorCell::computeDvwDy(int i, int j, int k) const
 double DonorCell::computeDvwDz(int i, int j, int k) const
 {
   const double wBack  = (w(i,j+1,k-1) + w(i,j,k-1)) / 2.; // w i,j+1/2,k-1
-  const double vBack  = (v(i,j,  k-1) + v(i,j,k))   / 2.; // v i,j,j-1/2
+  const double vBack  = (v(i,j,  k-1) + v(i,j,k))   / 2.; // v i,j,k-1/2
   const double wFront = (w(i,j+1,k)   + w(i,j,k))   / 2.; // w i,j+1/2,k
   const double vFront = (v(i,j,  k+1) + v(i,j,k))   / 2.; // v i,j,k+1/2
   const double centralDiff = (vFront*wFront - vBack*wBack) / dz();
 
-  const double vwDonorFront = std::abs(wFront) * (v(i,j,k+1) - v(i,j,k)) / 2.;
-  const double vwDonorBack  = std::abs(wBack)  * (v(i,j,k-1) - v(i,j,k)) / 2.;
+  const double vwDonorFront = std::abs(wFront) * (v(i,j,k)   - v(i,j,k+1)) / 2.;
+  const double vwDonorBack  = std::abs(wBack)  * (v(i,j,k-1) - v(i,j,k))   / 2.;
   return centralDiff + alpha_ * (vwDonorFront - vwDonorBack) / dz();
 }

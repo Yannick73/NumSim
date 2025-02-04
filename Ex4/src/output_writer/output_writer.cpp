@@ -11,10 +11,4 @@ OutputWriter::OutputWriter(std::shared_ptr<Discretization> discretization)
     std::cerr << "Warning: Could not create subdirectory \"out\"." << std::endl;
     return;
   }
-  // if the out dir could be created, then the others can be created as well
-  // (besides maybe path limits on NTFS/FAT, wellp)
-  #ifndef NDEBUG
-  system("mkdir -p out/pressure");
-  system("mkdir -p out/output");
-  #endif
 }

@@ -18,7 +18,9 @@ public:
     PressureSolver(std::shared_ptr<PartitionShell> partition, double epsilon, int maximumNumberOfIterations);
     
     //! Calls the solving-step in a loop, returns, whether it sufficiently converged
-    bool solve();
+    //! debugDt is an optional debug output and is printed, if the solver does not converge
+    //! (because if dt is incredibly small, then it is likely, that the solver cannot converge)
+    bool solve(double debugDt = -1.0);
 
     //! Output a statistic over how many iterations the solver needed, only defined for !NDEBUG
     void printIterationStats();

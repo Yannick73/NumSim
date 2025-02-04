@@ -24,6 +24,11 @@ public:
 
   //! more advanced bilinear interpolation schema, if the points are anywhere
   //double bilinearInterpolation(double x, double y);
+  // for u x lies on the correct x grid, but y and z does not
+  double yzInterpolation (double x, double y, double z);
+  double xzInterpolation (double x, double y, double z);
+  double xyInterpolation (double x, double y, double z);
+  double midInterpolation(double x, double y, double z);
 
   inline const std::array<double, 3> getOrigin() { return origin_; }
 

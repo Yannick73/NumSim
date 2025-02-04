@@ -4,7 +4,7 @@ FieldVariable::FieldVariable(std::array<int, 3> size,
                              std::array<double, 3> origin,
                              std::array<double, 3> meshWidth,
                              std::string name)
-    : Array3D(size, name), origin_(origin), meshWidth_(meshWidth) { }
+    : Array3D(size, name), meshWidth_(meshWidth), origin_(origin) { }
 
 double FieldVariable::yzInterpolation(double x, double y, double z)
 {
@@ -92,3 +92,58 @@ double FieldVariable::midInterpolation(double x, double y, double z)
 
     return (q000 + q001 + q010 + q011 + q100 + q101 + q110 + q111) / 8.0;
 }
+
+#ifdef DISCRETIZATION_TEST
+double &FieldVariable::operator()(int i, int j, int k)
+{
+    const std::size_t index = compute_index(i, j, k);
+    // make assertion conditional on DEBUG mode to optimize further
+    #ifndef NDEBUG
+    if(i < 0 || i >= size_[0] || j < 0 || j >= size_[1] || k < 0 || k >= size_[2])
+    {
+        int rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        std::stringstream str;
+        str << "Out-of-bound access on " << name_ << "(i,j,k): (" << i << ',' << j << ',' << k
+            << "), size: (" << size_[0] << ',' << size_[1] << ',' << size_[2] << ") in R:" << rank << "\n";
+        throw std::out_of_range(str.str());
+    }
+    #endif
+    
+    const double x = i * meshWidth_[0] + origin_[0];
+    const double y = j * meshWidth_[1] + origin_[1];
+    const double z = k * meshWidth_[2] + origin_[2];
+
+    std::cout << name_ << '(' << i << ',' << j << ',' << k << ") @pos (" <<
+        x << ',' << y << ',' << z << ") = " << data_[index] << "\n";
+
+    return data_[index];
+}
+
+double FieldVariable::operator()(int i, int j, int k) const
+{
+    //std::size_t index = compute_index(i, j, k);
+    const std::size_t index = compute_index(i, j, k);
+    // assert that indices are in range
+    #ifndef NDEBUG
+    if(i < 0 || i >= size_[0] || j < 0 || j >= size_[1] || k < 0 || k >= size_[2])
+    {
+        int rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        std::stringstream str;
+        str << "Out-of-bound access on " << name_ << "(i,j,k): (" << i << ',' << j << ',' << k
+            << "), size: (" << size_[0] << ',' << size_[1] << ',' << size_[2] << ") in R:" << rank << "\n";
+        throw std::out_of_range(str.str());
+    }
+    #endif
+    
+    const double x = i * meshWidth_[0] + origin_[0];
+    const double y = j * meshWidth_[1] + origin_[1];
+    const double z = k * meshWidth_[2] + origin_[2];
+
+    std::cout << name_ << '(' << i << ',' << j << ',' << k << ") @pos (" <<
+        x << ',' << y << ',' << z << ") = " << data_[index] << "\n";
+
+    return data_[index];
+}
+#endif

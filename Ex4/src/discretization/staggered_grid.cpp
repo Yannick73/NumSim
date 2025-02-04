@@ -43,25 +43,25 @@ inline std::array<double, 3> getOrigin(PartitionInformation &pi, field ind)
    switch (ind)
    {
    case field::u:
-      return {    pi.meshWidth()[0],
-              3 * pi.meshWidth()[1] / 2.,
-              3 * pi.meshWidth()[2] / 2.};
+      return {0.0,
+              -pi.meshWidth()[1] / 2.,
+              -pi.meshWidth()[2] / 2.};
    case field::v:
-      return {3 * pi.meshWidth()[0] / 2.,
-                  pi.meshWidth()[1],
-              3 * pi.meshWidth()[2] / 2.};
+      return {-pi.meshWidth()[0] / 2.,
+              0.0,
+              -pi.meshWidth()[2] / 2.};
    case field::w:
-      return {3 * pi.meshWidth()[0] / 2.,
-              3 * pi.meshWidth()[1] / 2.,
-                  pi.meshWidth()[2]};
+      return {-pi.meshWidth()[0] / 2.,
+              -pi.meshWidth()[1] / 2.,
+              0.0};
    case field::p:
-      return {3 * pi.meshWidth()[0] / 2.,
-              3 * pi.meshWidth()[1] / 2.,
-              3 * pi.meshWidth()[2] / 2.};
+      return {-pi.meshWidth()[0] / 2.,
+              -pi.meshWidth()[1] / 2.,
+              -pi.meshWidth()[2] / 2.};
    case field::rhs:
-      return {3 * pi.meshWidth()[0] / 2.,
-              3 * pi.meshWidth()[1] / 2.,
-              3 * pi.meshWidth()[2] / 2.};
+      return {pi.meshWidth()[0] / 2.,
+              pi.meshWidth()[1] / 2.,
+              pi.meshWidth()[2] / 2.};
    default:
       throw std::range_error("Undefined index");
    }

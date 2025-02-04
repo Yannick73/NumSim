@@ -8,9 +8,9 @@ FieldVariable::FieldVariable(std::array<int, 3> size,
 
 double FieldVariable::yzInterpolation(double x, double y, double z)
 {
-    const double i_x = (x + origin_[0]) / meshWidth_[0] - 1.0;
-    const double i_y = (y + origin_[1]) / meshWidth_[1] - 1.0;
-    const double i_z = (z + origin_[2]) / meshWidth_[2] - 1.0;
+    const double i_x = (x - origin_[0]) / meshWidth_[0];
+    const double i_y = (y - origin_[1]) / meshWidth_[1];
+    const double i_z = (z - origin_[2]) / meshWidth_[2];
     
     const int x_round = std::round(i_x);
     const int y_upper = std::ceil (i_y);
@@ -28,9 +28,9 @@ double FieldVariable::yzInterpolation(double x, double y, double z)
 
 double FieldVariable::xzInterpolation(double x, double y, double z)
 {
-    const double i_x = (x + origin_[0]) / meshWidth_[0] - 1.0;
-    const double i_y = (y + origin_[1]) / meshWidth_[1] - 1.0;
-    const double i_z = (z + origin_[2]) / meshWidth_[2] - 1.0;
+    const double i_x = (x - origin_[0]) / meshWidth_[0];
+    const double i_y = (y - origin_[1]) / meshWidth_[1];
+    const double i_z = (z - origin_[2]) / meshWidth_[2];
     
     const int y_round = std::round(i_y);
     const int x_upper = std::ceil (i_x);
@@ -48,9 +48,9 @@ double FieldVariable::xzInterpolation(double x, double y, double z)
 
 double FieldVariable::xyInterpolation(double x, double y, double z)
 {
-    const double i_x = (x + origin_[0]) / meshWidth_[0] - 1.0;
-    const double i_y = (y + origin_[1]) / meshWidth_[1] - 1.0;
-    const double i_z = (z + origin_[2]) / meshWidth_[2] - 1.0;
+    const double i_x = (x - origin_[0]) / meshWidth_[0];
+    const double i_y = (y - origin_[1]) / meshWidth_[1];
+    const double i_z = (z - origin_[2]) / meshWidth_[2];
     
     const int z_round = std::round(i_z);
     const int x_upper = std::ceil (i_x);
@@ -70,9 +70,9 @@ double FieldVariable::xyInterpolation(double x, double y, double z)
 // because the mesh is regular and the points are always in the same mid positions
 double FieldVariable::midInterpolation(double x, double y, double z)
 {
-    const double i_x = (x + origin_[0]) / meshWidth_[0] - 1.0;
-    const double i_y = (y + origin_[1]) / meshWidth_[1] - 1.0;
-    const double i_z = (z + origin_[2]) / meshWidth_[2] - 1.0;
+    const double i_x = (x - origin_[0]) / meshWidth_[0];
+    const double i_y = (y - origin_[1]) / meshWidth_[1];
+    const double i_z = (z - origin_[2]) / meshWidth_[2];
     
     const int x_upper = std::ceil (i_x);
     const int x_lower = std::floor(i_x);

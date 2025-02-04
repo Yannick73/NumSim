@@ -16,6 +16,8 @@ public:
   //! sets all the data to zero using the fill command
   inline void setToZero() { std::fill(data_.begin(), data_.end(), 0.0); };
 
+  inline void setToValue(double value) { std::fill(data_.begin(), data_.end(), value); };
+
   //! gets the underlying buffer definition
   inline double* data() { return data_.data(); };
 

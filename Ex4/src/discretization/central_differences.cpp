@@ -3,7 +3,15 @@
 //! compute the 1st derivative ∂ u^2 / ∂x
 double CentralDifferences::computeDu2Dx(int i, int j, int k) const
 {
+  #ifdef DISCRETIZATION_TEST
+  std::cout << std::endl;
+  u(i,j,k); // this should print out the coordinates where the derivative should lie
+  std::cout << "computeDu2Dx on u\nuRight: \n";
+  #endif
   const double uRight = (u(i,j,k)   + u(i+1,j,k)) / 2.;
+  #ifdef DISCRETIZATION_TEST
+  std::cout << "uLeft: \n";
+  #endif
   const double uLeft  = (u(i-1,j,k) + u(i,j,k))   / 2.;
   return (uRight*uRight - uLeft*uLeft) / dx();
 }
@@ -11,7 +19,15 @@ double CentralDifferences::computeDu2Dx(int i, int j, int k) const
 //! compute the 1st derivative ∂ v^2 / ∂y
 double CentralDifferences::computeDv2Dy(int i, int j, int k) const 
 {
+  #ifdef DISCRETIZATION_TEST
+  std::cout << std::endl;
+  v(i,j,k); // this should print out the coordinates where the derivative should lie
+  std::cout << "computeDv2Dy on v\nvTop: \n";
+  #endif
   const double vTop    = (v(i,j,k)   + v(i,j+1,k)) / 2.;
+  #ifdef DISCRETIZATION_TEST
+  std::cout << "vBottom: \n";
+  #endif
   const double vBottom = (v(i,j-1,k) + v(i,j,k))   / 2.;
   return (vTop*vTop - vBottom*vBottom) / dy();
 }
@@ -19,7 +35,15 @@ double CentralDifferences::computeDv2Dy(int i, int j, int k) const
 //! compute the 1st derivative ∂ w^2 / ∂z
 double CentralDifferences::computeDw2Dz(int i, int j, int k) const 
 {
+  #ifdef DISCRETIZATION_TEST
+  std::cout << std::endl;
+  w(i,j,k); // this should print out the coordinates where the derivative should lie
+  std::cout << "computeDw2Dz on w\nwFront: \n";
+  #endif
   const double wFront = (w(i,j,k)   + w(i,j,k+1)) / 2.;
+  #ifdef DISCRETIZATION_TEST
+  std::cout << "wBack: \n";
+  #endif
   const double wBack  = (w(i,j,k-1) + w(i,j,k))   / 2.;
   return (wFront*wFront - wBack*wBack) / dz();
 }

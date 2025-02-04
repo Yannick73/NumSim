@@ -1,11 +1,11 @@
 #include "discretization/staggered_grid.h"
 
-enum field
+enum field : char
 {
-   u,
-   v,
-   w,
-   p
+   u = 'u',
+   v = 'v',
+   w = 'w',
+   p = 'p'
 };
 
 inline std::array<int, 3> getCells(PartitionInformation &pi, field ind)
@@ -34,7 +34,7 @@ inline std::array<int, 3> getCells(PartitionInformation &pi, field ind)
    }
 }
 
-inline std::array<double, 3> getOrigin(PartitionInformation &pi, int ind)
+inline std::array<double, 3> getOrigin(PartitionInformation &pi, field ind)
 {
    switch (ind)
    {

@@ -10,7 +10,7 @@
 #include "discretization/partition_information.h"
 #include "boundary/boundary.h"
 #include "boundary/dirichlet.h"
-#include "boundary/async_neighbour_boundary.h"
+//#include "boundary/async_neighbour_boundary.h"
 
 //! Class to encapsulate the discretization and its boundaries
 class AsyncPartition : public PartitionShell
@@ -21,15 +21,19 @@ public:
               const PartitionInformation &pi);
 
     //! set applies all boundary conditions on fix boundary an on neighbours
-    void setBoundaryUV() override;
-    void setBoundaryFG() override;
+    void setBoundaryUVW() override;
+    void setBoundaryFGH() override;
     void setBoundaryP() override;
+
+    // this looks like a warning, but it is a reminder for an essential missing feature, that was excluded to get a first system runnign
+    #pragma message("Missing neighbour")
+
     //! only exchange the pressure values with the respective neighbours w/o setting dirichlet
-    void exchangeP() override;
+    /*void exchangeP() override;
     //! also only used in pressure solver, but specifically only for CG
     void exchangeRA() override;
     //! used before paraview output
-    void exchangeUV() override;
+    void exchangeUVW() override;
 
     //! sets up the appropriate send and start-receive for all neighbours and pushes the 
     //! neighbours into the neighbourRecvQueue for later use
@@ -47,10 +51,10 @@ public:
         #ifdef TIMER
         timer_.addTimeSinceT0();
         #endif
-    }
+    }*/
 
     //! this little function takes sets the data of the first incoming data 
-    inline void setFirstIncomingData(std::vector<std::shared_ptr<AsyncNeighbourBoundary>> &neighbourRecvQueue,
+    /*inline void setFirstIncomingData(std::vector<std::shared_ptr<AsyncNeighbourBoundary>> &neighbourRecvQueue,
                                     void (AsyncNeighbourBoundary::*setFun)())
     {
         // Although adding/removing elements is the domain of lists, the vector 
@@ -74,11 +78,11 @@ public:
         #ifdef TIMER
         timer_.addTimeSinceT0();
         #endif
-    }
+    }*/
 
 protected:
     //! Extra async neighbours vector, making them neighbour-derived migt solve this,
     //! but would remove neighbour specific virtual functions. One may solve this again by making
     //! a virtual SyncNeighbour class, but well...
-    std::vector<std::shared_ptr<AsyncNeighbourBoundary>> asyncNeighbours_;
+    //std::vector<std::shared_ptr<AsyncNeighbourBoundary>> asyncNeighbours_;
 };

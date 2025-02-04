@@ -12,13 +12,13 @@ Partition::Partition(const std::shared_ptr<Discretization> discretization,
     if(pi.getPartPosY() & 0b1)
     {
         if(pi.ownPartitionContainsBottomBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletSouth>(discretization, settings.dirichletBcBottom));
+            fixBoundaries_.push_back(std::make_shared<DirichletBottom>(discretization, settings.dirichletBcBottom));
         else
             neighbours_.push_back(std::make_shared<NeighbourSouth>(discretization, pi.bottomNeighbourRankNo(),
                                 !pi.ownPartitionContainsLeftBoundary(), !pi.ownPartitionContainsRightBoundary()));
 
         if(pi.ownPartitionContainsTopBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletNorth>(discretization, settings.dirichletBcTop));
+            fixBoundaries_.push_back(std::make_shared<DirichletTop>(discretization, settings.dirichletBcTop));
         else
             neighbours_.push_back(std::make_shared<NeighbourNorth>(discretization, pi.topNeighbourRankNo(),
                                 !pi.ownPartitionContainsLeftBoundary(), !pi.ownPartitionContainsRightBoundary()));
@@ -26,13 +26,13 @@ Partition::Partition(const std::shared_ptr<Discretization> discretization,
     else
     {
         if(pi.ownPartitionContainsTopBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletNorth>(discretization, settings.dirichletBcTop));
+            fixBoundaries_.push_back(std::make_shared<DirichletTop>(discretization, settings.dirichletBcTop));
         else
             neighbours_.push_back(std::make_shared<NeighbourNorth>(discretization, pi.topNeighbourRankNo(),
                                 !pi.ownPartitionContainsLeftBoundary(), !pi.ownPartitionContainsRightBoundary()));
 
         if(pi.ownPartitionContainsBottomBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletSouth>(discretization, settings.dirichletBcBottom));
+            fixBoundaries_.push_back(std::make_shared<DirichletBottom>(discretization, settings.dirichletBcBottom));
         else
             neighbours_.push_back(std::make_shared<NeighbourSouth>(discretization, pi.bottomNeighbourRankNo(),
                                 !pi.ownPartitionContainsLeftBoundary(), !pi.ownPartitionContainsRightBoundary()));
@@ -41,24 +41,24 @@ Partition::Partition(const std::shared_ptr<Discretization> discretization,
     if(pi.getPartPosY() & 0b1)
     {
         if(pi.ownPartitionContainsLeftBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletWest> (discretization, settings.dirichletBcLeft));
+            fixBoundaries_.push_back(std::make_shared<DirichletLeft> (discretization, settings.dirichletBcLeft));
         else
             neighbours_.push_back(std::make_shared<NeighbourWest> (discretization, pi.leftNeighbourRankNo()));
 
         if(pi.ownPartitionContainsRightBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletEast> (discretization, settings.dirichletBcRight));
+            fixBoundaries_.push_back(std::make_shared<DirichletRight> (discretization, settings.dirichletBcRight));
         else
             neighbours_.push_back(std::make_shared<NeighbourEast> (discretization, pi.rightNeighbourRankNo()));
     }
     else
     {
         if(pi.ownPartitionContainsRightBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletEast> (discretization, settings.dirichletBcRight));
+            fixBoundaries_.push_back(std::make_shared<DirichletRight> (discretization, settings.dirichletBcRight));
         else
             neighbours_.push_back(std::make_shared<NeighbourEast> (discretization, pi.rightNeighbourRankNo()));
 
         if(pi.ownPartitionContainsLeftBoundary())
-            fixBoundaries_.push_back(std::make_shared<DirichletWest> (discretization, settings.dirichletBcLeft));
+            fixBoundaries_.push_back(std::make_shared<DirichletLeft> (discretization, settings.dirichletBcLeft));
         else
             neighbours_.push_back(std::make_shared<NeighbourWest> (discretization, pi.leftNeighbourRankNo()));
     }
@@ -80,17 +80,17 @@ Partition::Partition(const std::shared_ptr<Discretization> discretization,
     assert(directions.size()  == 4);
 }
 
-void Partition::setBoundaryUV()
+void Partition::setBoundaryUVW()
 {
     fixDirichletBoundary();
-    exchangeUV();
+    exchangeUVW();
 }
 
-void Partition::setBoundaryFG()
+void Partition::setBoundaryFGH()
 {
     for(std::shared_ptr<Dirichlet> fixBoundary : fixBoundaries_)
     {
-        fixBoundary->setFG();
+        fixBoundary->setFGH();
     }
 
     #ifdef TIMER
@@ -128,7 +128,7 @@ void Partition::exchangeP()
     #endif
 }
 
-void Partition::exchangeUV()
+void Partition::exchangeUVW()
 {
     #ifdef TIMER
     timer_.setT0();

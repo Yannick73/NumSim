@@ -111,7 +111,7 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     sscanf(value.c_str(), "%lf", &dirichletBcBottom[0]);
   } else if (name == "dirichletBottomY") {
     sscanf(value.c_str(), "%lf", &dirichletBcBottom[1]);
-  } else if (name == "dirichtletBottomZ") {
+  } else if (name == "dirichletBottomZ") {
     sscanf(value.c_str(), "%lf", &dirichletBcBottom[2]);
   } else if (name == "dirichletTopX") {
     sscanf(value.c_str(), "%lf", &dirichletBcTop[0]);
@@ -131,18 +131,18 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     sscanf(value.c_str(), "%lf", &dirichletBcRight[1]);
   } else if(name == "dirichletRightZ") {
     sscanf(value.c_str(), "%lf", &dirichletBcRight[2]);
-  } else if(name == "dirichtletFrontX") {
+  } else if(name == "dirichletFrontX") {
     sscanf(value.c_str(), "%lf", &dirichletBcFront[0]);
-  } else if(name == "dirichtletFrontY") {
+  } else if(name == "dirichletFrontY") {
     sscanf(value.c_str(), "%lf", &dirichletBcFront[1]);
-  } else if(name == "dirichtletFrontZ") {
+  } else if(name == "dirichletFrontZ") {
     sscanf(value.c_str(), "%lf", &dirichletBcFront[2]);
-  } else if(name == "dirichtletBackX") {
-    sscanf(value.c_str(), "%lf", &dirichletBcFront[0]);
-  } else if(name == "dirichtletBackY") {
-    sscanf(value.c_str(), "%lf", &dirichletBcFront[1]);
-  } else if(name == "dirichtletBackZ") {
-    sscanf(value.c_str(), "%lf", &dirichletBcFront[2]);
+  } else if(name == "dirichletHindX") {
+    sscanf(value.c_str(), "%lf", &dirichletBcHind[0]);
+  } else if(name == "dirichletHindY") {
+    sscanf(value.c_str(), "%lf", &dirichletBcHind[1]);
+  } else if(name == "dirichletHindZ") {
+    sscanf(value.c_str(), "%lf", &dirichletBcHind[2]);
   } else if (name == "useDonorCell") {
     useDonorCell = (value == "true" || value == "1");
   } else if (name == "alpha") {
@@ -171,23 +171,29 @@ void Settings::printSettings()
 
   std::cout << "Settings: " << std::endl
 
-            << "  physicalSize: " << physicalSize[0] << " x " << physicalSize[1]
-            << ", nCells: " << nCells[0] << " x " << nCells[1] << std::endl
+            << "  physicalSize: " << physicalSize[0] << " x " << physicalSize[1] << " x " << physicalSize[2]
+            << ", nCells: " << nCells[0] << " x " << nCells[1] << " x " << nCells[2] << std::endl
 
             << "  endTime: " << endTime << " s, re: " << re << ", g: (" << g[0]
-            << "," << g[1] << "), tau: " << tau << ", maximum dt: " << maximumDt
+            << "," << g[1] << "," << g[2] << "), tau: " << tau << ", maximum dt: " << maximumDt
             << std::endl
 
             << "  dirichletBC: bottom: (" << dirichletBcBottom[0] << ","
-            << dirichletBcBottom[1] << ")"
+            << dirichletBcBottom[1] << "," << dirichletBcBottom[2] << ")"
 
-            << ", top: (" << dirichletBcTop[0] << "," << dirichletBcTop[1]
+            << ", top: (" << dirichletBcTop[0] << "," << dirichletBcTop[1] << "," << dirichletBcTop[2]
             << ")"
 
-            << ", left: (" << dirichletBcLeft[0] << "," << dirichletBcLeft[1]
+            << ", left: (" << dirichletBcLeft[0] << "," << dirichletBcLeft[1] << "," << dirichletBcLeft[2]
             << ")"
 
-            << ", right: (" << dirichletBcRight[0] << "," << dirichletBcRight[1]
+            << ", right: (" << dirichletBcRight[0] << "," << dirichletBcRight[1] << "," << dirichletBcRight[2]
+            << ")"
+
+            << ", hind: (" << dirichletBcHind[0] << "," << dirichletBcHind[1] << "," << dirichletBcHind[2]
+            << ")"
+
+            << ", front: (" << dirichletBcFront[0] << "," << dirichletBcFront[1] << "," << dirichletBcFront[2]
             << ")" << std::endl
 
             << "  useDonorCell: " << std::boolalpha << useDonorCell

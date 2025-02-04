@@ -9,13 +9,13 @@ class Dirichlet : public Boundary
 {
 public:
     // additionall to the discretization and edge, it also requires the known velocities
-    Dirichlet(std::shared_ptr<Discretization> discretization, BoundaryEdge edge, std::array<double, 2> vel) : 
+    Dirichlet(std::shared_ptr<Discretization> discretization, BoundaryEdge edge, std::array<double, 3> vel) : 
               Boundary(discretization, edge),
-              velX_(vel[0]), velY_(vel[1]) { }
+              velX_(vel[0]), velY_(vel[1]), velZ_(vel[2]) { }
     
-    virtual void setUV() = 0;
+    virtual void setUVW() = 0;
 
-    virtual void setFG() = 0;
+    virtual void setFGH() = 0;
 
     virtual void setP() = 0;
 
@@ -23,49 +23,72 @@ protected:
     //! direction of flow
     const double velX_;
     const double velY_;
+    const double velZ_;
 };
 
-class DirichletNorth : public Dirichlet
+class DirichletTop : public Dirichlet
 {
 public:
     //! Set the edge implicitely
-    DirichletNorth(std::shared_ptr<Discretization> discretization, std::array<double, 2> vel) :
-                   Dirichlet(discretization, BoundaryEdge::NORTH, vel) { };
+    DirichletTop(std::shared_ptr<Discretization> discretization, std::array<double, 3> vel) :
+                   Dirichlet(discretization, BoundaryEdge::TOP, vel) { };
 
-    void setUV() override;
-    void setFG() override;
+    void setUVW() override;
+    void setFGH() override;
     void setP() override;
 };
 
-class DirichletEast : public Dirichlet
+class DirichletRight : public Dirichlet
 {
 public:
-    DirichletEast(std::shared_ptr<Discretization> discretization, std::array<double, 2> vel) :
-                   Dirichlet(discretization, BoundaryEdge::EAST, vel) { };
+    DirichletRight(std::shared_ptr<Discretization> discretization, std::array<double, 3> vel) :
+                   Dirichlet(discretization, BoundaryEdge::RIGHT, vel) { };
 
-    void setUV() override;
-    void setFG() override;
+    void setUVW() override;
+    void setFGH() override;
     void setP() override;
 };
 
-class DirichletSouth : public Dirichlet
+class DirichletBottom : public Dirichlet
 {
 public:
-    DirichletSouth(std::shared_ptr<Discretization> discretization, std::array<double, 2> vel) :
-                   Dirichlet(discretization, BoundaryEdge::SOUTH, vel) { };
+    DirichletBottom(std::shared_ptr<Discretization> discretization, std::array<double, 3> vel) :
+                   Dirichlet(discretization, BoundaryEdge::BOTTOM, vel) { };
 
-    void setUV() override;
-    void setFG() override;
+    void setUVW() override;
+    void setFGH() override;
     void setP() override;
 };
 
-class DirichletWest : public Dirichlet
+class DirichletLeft : public Dirichlet
 {
 public:
-    DirichletWest(std::shared_ptr<Discretization> discretization, std::array<double, 2> vel) :
-                   Dirichlet(discretization, BoundaryEdge::WEST, vel) { };
+    DirichletLeft(std::shared_ptr<Discretization> discretization, std::array<double, 3> vel) :
+                   Dirichlet(discretization, BoundaryEdge::LEFT, vel) { };
                    
-    void setUV() override;
-    void setFG() override;
+    void setUVW() override;
+    void setFGH() override;
+    void setP() override;
+};
+
+class DirichletFront : public Dirichlet
+{
+public:
+    DirichletFront(std::shared_ptr<Discretization> discretization, std::array<double, 3> vel) :
+                   Dirichlet(discretization, BoundaryEdge::FRONT, vel) { };
+                   
+    void setUVW() override;
+    void setFGH() override;
+    void setP() override;
+};
+
+class DirichletHind : public Dirichlet
+{
+public:
+    DirichletHind(std::shared_ptr<Discretization> discretization, std::array<double, 3> vel) :
+                   Dirichlet(discretization, BoundaryEdge::HIND, vel) { };
+                   
+    void setUVW() override;
+    void setFGH() override;
     void setP() override;
 };

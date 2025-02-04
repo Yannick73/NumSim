@@ -2,18 +2,20 @@
 
 #include <array>
 #include <memory>
+#include <vector>
+#include <algorithm>
 #include <exception>
 #include <limits>
 #include <utility>
 #include <mpi.h>
 #include "settings.h"
 #include "timekeeper.h"
-#include "output_writer/output_writer_text.h"
-#include "output_writer/output_writer_paraview_parallel.h"
+//#include "output_writer/output_writer_text.h"
+//#include "output_writer/output_writer_paraview_parallel.h"
 #include "discretization/discretization.h"
 #include "discretization/partition_shell.h"
 #include "discretization/partition.h"
-#include "discretization/partition.h"
+//#include "discretization/partition.h"
 #include "discretization/async_partition.h"
 #include "discretization/central_differences.h"
 #include "discretization/donor_cell.h"
@@ -23,8 +25,8 @@
 #include "pressure_solver/pressure_solver.h"
 #include "pressure_solver/gauss_seidel.h"
 #include "pressure_solver/sor.h"
-#include "pressure_solver/checkerboard.h"
-#include "pressure_solver/cg.h"
+//#include "pressure_solver/checkerboard.h"
+//#include "pressure_solver/cg.h"
 
 
 //! only a small class intended to facilitate calculation and statistics about dt

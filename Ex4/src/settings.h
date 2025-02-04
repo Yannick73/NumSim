@@ -19,7 +19,7 @@ struct Settings
     double maximumDt = 0.1;             //< maximum time step width
     bool disableAdaptiveDt = false;     //< if set true, dt will not be dependent on the fluid velocities
     std::array<double, 3> g{0., 0., 0.};    //< external forces
-    bool useDonorCell = true; //< if the donor cell scheme schould be used
+    bool useDonorCell = false; //< if the donor cell scheme schould be used
     double alpha = 0.5;        //< factor for donor-cell scheme
 
     std::array<double, 3>
@@ -33,7 +33,7 @@ struct Settings
     std::array<double, 3>
         dirichletBcFront{0., 0., 0.};
     std::array<double, 3>
-        dirichtletBcBack{0., 0., 0.};
+        dirichletBcHind{0., 0., 0.};
     std::string pressureSolver =
         "Checkerboard";          //< which pressure solver to use, "GaussSeidel" or "SOR"
     double omega = 1.6; //< overrelaxation factor

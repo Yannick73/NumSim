@@ -72,6 +72,8 @@ public:
     return data_[index];
   }
 
+  inline void rename(std::string name) { name_ = name; }
+
 protected:
   std::vector<double> data_;      //< storage array values, in row-major order
   const std::array<int, 2> size_; //< width, height of the domain

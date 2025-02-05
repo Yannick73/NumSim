@@ -95,8 +95,15 @@ public:
                    AsyncNeighbourBoundary(d, BoundaryEdge::TOP, neighbourRank,
                    getVelSize(d, ind::X, ind::Z), getPSize(d, ind::X, ind::Z)),
                    leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0),
-                   frontOffset_(frontNeighbour ? 1 : 0), hindOffset_(hindNeighbour ? 1 : 0) {  };
+                   frontOffset_(frontNeighbour ? 1 : 0), hindOffset_(hindNeighbour ? 1 : 0)
                    // ? means, if leftNeighbour is true, then assign 1, else assign 0
+                    {
+                        // used in debugging
+                        velSendBuf_.rename("top.velSendBuf");
+                        velRecvBuf_.rename("top.velRecvBuf");
+                        pSendBuf_.rename("top.pSendBuf");
+                        pRecvBuf_.rename("top.pRecvBuf");
+                    };
 
     void exchangeUVW() override;
     void exchangeFGH() override;
@@ -118,7 +125,13 @@ class AsyncNeighbourRight : public AsyncNeighbourBoundary
 public:
     AsyncNeighbourRight(std::shared_ptr<Discretization> d, int neighbourRank) :
                    AsyncNeighbourBoundary(d, BoundaryEdge::RIGHT, neighbourRank,
-                   getVelSize(d, ind::Y, ind::Z), getPSize(d, ind::Y, ind::Z)) { };
+                   getVelSize(d, ind::Y, ind::Z), getPSize(d, ind::Y, ind::Z)) 
+                    {
+                        velSendBuf_.rename("right.velSendBuf");
+                        velRecvBuf_.rename("right.velRecvBuf");
+                        pSendBuf_.rename("right.pSendBuf");
+                        pRecvBuf_.rename("right.pRecvBuf");
+                    };
 
     void exchangeUVW() override;
     void exchangeFGH() override;
@@ -136,7 +149,13 @@ public:
                    AsyncNeighbourBoundary(d, BoundaryEdge::BOTTOM, neighbourRank,
                    getVelSize(d, ind::X, ind::Z), getPSize(d, ind::X, ind::Z)),
                    leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0),
-                   hindOffset_(hindNeighbour ? 1 : 0), frontOffset_(frontNeighbour ? 1 : 0) { }
+                   hindOffset_(hindNeighbour ? 1 : 0), frontOffset_(frontNeighbour ? 1 : 0)
+                    {
+                        velSendBuf_.rename("bottom.velSendBuf");
+                        velRecvBuf_.rename("bottom.velRecvBuf");
+                        pSendBuf_.rename("bottom.pSendBuf");
+                        pRecvBuf_.rename("bottom.pRecvBuf");
+                    };
 
     void exchangeUVW() override;
     void exchangeFGH() override;
@@ -158,7 +177,13 @@ class AsyncNeighbourLeft : public AsyncNeighbourBoundary
 public:
     AsyncNeighbourLeft(std::shared_ptr<Discretization> d, int neighbourRank) :
                    AsyncNeighbourBoundary(d, BoundaryEdge::LEFT, neighbourRank,
-                   getVelSize(d, ind::X, ind::Z), getPSize(d, ind::X, ind::Z)) { };
+                   getVelSize(d, ind::Y, ind::Z), getPSize(d, ind::Y, ind::Z))
+                    {
+                        velSendBuf_.rename("left.velSendBuf");
+                        velRecvBuf_.rename("left.velRecvBuf");
+                        pSendBuf_.rename("left.pSendBuf");
+                        pRecvBuf_.rename("left.pRecvBuf");
+                    };
                    
     void exchangeUVW() override;
     void exchangeFGH() override;
@@ -175,7 +200,13 @@ public:
     AsyncNeighbourHind(std::shared_ptr<Discretization> d, int neighbourRank, bool leftNeighbour, bool rightNeighbour) :
                    AsyncNeighbourBoundary(d, BoundaryEdge::HIND, neighbourRank,
                    getVelSize(d, ind::X, ind::Y), getPSize(d, ind::X, ind::Y)),
-                   leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0) { };
+                   leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0) 
+                    {
+                        velSendBuf_.rename("hind.velSendBuf");
+                        velRecvBuf_.rename("hind.velRecvBuf");
+                        pSendBuf_.rename("hind.pSendBuf");
+                        pRecvBuf_.rename("hind.pRecvBuf");
+                    };
                    
     void exchangeUVW() override;
     void exchangeFGH() override;
@@ -196,7 +227,13 @@ public:
     AsyncNeighbourFront(std::shared_ptr<Discretization> d, int neighbourRank, bool leftNeighbour, bool rightNeighbour) :
                    AsyncNeighbourBoundary(d, BoundaryEdge::FRONT, neighbourRank,
                    getVelSize(d, ind::X, ind::Y), getPSize(d, ind::X, ind::Y)),
-                   leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0) { };
+                   leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0)
+                    {
+                        velSendBuf_.rename("front.velSendBuf");
+                        velRecvBuf_.rename("front.velRecvBuf");
+                        pSendBuf_.rename("front.pSendBuf");
+                        pRecvBuf_.rename("front.pRecvBuf");
+                    };
                    
     void exchangeUVW() override;
     void exchangeFGH() override;

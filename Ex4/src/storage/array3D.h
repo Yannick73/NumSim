@@ -44,6 +44,8 @@ public:
   //! to change the value
   virtual double operator()(int i, int j, int k) const;
 
+  inline void rename(std::string name) { name_ = name; }
+
 protected:
   std::vector<double> data_;      //< storage array values, in row-major order
   const std::array<int, 3> size_; //< width, height of the domain

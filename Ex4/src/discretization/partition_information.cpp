@@ -20,7 +20,9 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     if(nRanks == 1)
     { }
     else if(nRanks == 2)
+    {
         nPartX = 2;
+    }
     else if(nRanks == 4)
     {
         nPartX = 2;
@@ -88,7 +90,7 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     }
     if(partPosZ_ > 0)
     {
-        backRank_ = rank_ - nPartX*nPartY;
+        hindRank_ = rank_ - nPartX*nPartY;
     }
     if(partPosZ_ < nPartZ-1)
     {
@@ -161,7 +163,7 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     // print debugging information about the partition
     std::cout << "\nR:" << rank_ << "\t@(" << partPosX_ << ',' << partPosY_ << ',' << partPosZ_ << ")"
         << "\tneighbours T:" << topRank_ << ", R:" << rightRank_
-        << ", B:" << bottomRank_ << ", L:" << leftRank_ << ", H:" << backRank_ << ", F:" << frontRank_ << "\tpartition domain: ["
+        << ", B:" << bottomRank_ << ", L:" << leftRank_ << ", H:" << hindRank_ << ", F:" << frontRank_ << "\tpartition domain: ["
         << nodeOffset_[0] << ", " << nodeOffset_[0]+nCellsLocal_[0]-1
         << "]x[" << nodeOffset_[1] << ", " << nodeOffset_[1]+nCellsLocal_[1]-1 << "]x[" << nodeOffset_[2] << ", " << nodeOffset_[2]+nCellsLocal_[2]-1 << "]\n";
 }

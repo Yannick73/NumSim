@@ -93,6 +93,7 @@ double FieldVariable::midInterpolation(double x, double y, double z)
     return (q000 + q001 + q010 + q011 + q100 + q101 + q110 + q111) / 8.0;
 }
 
+// debugging code, which is activated by setting -DDTEST=1 during cmake configuration
 #ifdef DISCRETIZATION_TEST
 double &FieldVariable::operator()(int i, int j, int k)
 {

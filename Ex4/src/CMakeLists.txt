@@ -20,21 +20,16 @@ if(TEST)
     discretization/donor_cell.cpp
     discretization/central_differences.cpp
     discretization/partition_information.cpp
-    #discretization/partition.cpp
     discretization/async_partition.cpp
     boundary/boundary.cpp
     boundary/dirichlet.cpp
-    #boundary/neighbour_boundary.cpp
     boundary/async_neighbour_boundary.cpp
     output_writer/output_writer.cpp
-    #output_writer/output_writer_text.cpp
-    #output_writer/output_writer_paraview.cpp
     output_writer/output_writer_paraview_parallel.cpp
     pressure_solver/pressure_solver.cpp
     pressure_solver/gauss_seidel.cpp
     pressure_solver/sor.cpp
     pressure_solver/checkerboard.cpp
-    #pressure_solver/cg.cpp
     computation.cpp
     testmain.cpp  
   )
@@ -51,21 +46,16 @@ else()
     discretization/donor_cell.cpp
     discretization/central_differences.cpp
     discretization/partition_information.cpp
-    #discretization/partition.cpp
     discretization/async_partition.cpp
     boundary/boundary.cpp
     boundary/dirichlet.cpp
-    #boundary/neighbour_boundary.cpp
     boundary/async_neighbour_boundary.cpp
     output_writer/output_writer.cpp
-    #output_writer/output_writer_text.cpp
-    #output_writer/output_writer_paraview.cpp
     output_writer/output_writer_paraview_parallel.cpp
     pressure_solver/pressure_solver.cpp
     pressure_solver/gauss_seidel.cpp
     pressure_solver/sor.cpp
     pressure_solver/checkerboard.cpp
-    #pressure_solver/cg.cpp
     computation.cpp
     main.cpp
   )

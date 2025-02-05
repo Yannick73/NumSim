@@ -82,15 +82,3 @@ StaggeredGrid::StaggeredGrid(PartitionInformation &pi)
       wi0_(1), wj0_(1), wk0_(1),
       pi0_(1), pj0_(1), pk0_(1),
       uGhost_(pi.uGhostLayer()), vGhost_(pi.vGhostLayer()), wGhost_(pi.wGhostLayer()) {}
-
-void StaggeredGrid::makeCGFields()
-{
-   //! this function may only be called once
-   if(cgFieldsMade_)
-      throw std::runtime_error("makeCGFields may only be called once\n");
-
-   cgFieldsMade_ = true;
-   // the origin probably doesn't matter
-   r_  = std::make_shared<FieldVariable>(p_.size(),   p_.getOrigin(), meshWidth_, "r");
-   a_  = std::make_shared<FieldVariable>(p_.size(),   p_.getOrigin(), meshWidth_, "a");
-}

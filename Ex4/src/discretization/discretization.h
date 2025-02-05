@@ -10,9 +10,6 @@ class Discretization : public StaggeredGrid
 {
 public:
   //! construct the object with given number of cells in x and y direction
-  // Discretization(std::array<int, 2> nCells, std::array<double, 2> meshWidth, const Settings &settings);
-
-  //! construct the object with given number of cells in x and y direction
   Discretization(PartitionInformation &pi, const Settings &settings);
 
   //! calculate the deltaT depending on the velocity and mesh-width, includes boundaries
@@ -65,15 +62,6 @@ public:
 
   //! compute the 2st derivative ∂^2p / ∂z^2
   inline double computeD2pDz2(int i, int j, int k) const { return (p(i,j,k+1) - 2*p(i,j,k) + p(i,j,k-1)) / dz2(); };
-
-  //! compute the 2st derivative ∂^2a / ∂x^2
-  inline double computeD2aDx2(int i, int j, int k) const { return (a(i-1,j,k) - 2*a(i,j,k) + a(i+1,j,k)) / dx2(); };
-
-  //! compute the 2st derivative ∂^2a / ∂y^2
-  inline double computeD2aDy2(int i, int j, int k) const { return (a(i,j-1,k) - 2*a(i,j,k) + a(i,j+1,k)) / dy2(); };
-
-  //! compute the 2st derivative ∂^2a / ∂z^2
-  inline double computeD2aDz2(int i, int j, int k) const { return (a(i,j,k-1) - 2*a(i,j,k) + a(i,j,k+1)) / dz2(); };
 
   //! compute the 2nd derivative ∂^2 u / ∂x^2
   inline double computeD2uDx2(int i, int j, int k) const { return (u(i+1,j,k) - 2*u(i,j,k) + u(i-1,j,k)) / dx2(); };

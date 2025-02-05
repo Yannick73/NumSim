@@ -34,6 +34,7 @@ public:
   inline const std::array<double, 3> getOrigin() { return origin_; }
 
   //! same as the inherited function, but with additional prints used for testing
+  //! activated by setting -DDTEST=1 during cmake configuration
   #ifdef DISCRETIZATION_TEST
   double &operator()(int i, int j, int k) override;
   double operator()(int i, int j, int k) const override;

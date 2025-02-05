@@ -17,17 +17,9 @@ void runComputation(const Settings &settings, int rank, int nRanks)
     
     std::shared_ptr<PartitionShell> partition;
     partition = std::make_shared<AsyncPartition>(discretization, settings, pi);
-    /*if(settings.useAsyncComm)
-        partition = std::make_shared<AsyncPartition>(discretization, settings, pi);
-    else
-        partition = std::make_shared<Partition>(discretization, settings, pi);*/
         
     std::shared_ptr<PressureSolver> pressureSolver = newPressureSolver(partition, settings, nRanks);
 
-    //#pragma message("Output writer missing")
-    #ifndef NDEBUG
-    //OutputWriterText debugOut(discretization, rank);
-    #endif
     OutputWriterParaviewParallel paraviewOut(partition);
 
     DtCalculator dt(settings, partition);
@@ -65,7 +57,6 @@ void runComputation(const Settings &settings, int rank, int nRanks)
         partition->calculateUVW(deltaT);
 
         // necassary for correct output files
-        //#pragma message("Missing")
         partition->exchangeUVW();
 
         #ifndef NDEBUG
@@ -82,13 +73,7 @@ void runComputation(const Settings &settings, int rank, int nRanks)
                 std::cout << "Output for step " << simTimestep 
                     << " at sim-time " << simulationTime << " with dt " << deltaT 
                     << " last solver needed " << pressureSolver->getLastIterations() << " steps\n";
-            #ifndef NDEBUG
-            //debugOut.writeFile(simulationTime);
-            #endif
         }
-
-
-        // for outputParaview, small timesteps may occur, in which case the p for the next time step may be not well set
 
         simTimestep++;
     }
@@ -131,27 +116,14 @@ void runComputation(const Settings &settings, int rank, int nRanks)
 
 std::shared_ptr<PressureSolver> newPressureSolver(std::shared_ptr<PartitionShell> partition, const Settings &settings, int nRanks)
 {
-    #pragma message("Missing pressure solvers")
-    // for a single rank, any solver works
     if(settings.pressureSolver == "SOR")
         return std::make_shared<SOR>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
     else if(settings.pressureSolver == "GaussSeidel")
         return std::make_shared<GaussSeidel>(partition, settings.epsilon, settings.maximumNumberOfIterations);
+    else if(settings.pressureSolver == "Checkerboard")
+        return std::make_shared<Checkerboard>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
     else
         throw std::invalid_argument("Invalid or non-implemented pressure solver: " + settings.pressureSolver + ", stop simulation\n.");
-    /*    else if(settings.pressureSolver == "Checkerboard")
-            return std::make_shared<Checkerboard>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
-        else if(settings.pressureSolver == "CG")
-            // Unfortunately, CG could not be implemented in time. Oh well!
-            throw std::invalid_argument("CG is not fully implemented and does not work yet.\n");
-        else
-            throw std::invalid_argument("Invalid or non-implemented pressure solver: " + settings.pressureSolver + ", stop simulation\n.");
-    }
-    else
-    {
-        // for multiple ranks, as of now, only the checkerboards is hardcoded (although other algorithms work as well)
-        return std::make_shared<Checkerboard>(partition, settings.epsilon, settings.maximumNumberOfIterations, settings.omega);
-    }*/
 }
 
 std::pair<double, bool> DtCalculator::calculate(double simulationTime)

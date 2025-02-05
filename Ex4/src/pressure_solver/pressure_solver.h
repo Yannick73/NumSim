@@ -10,7 +10,6 @@
 #include "timekeeper.h"
 #include "discretization/partition_shell.h"
 #include "discretization/discretization.h"
-#include "output_writer/output_writer_text.h"
 
 class PressureSolver {
 public:

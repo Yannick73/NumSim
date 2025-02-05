@@ -49,7 +49,7 @@ inline void Checkerboard::step()
 
     for(int k=0; k<discretization_->pkN(); k++) {
         for(int j = 0; j < discretization_->pjN(); j++) {
-            const int offset = ~((k & 0b1) ^ (j & 0b1));
+            const int offset = ((k & 0b1) ^ (j & 0b1)) ^ 0b1;   // flip the LSB compared to the first step
             for(int i = offset; i < discretization_->piN(); i += 2) {
                 const double p_last = discretization_->p(i,j,k);
                 const double p_xm   = discretization_->p(i-1,j,k);

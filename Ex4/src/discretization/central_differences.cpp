@@ -3,6 +3,7 @@
 //! compute the 1st derivative ∂ u^2 / ∂x
 double CentralDifferences::computeDu2Dx(int i, int j, int k) const
 {
+  // well, it does not look great, but it was very valuable for testing
   #ifdef DISCRETIZATION_TEST
   std::cout << std::endl;
   u(i,j,k); // this should print out the coordinates where the derivative should lie

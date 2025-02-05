@@ -11,13 +11,6 @@
 #include "storage/array3D.h"
 #include "storage/array2D.h"
 
-/*
-    In a quick test using Scenario3 with 80x60 cells and the simple exchange
-    (non-blocking send and direct receive using arbitrary edge order & release)
-    resulted in 35s runtime on my machine. YD
-    
-*/
-
 enum ind : int
 {
     X = 0,
@@ -35,7 +28,7 @@ public:
                       Boundary(d, edge), neighbourRank_(neighbourRank),
                       pBufLen_(pBufLen), velBufLen_(velBufLen),
                       mpiHandler_(neighbourRank),
-                      // 3 for u,v,w
+                      // 3 for ind::X, ind::Y, ind::Z for velocity
                       velSendBuf_({velBufLen[0], velBufLen[1], 3}), velRecvBuf_({velBufLen[0], velBufLen[1], 3}),
                       pSendBuf_(pBufLen), pRecvBuf_(pBufLen) { }
     

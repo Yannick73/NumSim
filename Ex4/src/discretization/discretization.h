@@ -10,9 +10,6 @@ class Discretization : public StaggeredGrid
 {
 public:
   //! construct the object with given number of cells in x and y direction
-  // Discretization(std::array<int, 2> nCells, std::array<double, 2> meshWidth, const Settings &settings);
-
-  //! construct the object with given number of cells in x and y direction
   Discretization(PartitionInformation &pi, const Settings &settings);
 
   //! calculate the deltaT depending on the velocity and mesh-width, includes boundaries

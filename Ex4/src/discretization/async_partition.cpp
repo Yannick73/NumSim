@@ -9,12 +9,6 @@ AsyncPartition::AsyncPartition(const std::shared_ptr<Discretization> discretizat
 
     // generate the boundaries, horizontal boundaries take priority, hence why they come first
     // odd y position and even y positions are flipped with regards of priority
-    /*fixBoundaries_.push_back(std::make_shared<DirichletLeft>  (discretization, settings.dirichletBcLeft));
-    fixBoundaries_.push_back(std::make_shared<DirichletRight> (discretization, settings.dirichletBcRight));
-    fixBoundaries_.push_back(std::make_shared<DirichletHind>  (discretization, settings.dirichletBcHind));
-    fixBoundaries_.push_back(std::make_shared<DirichletFront> (discretization, settings.dirichletBcFront));
-    fixBoundaries_.push_back(std::make_shared<DirichletBottom>(discretization, settings.dirichletBcBottom));
-    fixBoundaries_.push_back(std::make_shared<DirichletTop>   (discretization, settings.dirichletBcTop));*/
     if(pi.getPartPosY() & 0b1)
     {
         if(pi.ownBottomBoundary())

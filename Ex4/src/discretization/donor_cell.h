@@ -8,12 +8,6 @@
 class DonorCell : public Discretization
 {
 public:
-  //! use the constructor of the base class
-  /*DonorCell(std::array<int, 2> nCells, std::array<double, 2> meshWidth,
-            const Settings &settings) : 
-            Discretization(nCells, meshWidth, settings),
-            alpha_(settings.alpha) { assert(alpha_ > 0); }*/
-
   //! same constructor, but using partition information
   DonorCell(PartitionInformation &pi, const Settings &settings) : 
             Discretization(pi, settings),

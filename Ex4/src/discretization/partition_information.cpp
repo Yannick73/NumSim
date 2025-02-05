@@ -1,8 +1,5 @@
 #include "discretization/partition_information.h"
 
-#include <vector>
-#include <array>
-
 PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
                                            std::array<double, 3> meshWidth, 
                                            int rank, int nRanks) :

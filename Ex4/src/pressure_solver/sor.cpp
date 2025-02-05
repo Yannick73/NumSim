@@ -21,12 +21,11 @@ SOR::SOR(std::shared_ptr<PartitionShell> partition,
 inline void SOR::step()
 {
     //! works very similar to gauss-seidel, but uses a relaxation term with omega instead
-    //double res = 0;     // residuum uses Euclidian norm (with p beeing treated as a vector)
 
     const double dx2 = discretization_->dx2();
     const double dy2 = discretization_->dy2();
     const double dz2 = discretization_->dz2();
-    const double factor = (dx2 * dy2 * dz2) / (2. * (dy2*dz2+dx2*dz2+dx2*dy2));   // diffusion factor
+    const double factor = (dx2 * dy2 * dz2) / (2. * (dy2*dz2+dx2*dz2+dx2*dy2));
 
     for(int k = 0; k < discretization_->pkN(); k++)
     {

@@ -23,10 +23,7 @@ public:
     virtual void setBoundaryFGH() = 0;
     virtual void setBoundaryP() = 0;
     //! only exchange the pressure values with the respective neighbours w/o setting dirichlet
-    //#pragma message("Missing exchange")
     virtual void exchangeP() = 0;
-    //! also only used in pressure solver, but specifically only for CG
-    //virtual void exchangeRA() = 0;
     //! used before paraview output
     virtual void exchangeUVW() = 0;
 

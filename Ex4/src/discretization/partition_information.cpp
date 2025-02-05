@@ -42,45 +42,10 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     }
     std::cout << "partition: " << bestPartitioning[0] << ", " << bestPartitioning[1] << ", "
     << bestPartitioning[2] << ", "<< bestPartitioning[0]*bestPartitioning[1]*bestPartitioning[2] << std::endl;
-    
 
-
-    //
-
-    if(nRanks == 1)
-    { }
-    else if(nRanks == 2)
-    {
-        nPartX = 2;
-    }
-    else if(nRanks == 4)
-    {
-        nPartX = 2;
-        nPartY = 2;
-    }
-    else if(nRanks == 6)
-    {
-        nPartX = 3;
-        nPartY = 2;
-    }
-    else if(nRanks == 8)
-    {
-        nPartX = 2;
-        nPartY = 2;
-        nPartZ = 2;
-    }
-    else if(nRanks == 27)
-    {
-        nPartX = 3;
-        nPartY = 3;
-        nPartZ = 3;
-    }
-    else
-    {
-        std::stringstream message;
-        message << "Number of ranks (" << nRanks << ") not yet supported!\n";
-        throw std::runtime_error(message.str());
-    }
+    int nPartX = bestPartitioning[0];
+    int nPartY = bestPartitioning[1];
+    int nPartZ = bestPartitioning[2];
 
     if(nRanks != nPartX*nPartY*nPartZ)
     {
@@ -93,12 +58,10 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     if(rank_ == 0)
         std::cout << "number of ranks:" << nRanks_ << " partitioning scheme: " << nPartX << 'x' << nPartY << std::endl;
 
-    // ?
     partPosX_ = rank_ % nPartX;
     partPosY_ = ((int)std::floor(rank_ / (nPartX))) % nPartY;
     partPosZ_ = std::floor(rank_ / (nPartX*nPartY));
 
-    // ???
     if(partPosX_ > 0)        // not the left-most partition
     {
         // so set the rank information and add an additional ghost layer

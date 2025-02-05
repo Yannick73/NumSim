@@ -78,18 +78,19 @@ double DonorCell::computeDuwDx(int i, int j, int k) const
   return centralDiff + alpha_ * (uwDonorRight - uwDonorLeft) / dx();
 }
 
-//! compute the 1st derivative ∂ (uw) / ∂z
+//! compute the 1st derivative ∂ (uw) / ∂z on u points
 double DonorCell::computeDuwDz(int i, int j, int k) const 
 {
+  // Dunno, what was broken, but now it is fixed (reduced error by 10)
   // back to front z increases
   const double wBack  = (w(i+1,j,k-1) + w(i,j,k-1)) / 2.; // w i+1/2,j,k-1
   const double uBack  = (u(i,  j,k-1) + u(i,j,k))   / 2.; // u i,j,k-1/2
   const double wFront = (w(i+1,j,k)   + w(i,j,k))   / 2.; // w i+1/2,j,k
-  const double uFront = (u(i,  j,k+1) + u(i,j,k))   / 2.; // u i,j,k+1/2
-  const double centralDiff = (wFront*uFront - wBack*uBack) / dz();
-
-  const double uwDonorFront = std::abs(wFront) * (u(i,j,k)   - u(i,j,k+1)) / 2.;
-  const double uwDonorBack  = std::abs(wBack)  * (u(i,j,k-1) + u(i,j,k)) / 2.;
+  const double uFront = (u(i,  j,k+1) + u(i,j,k))   / 2.; // u i,j,k+1/2 (i+1/2 to k+1/2)
+  const double centralDiff = (wFront*uFront - wBack*uBack) / dz();  // wrong order!
+  
+  const double uwDonorFront = std::abs(wFront) * (u(i,  j,k) - u(i,j,k+1))   / 2.;
+  const double uwDonorBack = std::abs(wBack) * (u(i,  j,k-1) - u(i,j,k))   / 2.;
   return centralDiff + alpha_ * (uwDonorFront - uwDonorBack) / dz();
 }
 

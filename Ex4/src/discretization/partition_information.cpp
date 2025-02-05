@@ -14,10 +14,6 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     assert(rank < nRanks);
     assert(rank >= 0);
 
-    int nPartX = 1;
-    int nPartY = 1;
-    int nPartZ = 1;
-
     //calculate possible partitions
     std::vector<std::array<int, 3>> partitionings = {};  //stores partitionings with format {x,y,z} 
     for(int x=1; x<=nRanks; x++) {
@@ -31,16 +27,18 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     }
 
     //determine best partition
-    std::array<int, 3> nCellsLocal_ = {1,1,1};
+    std::array<int, 3> bestPartitioning = {1,1,1};
     int partitioningSurface = nCellsGlobal[0]*nCellsGlobal[1]*nCellsGlobal[2];
     for(int i=0; i<partitionings.size(); i++) {
         int iPartitioningSurface = (nCellsGlobal[0]/partitionings[i][0]) * (nCellsGlobal[1]/partitionings[i][1])  
         *(nCellsGlobal[2]/partitionings[i][2]);
         if(iPartitioningSurface < partitioningSurface) {
-            nCellsLocal_ = partitionings[i];
+            bestPartitioning = partitionings[i];
             partitioningSurface = iPartitioningSurface;
         }
     }
+    
+
 
     //
 

@@ -43,3 +43,11 @@ referenceOut*
 # remove the output files
 output_*.txt
 output_*.vti
+
+# remove the correlation/compare test
+compare_openfoam/input
+VTK
+[1-999]*
+0.*
+*.foam
+polyMesh*

@@ -38,7 +38,9 @@ nCellsZ = 10
 useDonorCell = false   # if donor cell discretization should be used, possible values: true false
 alpha = 0.5           # factor for donor-cell scheme, 0 is equivalent to central differences
 tau = 0.5             # safety factor for time step width
-maximumDt = 0.2       # maximum values for time step width
+maximumDt = 0.02       # maximum values for time step width
+minimumDt = 1e-10     # minimumDt for stability
+outputDt  = 0.1       # when to output the vtk files
 
 # Solver parameters
 pressureSolver = SOR  # which pressure solver to use, possible values: GaussSeidel SOR CG

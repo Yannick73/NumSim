@@ -145,9 +145,9 @@ void Discretization::calculateRHS(double deltaT)
     {
       for(int i = 0; i < piN(); i++)
       {
-        const double DfDx = (f(i,j,k)-f(i-1,j,  k))/dx();
-        const double DgDy = (g(i,j,k)-g(i,  j-1,k))/dy();
-        const double DhDz = (h(i,j,k)-h(i,  j,  k-1))/dz();
+        const double DfDx = (f(i,j,k) - f(i-1,j,  k))   / dx();
+        const double DgDy = (g(i,j,k) - g(i,  j-1,k))   / dy();
+        const double DhDz = (h(i,j,k) - h(i,  j,  k-1)) / dz();
         rhs(i,j,k) = (DfDx + DgDy + DhDz) / deltaT;
       }
     }

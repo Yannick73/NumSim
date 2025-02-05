@@ -1,0 +1,94 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  12
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale 1;
+
+vertices
+(
+    name left_bottom_back   (0 0 0)		// 0
+    name right_bottom_back  (2 0 0)		// 1
+    name right_top_back     (2 2 0)		// 2
+    name left_top_back      (0 2 0)		// 3
+    name left_bottom_front  (0 0 2)		// 4
+    name right_bottom_front (2 0 2)		// 5
+    name right_top_front    (2 2 2)		// 6
+    name left_top_front     (0 2 2)		// 7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (20 20 20) simpleGrading (1 1 1)
+);
+
+boundary
+(
+    front
+    {
+        type wall;
+        faces
+        (
+            (left_bottom_front right_bottom_front right_top_front left_top_front)
+        );
+    }
+    
+    back
+    {
+		type wall;
+		faces
+		(
+			
+            (left_bottom_back right_bottom_back right_top_back left_top_back)
+        );
+    }
+    
+    left
+    {
+		type wall;
+		faces
+        (
+            (left_bottom_back left_bottom_front left_top_front left_top_back)
+        );
+	}
+	
+	right
+	{
+		type wall;
+		faces
+		(
+			
+            (right_bottom_back right_bottom_front right_top_front right_top_back)
+        );
+    }
+    
+	bottom
+	{
+		type wall;
+		faces
+		(
+            (left_bottom_back left_bottom_front right_bottom_front right_bottom_back)		
+		);
+	}
+	top
+    {
+        type wall;
+        faces
+        (
+            (left_top_back left_top_front right_top_front right_top_back)
+        );
+    }
+);
+
+
+// ************************************************************************* //

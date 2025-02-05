@@ -11,7 +11,7 @@ gX = 0.0              # external forces, set to (gX,gY) = (0,-9.81) to account f
 gY = 0.0
 gZ = 0.0
 
-# Dirichlet boundary conditions
+# Dirichlet boundary conditions (only these were adapted to compute each numsim result)
 dirichletBottomX = 0
 dirichletBottomY = 0
 dirichletBottomZ = 0

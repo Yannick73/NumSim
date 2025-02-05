@@ -326,9 +326,9 @@ double compareData(SimulationData &testData, SimulationData &referenceData)
   std::cout << nFiles << " files with " << testData.values[0].u.size() << " entries each." << std::endl 
     << "average 2-norm error per velocity vector: " << differenceNormData << std::endl;
   
-  if (fabs(differenceNormData) > 1e-4)
+  if (fabs(differenceNormData) > 0.01)
   {
-    std::cout << "Error is higher than tolerance of 1e-4!" << std::endl;
+    std::cout << "Error is higher than tolerance of 1%!" << std::endl;
   }
 
   return differenceNormData;

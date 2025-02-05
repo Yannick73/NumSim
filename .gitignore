@@ -46,4 +46,8 @@ output_*.vti
 
 # remove the correlation/compare test
 compare_openfoam/input
-Ex4_correlation
+VTK
+[1-999]*
+0.*
+*.foam
+polyMesh*

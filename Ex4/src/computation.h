@@ -18,7 +18,6 @@
 #include "discretization/donor_cell.h"
 #include "boundary/boundary.h"
 #include "boundary/dirichlet.h"
-#include "boundary/neighbour_boundary.h"
 #include "pressure_solver/pressure_solver.h"
 #include "pressure_solver/gauss_seidel.h"
 #include "pressure_solver/sor.h"

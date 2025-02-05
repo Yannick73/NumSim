@@ -31,14 +31,17 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
         double iPartitioningSurface = 2*((double)nCellsGlobal[0]/partitionings[i][0]) * ((double)nCellsGlobal[1]/partitionings[i][1])   //bottom and top surface
         + 2*((double)nCellsGlobal[0]/partitionings[i][0]) *((double)nCellsGlobal[2]/partitionings[i][2])  //front and back surface
         + 2*((double)nCellsGlobal[1]/partitionings[i][1]) * ((double)nCellsGlobal[2]/partitionings[i][2]);    //right and left surface
-        std::cout << "partioning " << i << ": " << partitionings[i][0] << ", " << partitionings[i][1] << ", " << partitionings[i][2] << ", " << iPartitioningSurface << std::endl;
         if(iPartitioningSurface < partitioningSurface) {
             bestPartitioning = partitionings[i];
             partitioningSurface = iPartitioningSurface;
         }
     }
-    std::cout << "partition: " << bestPartitioning[0] << ", " << bestPartitioning[1] << ", "
-    << bestPartitioning[2] << ", "<< bestPartitioning[0]*bestPartitioning[1]*bestPartitioning[2] << std::endl;
+    
+    if(rank == 0)
+    {
+        std::cout << "Best partitioning scheme: " << bestPartitioning[0] << ", " << bestPartitioning[1] << ", " << bestPartitioning[2] 
+            << " with surface: " << partitioningSurface << std::endl;
+    }
 
     int nPartX = bestPartitioning[0];
     int nPartY = bestPartitioning[1];

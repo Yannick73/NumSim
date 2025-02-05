@@ -28,15 +28,20 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
 
     //determine best partition
     std::array<int, 3> bestPartitioning = {1,1,1};
-    int partitioningSurface = nCellsGlobal[0]*nCellsGlobal[1]*nCellsGlobal[2];
+    double partitioningSurface = nCellsGlobal[0]*nCellsGlobal[1]*nCellsGlobal[2];
+    std::cout << nCellsGlobal[0] << ", " << nCellsGlobal[1] << ", " << nCellsGlobal[2] << std::endl;
     for(int i=0; i<partitionings.size(); i++) {
-        int iPartitioningSurface = (nCellsGlobal[0]/partitionings[i][0]) * (nCellsGlobal[1]/partitionings[i][1])  
-        *(nCellsGlobal[2]/partitionings[i][2]);
+        double iPartitioningSurface = 2*((double)nCellsGlobal[0]/partitionings[i][0]) * ((double)nCellsGlobal[1]/partitionings[i][1])   //bottom and top surface
+        + 2*((double)nCellsGlobal[0]/partitionings[i][0]) *((double)nCellsGlobal[2]/partitionings[i][2])  //front and back surface
+        + 2*((double)nCellsGlobal[1]/partitionings[i][1]) * ((double)nCellsGlobal[2]/partitionings[i][2]);    //right and left surface
+        std::cout << "partioning " << i << ": " << partitionings[i][0] << ", " << partitionings[i][1] << ", " << partitionings[i][2] << ", " << iPartitioningSurface << std::endl;
         if(iPartitioningSurface < partitioningSurface) {
             bestPartitioning = partitionings[i];
             partitioningSurface = iPartitioningSurface;
         }
     }
+    std::cout << "partition: " << bestPartitioning[0] << ", " << bestPartitioning[1] << ", "
+    << bestPartitioning[2] << ", "<< bestPartitioning[0]*bestPartitioning[1]*bestPartitioning[2] << std::endl;
     
 
 
@@ -72,7 +77,7 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
 
 	    double area = nCellsLocal_[0] * nCellsLocal_[1];
 	    double averageEdges = ((double)allNeighbourCells) / ((double)(nPartX*nPartY));
-	    std::cout << "PARTITION Geometry " << nCellsLocal_[0] << 'x' << nCellsLocal_[1] << " A: "
+	    std::cout << "Pn =  ARTITION Geometry " << nCellsLocal_[0] << 'x' << nCellsLocal_[1] << " A: "
                   << area << " E: " << averageEdges << " E/A: " << averageEdges/area << std::endl;
     }
     #endif

@@ -1,5 +1,8 @@
 #include "discretization/partition_information.h"
 
+#include <vector>
+#include <array>
+
 PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
                                            std::array<double, 3> meshWidth, 
                                            int rank, int nRanks) :
@@ -8,49 +11,41 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
                                            meshWidth_(meshWidth),
                                            totalNoOfCellsGlobal_(nCellsGlobal[0]*nCellsGlobal[1]*nCellsGlobal[2])
 {
-    #pragma message("Partinoning scheme still missing")
-
     assert(rank < nRanks);
     assert(rank >= 0);
 
-    int nPartX = 1;
-    int nPartY = 1;
-    int nPartZ = 1;
+    //calculate possible partitions
+    std::vector<std::array<int, 3>> partitionings = {};  //stores partitionings with format {x,y,z} 
+    for(int x=1; x<=nRanks; x++) {
+        for(int y=1; y<=nRanks; y++) {
+            for(int z=1; z<=nRanks; z++) {
+                if(x*y*z == nRanks) {
+                    partitionings.push_back({x,y,z});
+                }
+            }
+        }
+    }
 
-    if(nRanks == 1)
-    { }
-    else if(nRanks == 2)
-    {
-        nPartX = 2;
+    //determine best partition
+    std::array<int, 3> bestPartitioning = {1,1,1};
+    double partitioningSurface = nCellsGlobal[0]*nCellsGlobal[1]*nCellsGlobal[2];
+    std::cout << nCellsGlobal[0] << ", " << nCellsGlobal[1] << ", " << nCellsGlobal[2] << std::endl;
+    for(int i=0; i<partitionings.size(); i++) {
+        double iPartitioningSurface = 2*((double)nCellsGlobal[0]/partitionings[i][0]) * ((double)nCellsGlobal[1]/partitionings[i][1])   //bottom and top surface
+        + 2*((double)nCellsGlobal[0]/partitionings[i][0]) *((double)nCellsGlobal[2]/partitionings[i][2])  //front and back surface
+        + 2*((double)nCellsGlobal[1]/partitionings[i][1]) * ((double)nCellsGlobal[2]/partitionings[i][2]);    //right and left surface
+        std::cout << "partioning " << i << ": " << partitionings[i][0] << ", " << partitionings[i][1] << ", " << partitionings[i][2] << ", " << iPartitioningSurface << std::endl;
+        if(iPartitioningSurface < partitioningSurface) {
+            bestPartitioning = partitionings[i];
+            partitioningSurface = iPartitioningSurface;
+        }
     }
-    else if(nRanks == 4)
-    {
-        nPartX = 2;
-        nPartY = 2;
-    }
-    else if(nRanks == 6)
-    {
-        nPartX = 3;
-        nPartY = 2;
-    }
-    else if(nRanks == 8)
-    {
-        nPartX = 2;
-        nPartY = 2;
-        nPartZ = 2;
-    }
-    else if(nRanks == 27)
-    {
-        nPartX = 3;
-        nPartY = 3;
-        nPartZ = 3;
-    }
-    else
-    {
-        std::stringstream message;
-        message << "Number of ranks (" << nRanks << ") not yet supported!\n";
-        throw std::runtime_error(message.str());
-    }
+    std::cout << "partition: " << bestPartitioning[0] << ", " << bestPartitioning[1] << ", "
+    << bestPartitioning[2] << ", "<< bestPartitioning[0]*bestPartitioning[1]*bestPartitioning[2] << std::endl;
+
+    int nPartX = bestPartitioning[0];
+    int nPartY = bestPartitioning[1];
+    int nPartZ = bestPartitioning[2];
 
     if(nRanks != nPartX*nPartY*nPartZ)
     {
@@ -63,12 +58,10 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     if(rank_ == 0)
         std::cout << "number of ranks:" << nRanks_ << " partitioning scheme: " << nPartX << 'x' << nPartY << std::endl;
 
-    // ?
     partPosX_ = rank_ % nPartX;
     partPosY_ = ((int)std::floor(rank_ / (nPartX))) % nPartY;
     partPosZ_ = std::floor(rank_ / (nPartX*nPartY));
 
-    // ???
     if(partPosX_ > 0)        // not the left-most partition
     {
         // so set the rank information and add an additional ghost layer
@@ -154,7 +147,7 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
 
 	    double area = nCellsLocal_[0] * nCellsLocal_[1];
 	    double averageEdges = ((double)allNeighbourCells) / ((double)(nPartX*nPartY));
-	    std::cout << "PARTITION Geometry " << nCellsLocal_[0] << 'x' << nCellsLocal_[1] << " A: "
+	    std::cout << "Pn =  ARTITION Geometry " << nCellsLocal_[0] << 'x' << nCellsLocal_[1] << " A: "
                   << area << " E: " << averageEdges << " E/A: " << averageEdges/area << std::endl;
     }
     #endif

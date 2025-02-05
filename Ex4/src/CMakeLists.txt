@@ -5,38 +5,71 @@ project(numsim_3d)
 
 # Specify the name of the executable (${PROJECT_NAME} which is equal to what was set in the project() command).
 # Also specify the source files.
-add_executable(${PROJECT_NAME}
 
-   settings.cpp
-   storage/array2D.cpp
-   storage/array3D.cpp
-   storage/field_variable.cpp
-   discretization/staggered_grid.cpp
-   discretization/discretization.cpp
-   discretization/donor_cell.cpp
-   discretization/central_differences.cpp
-   discretization/partition_information.cpp
-   #discretization/partition.cpp
-   discretization/async_partition.cpp
-   boundary/boundary.cpp
-   boundary/dirichlet.cpp
-   #boundary/neighbour_boundary.cpp
-   #boundary/async_neighbour_boundary.cpp
-   output_writer/output_writer.cpp
-   #output_writer/output_writer_text.cpp
-   #output_writer/output_writer_paraview.cpp
-   output_writer/output_writer_paraview_parallel.cpp
-   pressure_solver/pressure_solver.cpp
-   pressure_solver/gauss_seidel.cpp
-   pressure_solver/sor.cpp
-   #pressure_solver/checkerboard.cpp
-   #pressure_solver/cg.cpp
-   computation.cpp
-   main.cpp
+if(TEST)
+  message("Set TEST mode")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDISCRETIZATION_TEST")
+  add_executable(${PROJECT_NAME}
 
-   #testmain.cpp
-   
-)
+    settings.cpp
+    storage/array2D.cpp
+    storage/array3D.cpp
+    storage/field_variable.cpp
+    discretization/staggered_grid.cpp
+    discretization/discretization.cpp
+    discretization/donor_cell.cpp
+    discretization/central_differences.cpp
+    discretization/partition_information.cpp
+    #discretization/partition.cpp
+    discretization/async_partition.cpp
+    boundary/boundary.cpp
+    boundary/dirichlet.cpp
+    #boundary/neighbour_boundary.cpp
+    boundary/async_neighbour_boundary.cpp
+    output_writer/output_writer.cpp
+    #output_writer/output_writer_text.cpp
+    #output_writer/output_writer_paraview.cpp
+    output_writer/output_writer_paraview_parallel.cpp
+    pressure_solver/pressure_solver.cpp
+    pressure_solver/gauss_seidel.cpp
+    pressure_solver/sor.cpp
+    pressure_solver/checkerboard.cpp
+    #pressure_solver/cg.cpp
+    computation.cpp
+    testmain.cpp  
+  )
+else()
+  message("Set NORMAL sim mode")
+  add_executable(${PROJECT_NAME}
+
+    settings.cpp
+    storage/array2D.cpp
+    storage/array3D.cpp
+    storage/field_variable.cpp
+    discretization/staggered_grid.cpp
+    discretization/discretization.cpp
+    discretization/donor_cell.cpp
+    discretization/central_differences.cpp
+    discretization/partition_information.cpp
+    #discretization/partition.cpp
+    discretization/async_partition.cpp
+    boundary/boundary.cpp
+    boundary/dirichlet.cpp
+    #boundary/neighbour_boundary.cpp
+    boundary/async_neighbour_boundary.cpp
+    output_writer/output_writer.cpp
+    #output_writer/output_writer_text.cpp
+    #output_writer/output_writer_paraview.cpp
+    output_writer/output_writer_paraview_parallel.cpp
+    pressure_solver/pressure_solver.cpp
+    pressure_solver/gauss_seidel.cpp
+    pressure_solver/sor.cpp
+    pressure_solver/checkerboard.cpp
+    #pressure_solver/cg.cpp
+    computation.cpp
+    main.cpp
+  )
+endif(TEST)
 
 # Add the project directory to include directories, to be able to include all project header files from anywhere
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})

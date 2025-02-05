@@ -4,6 +4,8 @@
 #include <iostream>
 #include "storage/array3D.h"
 
+// DISCRETIZATION_TEST is set by issuing -DTEST=1 during cmake configuration
+
 //! storage class holding and managing the data variable
 class FieldVariable : public Array3D 
 {
@@ -14,8 +16,7 @@ public:
   //! sets all the data to zero using the fill command
   inline void setToZero() { std::fill(data_.begin(), data_.end(), 0.0); };
 
-  //! gets the underlying buffer definition
-  inline double* data() { return data_.data(); };
+  inline void setToValue(double value) { std::fill(data_.begin(), data_.end(), value); };
 
   //! simple linear interpolation schemata based on the assumption,
   //! that the corresponding other dimension is already very close
@@ -31,6 +32,12 @@ public:
   double midInterpolation(double x, double y, double z);
 
   inline const std::array<double, 3> getOrigin() { return origin_; }
+
+  //! same as the inherited function, but with additional prints used for testing
+  #ifdef DISCRETIZATION_TEST
+  double &operator()(int i, int j, int k) override;
+  double operator()(int i, int j, int k) const override;
+  #endif
 
 private:
   //! physical dimensions

@@ -1,4 +1,5 @@
 #include "discretization/discretization.h"
+//#define DEBUG_VELMAX
 
 Discretization::Discretization(PartitionInformation &pi, const Settings &settings) : 
                                StaggeredGrid(pi),
@@ -54,7 +55,9 @@ double Discretization::calculateVelocityDelta() const
         }
     }
   }
+  #ifdef DEBUG_VELMAX
   std::cout << "max-u " << max_u << "\tmax-v " << max_v << "\tmax-w " << max_w << std::endl;
+  #endif
   double dTx = dx() / max_u;
   double dTy = dy() / max_v;
   double dTz = dz() / max_w;
@@ -145,9 +148,9 @@ void Discretization::calculateRHS(double deltaT)
     {
       for(int i = 0; i < piN(); i++)
       {
-        const double DfDx = (f(i,j,k)-f(i-1,j,  k))/dx();
-        const double DgDy = (g(i,j,k)-g(i,  j-1,k))/dy();
-        const double DhDz = (h(i,j,k)-h(i,  j,  k-1))/dz();
+        const double DfDx = (f(i,j,k) - f(i-1,j,  k))   / dx();
+        const double DgDy = (g(i,j,k) - g(i,  j-1,k))   / dy();
+        const double DhDz = (h(i,j,k) - h(i,  j,  k-1)) / dz();
         rhs(i,j,k) = (DfDx + DgDy + DhDz) / deltaT;
       }
     }

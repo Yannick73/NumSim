@@ -33,7 +33,7 @@ if(TEST)
     pressure_solver/pressure_solver.cpp
     pressure_solver/gauss_seidel.cpp
     pressure_solver/sor.cpp
-    #pressure_solver/checkerboard.cpp
+    pressure_solver/checkerboard.cpp
     #pressure_solver/cg.cpp
     computation.cpp
     testmain.cpp  
@@ -64,7 +64,7 @@ else()
     pressure_solver/pressure_solver.cpp
     pressure_solver/gauss_seidel.cpp
     pressure_solver/sor.cpp
-    #pressure_solver/checkerboard.cpp
+    pressure_solver/checkerboard.cpp
     #pressure_solver/cg.cpp
     computation.cpp
     main.cpp

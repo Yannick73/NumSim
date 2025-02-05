@@ -18,9 +18,6 @@ public:
 
   inline void setToValue(double value) { std::fill(data_.begin(), data_.end(), value); };
 
-  //! gets the underlying buffer definition
-  inline double* data() { return data_.data(); };
-
   //! simple linear interpolation schemata based on the assumption,
   //! that the corresponding other dimension is already very close
   //double horizontalInterpolation(double x, double y);

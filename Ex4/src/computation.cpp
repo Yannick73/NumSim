@@ -65,11 +65,12 @@ void runComputation(const Settings &settings, int rank, int nRanks)
         partition->calculateUVW(deltaT);
 
         // necassary for correct output files
-        #pragma message("Missing")
-        //partition->exchangeUVW();
+        //#pragma message("Missing")
+        partition->exchangeUVW();
 
         #ifndef NDEBUG
-        std::cout << "Sim timestep " << simTimestep << "\tat sim-time " << simulationTime << "\twith dt " << deltaT 
+        if(rank == 0)
+            std::cout << "Sim timestep " << simTimestep << "\tat sim-time " << simulationTime << "\twith dt " << deltaT 
                   << "\tat runtime " << std::setprecision(4) << getDurationS(t0) << "s\n";
         #endif
 

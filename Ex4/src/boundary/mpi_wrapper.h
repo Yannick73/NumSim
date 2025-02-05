@@ -13,24 +13,17 @@ public:
     MPI_Wrapper(int neighbourRank) : neighbourRank_(neighbourRank) { }
 
     //! setups the receive request, it requires a valid receive buffer
-    inline void startReceive(std::vector<double> &recvBuf, int len)
+    inline void startReceive(double *recvBuf, int len)
     {
-        // std::cout << "startReceive handler " << this << std::endl;
-        #ifndef NDEBUG
-        assert(recvBuf.size() >= len);
-        #endif
-        MPI_Irecv(recvBuf.data(), len, MPI_DOUBLE, neighbourRank_, 0, MPI_COMM_WORLD, &recvRequest_);
+        MPI_Irecv(recvBuf, len, MPI_DOUBLE, neighbourRank_, 0, MPI_COMM_WORLD, &recvRequest_);
         expectedRecvLen_ = len;
     }
 
     //! wrapper for sending
-    inline void send(std::vector<double> &sendBuf, int len)
+    inline void send(double *sendBuf, int len)
     {
-        #ifndef NDEBUG
-        assert(sendBuf.size() >= len);
-        #endif
         MPI_Request sendReq;    // request handle is ignored
-        MPI_Isend(sendBuf.data(), len, MPI_DOUBLE, neighbourRank_, 0, MPI_COMM_WORLD, &sendReq);
+        MPI_Isend(sendBuf, len, MPI_DOUBLE, neighbourRank_, 0, MPI_COMM_WORLD, &sendReq);
     }
 
     //! checks, if the asynchronoues receive is complete 

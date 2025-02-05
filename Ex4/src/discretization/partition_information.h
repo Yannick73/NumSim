@@ -41,15 +41,15 @@ public:
     inline bool ownLeftBoundary()   const { return leftRank_    == -1; }
     inline bool ownRightBoundary()  const { return rightRank_   == -1; }
     inline bool ownFrontBoundary()  const { return frontRank_   == -1; }
-    inline bool ownBackBoundary()   const { return backRank_    == -1; }
+    inline bool ownHindBoundary()   const { return hindRank_    == -1; }
 
     //! get the rank no of the left neighbouring rank
     inline int bottomRank() const { return bottomRank_; }
     inline int topRank()    const { return topRank_; }
     inline int leftRank()   const { return leftRank_; }
     inline int rightRank()  const { return rightRank_; }
-    inline int frontRank()  const { return backRank_; }
-    inline int backRank()   const { return backRank_; }
+    inline int frontRank()  const { return frontRank_; }
+    inline int hindRank()   const { return hindRank_; }
 
     //! get the offset values for counting local nodes in x and y direction. 
     //! (i_local,j_local) + nodeOffset = (i_global,j_global)
@@ -88,7 +88,7 @@ private:
     int leftRank_   = -1;
     int rightRank_  = -1;
     int frontRank_  = -1;
-    int backRank_   = -1;
+    int hindRank_   = -1;
 
     int uGhostLayer_ = 0;
     int vGhostLayer_ = 0;

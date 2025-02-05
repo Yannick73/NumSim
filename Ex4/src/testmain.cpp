@@ -9,6 +9,8 @@
 #include "discretization/central_differences.h"
 #include "discretization/async_partition.h"
 
+// setup with "cmake .. -DTEST=1"
+
 void test_field_variable()
 {
     // generate field variable
@@ -114,7 +116,6 @@ void test_discretization(int rank, int nRanks)
     /*cd.calculateFGH(0.1);
     cd.calculateRHS(0.1);
     cd.calculateUVW(0.1);*/
-
 }
 
 void test_boundaries(int rank, int nRanks)
@@ -188,6 +189,35 @@ void test_boundaries(int rank, int nRanks)
     std::cout << "Set boundaries\n";
 }
 
+void test_partitioning()
+{
+    std::array<int, 3> dim = {20, 20, 20};
+    std::array<double, 3> meshWidth = {0.1, 0.1, 0.1};
+    PartitionInformation pi1(dim, meshWidth, 0, 1);
+    PartitionInformation pi2_0(dim, meshWidth, 0, 2);
+    PartitionInformation pi2_1(dim, meshWidth, 1, 2);
+    PartitionInformation pi4_0(dim, meshWidth, 0, 4);
+    PartitionInformation pi4_1(dim, meshWidth, 1, 4);
+    PartitionInformation pi4_2(dim, meshWidth, 2, 4);
+    PartitionInformation pi4_3(dim, meshWidth, 3, 4);
+    PartitionInformation pi6_0(dim, meshWidth, 0, 6);
+    PartitionInformation pi6_1(dim, meshWidth, 1, 6);
+    PartitionInformation pi6_2(dim, meshWidth, 2, 6);
+    PartitionInformation pi6_3(dim, meshWidth, 3, 6);
+    PartitionInformation pi6_4(dim, meshWidth, 4, 6);
+    PartitionInformation pi6_5(dim, meshWidth, 5, 6);
+    PartitionInformation pi8_0(dim, meshWidth, 0, 8);
+    PartitionInformation pi8_1(dim, meshWidth, 1, 8);
+    PartitionInformation pi8_2(dim, meshWidth, 2, 8);
+    PartitionInformation pi8_3(dim, meshWidth, 3, 8);
+    PartitionInformation pi8_4(dim, meshWidth, 4, 8);
+    PartitionInformation pi8_5(dim, meshWidth, 5, 8);
+    PartitionInformation pi8_6(dim, meshWidth, 6, 8);
+    PartitionInformation pi8_7(dim, meshWidth, 7, 8);
+    for(int i = 0; i < 27; i++)
+        PartitionInformation pi27_i(dim, meshWidth, i, 27);
+}
+
 int main(int argc, char *argv[])
 {
     MPI_Init(&argc, &argv);
@@ -203,6 +233,7 @@ int main(int argc, char *argv[])
     //test_field_variable();
     //test_staggered_grid(world_rank, world_size);
     //test_discretization(world_rank, world_size);
-    test_boundaries(world_rank, world_size);
+    //test_boundaries(world_rank, world_size);
+    test_partitioning();
     return 0;
 }

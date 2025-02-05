@@ -23,7 +23,10 @@ public:
   inline std::array<int, 3> size() const { return size_; }
 
   //! get the length of the underlying data
-  inline std::size_t length() const { return size_[0]*size_[1]*size_[2]; }
+  inline std::size_t length() const { return data_.size(); }
+
+  //! gets the underlying buffer definition
+  inline double* data() { return data_.data(); };
 
   //! get index (to avoid it beeing different between both access functions)
   inline std::size_t compute_index(std::size_t i, std::size_t j, std::size_t k)
@@ -40,6 +43,8 @@ public:
   //! get the value at coordinate (i,j), declared const, i.e. it is not possible
   //! to change the value
   virtual double operator()(int i, int j, int k) const;
+
+  inline void rename(std::string name) { name_ = name; }
 
 protected:
   std::vector<double> data_;      //< storage array values, in row-major order

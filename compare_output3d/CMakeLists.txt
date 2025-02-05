@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-project(compare_output)
+project(compare_output3d)
 
 add_executable(${PROJECT_NAME}
    main.cpp

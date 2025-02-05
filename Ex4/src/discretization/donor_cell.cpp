@@ -36,7 +36,7 @@ double DonorCell::computeDw2Dz(int i, int j, int k) const
     return centralDiff + alpha_ * (wDonorFront - wDonorBack) / dz();
 }
 
-//! compute the 1st derivative ∂ (uv) / ∂x
+//! compute the 1st derivative ∂ (uv) / ∂x on the v points
 double DonorCell::computeDuvDx(int i, int j, int k) const 
 {
     const double vRight = (v(i+1,j,k)   + v(i,j,k))   / 2.; // v at top right corner of cell
@@ -93,7 +93,7 @@ double DonorCell::computeDuwDz(int i, int j, int k) const
   return centralDiff + alpha_ * (uwDonorFront - uwDonorBack) / dz();
 }
 
-//! compute the 1st derivative ∂ (vw) / ∂y
+//! compute the 1st derivative ∂ (vw) / ∂y on the w points
 double DonorCell::computeDvwDy(int i, int j, int k) const 
 {
   const double vTop    = (v(i,  j,  k+1) + v(i,j,  k)) / 2.; // v i,j,k+1/2
@@ -107,7 +107,7 @@ double DonorCell::computeDvwDy(int i, int j, int k) const
   return centralDiff + alpha_ * (vwDonorTop - vwDonorBottom) / dy();
 }
 
-//! compute the 1st derivative ∂ (vw) / ∂z
+//! compute the 1st derivative ∂ (vw) / ∂z on the v points
 double DonorCell::computeDvwDz(int i, int j, int k) const
 {
   const double wBack  = (w(i,j+1,k-1) + w(i,j,k-1)) / 2.; // w i,j+1/2,k-1

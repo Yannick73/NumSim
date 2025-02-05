@@ -25,7 +25,7 @@ if(TEST)
     boundary/boundary.cpp
     boundary/dirichlet.cpp
     #boundary/neighbour_boundary.cpp
-    #boundary/async_neighbour_boundary.cpp
+    boundary/async_neighbour_boundary.cpp
     output_writer/output_writer.cpp
     #output_writer/output_writer_text.cpp
     #output_writer/output_writer_paraview.cpp

@@ -23,6 +23,12 @@ public:
   //! get the size
   inline std::array<int, 2> size() const { return size_; }
 
+  //! gets the underlying buffer definition
+  inline double* data() { return data_.data(); };
+
+  //! gets the total length
+  inline std::size_t length() const { return data_.size(); }
+
   // often used items are inlined for better optimisation
   //! access the value at coordinate (i,j), declared not const, i.e. the value
   //! can be changed

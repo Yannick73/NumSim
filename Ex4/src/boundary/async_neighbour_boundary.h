@@ -8,6 +8,8 @@
 #include "boundary/boundary.h"
 #include "boundary/mpi_wrapper.h"
 #include "storage/field_variable.h"
+#include "storage/array3D.h"
+#include "storage/array2D.h"
 
 /*
     In a quick test using Scenario3 with 80x60 cells and the simple exchange
@@ -16,32 +18,36 @@
     
 */
 
+enum ind : int
+{
+    X = 0,
+    Y = 1,
+    Z = 2
+};
+
 //! Virtual implementation for a boundary to neighbouring partition
 class AsyncNeighbourBoundary : public Boundary
 {
 public:
     //! Requires edge and length information, child classes may set them implicitely
-    AsyncNeighbourBoundary(std::shared_ptr<Discretization> discretization, 
-                      BoundaryEdge edge, int neighbourRank, int velBufLen, int pBufLen) : 
-                      Boundary(discretization, edge), neighbourRank_(neighbourRank),
+    AsyncNeighbourBoundary(std::shared_ptr<Discretization> d, 
+                      BoundaryEdge edge, int neighbourRank, std::array<int, 2> velBufLen, std::array<int, 2> pBufLen) : 
+                      Boundary(d, edge), neighbourRank_(neighbourRank),
                       pBufLen_(pBufLen), velBufLen_(velBufLen),
-                      // 2*pBufLen is used sending R&A with CG (which is not implemented yet)
-                      maxBufLen_(std::max(velBufLen, 2*pBufLen)),
-                      r_(discretization->r()), a_(discretization->a()), mpiHandler_(neighbourRank),
-                      sendBuf_(maxBufLen_, 0.0), recvBuf_(maxBufLen_, 0.0) { }
+                      mpiHandler_(neighbourRank),
+                      // 3 for u,v,w
+                      velSendBuf_({velBufLen[0], velBufLen[1], 3}), velRecvBuf_({velBufLen[0], velBufLen[1], 3}),
+                      pSendBuf_(pBufLen), pRecvBuf_(pBufLen) { }
     
     //! sends UV data and setups receive for it
-    virtual void exchangeUV() = 0;
-    virtual void exchangeFG() = 0;
-    virtual void exchangeP()  = 0;
-    // exchange variables R and A between ranks for CG
-    virtual void exchangeRA() = 0;
+    virtual void exchangeUVW() = 0;
+    virtual void exchangeFGH() = 0;
+    virtual void exchangeP()   = 0;
 
     //! sets the boundary to the values received in the buffer
-    virtual void setRecvUV() = 0;
-    virtual void setRecvFG() = 0;
-    virtual void setRecvP()  = 0;
-    virtual void setRecvRA() = 0;
+    virtual void setRecvUVW() = 0;
+    virtual void setRecvFGH() = 0;
+    virtual void setRecvP()   = 0;
 
     //! Communication handler
     MPI_Wrapper mpiHandler_;
@@ -51,108 +57,156 @@ protected:
     const int neighbourRank_;
 
     //! lengths for velocity and pressure fields
-    const int velBufLen_;
-    const int pBufLen_;
-    //! length of the longest buffer, probably not used besides the constructor
-    const int maxBufLen_;
+    const std::array<int, 2> velBufLen_;
+    const std::array<int, 2> pBufLen_;
 
     //! buffers for exchange, uv and fg exchange the same amount of data, so reuse
-    std::vector<double> sendBuf_;
-    std::vector<double> recvBuf_;
+    Array3D velSendBuf_;
+    Array3D velRecvBuf_;
+    Array2D pSendBuf_;
+    Array2D pRecvBuf_;
     //! it may be a good idea, to wrap the mpi comm into a seperate class
-
-    //! variable access for CG specific variables (need exchange, but no fix-boundary)
-    std::shared_ptr<FieldVariable> r_;
-    std::shared_ptr<FieldVariable> a_;
-    // well, unused as of now
 };
 
+//! given the two indices, this function returns the maximum size of the velocity field
+inline std::array<int, 2> getVelSize(std::shared_ptr<Discretization> d, int i0, int i1)
+{
+    const int max_uv0  = std::max(d->u().size()[i0], d->v().size()[i0]);
+    const int max_uvw0 = std::max(max_uv0, d->w().size()[i0]);
+    const int max_uv1  = std::max(d->u().size()[i1], d->v().size()[i1]);
+    const int max_uvw1 = std::max(max_uv1, d->w().size()[i1]);
+    return {max_uvw0, max_uvw1};
+}
+
+inline std::array<int, 2> getPSize(std::shared_ptr<Discretization> d, int i0, int i1)
+{
+    return {d->p().size()[i0], d->p().size()[i1]};
+}
+
 //! Following classes work the same, but for the respective orientation
-class AsyncNeighbourNorth : public AsyncNeighbourBoundary
+class AsyncNeighbourTop : public AsyncNeighbourBoundary
 {
 public:
-    //! Using the discretization and beeing North, this sets up the general AsyncNeighbourBandary object
+    //! Using the d and beeing North, this sets up the general AsyncNeighbourBandary object
     //! Both velocity directions are sent simultaniously, so add them up for the buffer. 
     //! It is north, so they are sliced in x-direction.
     //! north and south neighbours have the quirk, that they may not override the edge values of their partitions' east/west neighbours
-    AsyncNeighbourNorth(std::shared_ptr<Discretization> discretization, int neighbourRank, bool westNeighbour, bool eastNeighbour) :
-                   AsyncNeighbourBoundary(discretization, BoundaryEdge::TOP, neighbourRank,
-                   discretization->u().size()[0] + discretization->v().size()[0], discretization->p().size()[0]),
-                   westOffset_(westNeighbour ? 1 : 0), eastOffset_(eastNeighbour ? 1 : 0) {  };
-                   // ? means, if westNeighbour is true, then assign 1, else assign 0
+    AsyncNeighbourTop(std::shared_ptr<Discretization> d, int neighbourRank, bool leftNeighbour, bool rightNeighbour, bool hindNeighbour, bool frontNeighbour) :
+                   AsyncNeighbourBoundary(d, BoundaryEdge::TOP, neighbourRank,
+                   getVelSize(d, ind::X, ind::Z), getPSize(d, ind::X, ind::Z)),
+                   leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0),
+                   frontOffset_(frontNeighbour ? 1 : 0), hindOffset_(hindNeighbour ? 1 : 0) {  };
+                   // ? means, if leftNeighbour is true, then assign 1, else assign 0
 
-    void exchangeUV() override;
-    void exchangeFG() override;
+    void exchangeUVW() override;
+    void exchangeFGH() override;
     void exchangeP()  override;
-    void exchangeRA() override;
 
-    void setRecvUV() override;
-    void setRecvFG() override;
+    void setRecvUVW() override;
+    void setRecvFGH() override;
     void setRecvP()  override;
-    void setRecvRA() override;
 
 private:
-    const int westOffset_;
-    const int eastOffset_;
+    const int leftOffset_;
+    const int rightOffset_;
+    const int frontOffset_;
+    const int hindOffset_;
 };
 
-class AsyncNeighbourEast : public AsyncNeighbourBoundary
+class AsyncNeighbourRight : public AsyncNeighbourBoundary
 {
 public:
-    AsyncNeighbourEast(std::shared_ptr<Discretization> discretization, int neighbourRank) :
-                   AsyncNeighbourBoundary(discretization, BoundaryEdge::RIGHT, neighbourRank,
-                   discretization->u().size()[1] + discretization->v().size()[1],
-                   discretization->p().size()[1]) { };
+    AsyncNeighbourRight(std::shared_ptr<Discretization> d, int neighbourRank) :
+                   AsyncNeighbourBoundary(d, BoundaryEdge::RIGHT, neighbourRank,
+                   getVelSize(d, ind::Y, ind::Z), getPSize(d, ind::Y, ind::Z)) { };
 
-    void exchangeUV() override;
-    void exchangeFG() override;
+    void exchangeUVW() override;
+    void exchangeFGH() override;
     void exchangeP()  override;
-    void exchangeRA() override;
 
-    void setRecvUV() override;
-    void setRecvFG() override;
+    void setRecvUVW() override;
+    void setRecvFGH() override;
     void setRecvP()  override;
-    void setRecvRA() override;
 };
 
-class AsyncNeighbourSouth : public AsyncNeighbourBoundary
+class AsyncNeighbourBottom : public AsyncNeighbourBoundary
 {
 public:
-    AsyncNeighbourSouth(std::shared_ptr<Discretization> discretization, int neighbourRank, bool westNeighbour, bool eastNeighbour) :
-                   AsyncNeighbourBoundary(discretization, BoundaryEdge::BOTTOM, neighbourRank,
-                   discretization->u().size()[0] + discretization->v().size()[0], discretization->p().size()[0]),
-                   westOffset_(westNeighbour ? 1 : 0), eastOffset_(eastNeighbour ? 1 : 0) {  };
+    AsyncNeighbourBottom(std::shared_ptr<Discretization> d, int neighbourRank, bool leftNeighbour, bool rightNeighbour, bool hindNeighbour, bool frontNeighbour) :
+                   AsyncNeighbourBoundary(d, BoundaryEdge::BOTTOM, neighbourRank,
+                   getVelSize(d, ind::X, ind::Z), getPSize(d, ind::X, ind::Z)),
+                   leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0),
+                   hindOffset_(hindNeighbour ? 1 : 0), frontOffset_(frontNeighbour ? 1 : 0) { }
 
-    void exchangeUV() override;
-    void exchangeFG() override;
+    void exchangeUVW() override;
+    void exchangeFGH() override;
     void exchangeP()  override;
-    void exchangeRA() override;
 
-    void setRecvUV() override;
-    void setRecvFG() override;
+    void setRecvUVW() override;
+    void setRecvFGH() override;
     void setRecvP()  override;
-    void setRecvRA() override;
 
 private:
-    const int westOffset_;
-    const int eastOffset_;
+    const int leftOffset_;
+    const int rightOffset_;
+    const int hindOffset_;
+    const int frontOffset_;
 };
 
-class AsyncNeighbourWest : public AsyncNeighbourBoundary
+class AsyncNeighbourLeft : public AsyncNeighbourBoundary
 {
 public:
-    AsyncNeighbourWest(std::shared_ptr<Discretization> discretization, int neighbourRank) :
-                   AsyncNeighbourBoundary(discretization, BoundaryEdge::LEFT, neighbourRank,
-                   discretization->u().size()[1] + discretization->v().size()[1],
-                   discretization->p().size()[1]) { };
+    AsyncNeighbourLeft(std::shared_ptr<Discretization> d, int neighbourRank) :
+                   AsyncNeighbourBoundary(d, BoundaryEdge::LEFT, neighbourRank,
+                   getVelSize(d, ind::X, ind::Z), getPSize(d, ind::X, ind::Z)) { };
                    
-    void exchangeUV() override;
-    void exchangeFG() override;
+    void exchangeUVW() override;
+    void exchangeFGH() override;
     void exchangeP()  override;
-    void exchangeRA() override;
 
-    void setRecvUV() override;
-    void setRecvFG() override;
+    void setRecvUVW() override;
+    void setRecvFGH() override;
     void setRecvP()  override;
-    void setRecvRA() override;
+};
+
+class AsyncNeighbourHind : public AsyncNeighbourBoundary
+{
+public:
+    AsyncNeighbourHind(std::shared_ptr<Discretization> d, int neighbourRank, bool leftNeighbour, bool rightNeighbour) :
+                   AsyncNeighbourBoundary(d, BoundaryEdge::HIND, neighbourRank,
+                   getVelSize(d, ind::X, ind::Y), getPSize(d, ind::X, ind::Y)),
+                   leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0) { };
+                   
+    void exchangeUVW() override;
+    void exchangeFGH() override;
+    void exchangeP()  override;
+
+    void setRecvUVW() override;
+    void setRecvFGH() override;
+    void setRecvP()  override;
+
+private:
+    int leftOffset_;
+    int rightOffset_;
+};
+
+class AsyncNeighbourFront : public AsyncNeighbourBoundary
+{
+public:
+    AsyncNeighbourFront(std::shared_ptr<Discretization> d, int neighbourRank, bool leftNeighbour, bool rightNeighbour) :
+                   AsyncNeighbourBoundary(d, BoundaryEdge::FRONT, neighbourRank,
+                   getVelSize(d, ind::X, ind::Y), getPSize(d, ind::X, ind::Y)),
+                   leftOffset_(leftNeighbour ? 1 : 0), rightOffset_(rightNeighbour ? 1 : 0) { };
+                   
+    void exchangeUVW() override;
+    void exchangeFGH() override;
+    void exchangeP()  override;
+
+    void setRecvUVW() override;
+    void setRecvFGH() override;
+    void setRecvP()  override;
+
+private:
+    int leftOffset_;
+    int rightOffset_;
 };

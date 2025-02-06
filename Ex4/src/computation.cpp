@@ -72,7 +72,8 @@ void runComputation(const Settings &settings, int rank, int nRanks)
             if(rank == 0)
                 std::cout << "Output for step " << simTimestep 
                     << " at sim-time " << simulationTime << " with dt " << deltaT 
-                    << " last solver needed " << pressureSolver->getLastIterations() << " steps\n";
+                    << " last solver needed " << pressureSolver->getLastIterations() 
+                    << " steps at runtime " << std::setprecision(4) << getDurationS(t0) << "s\n";
         }
 
         simTimestep++;
@@ -147,10 +148,12 @@ std::pair<double, bool> DtCalculator::calculate(double simulationTime)
         nextParaviewTime_ = std::min(nextParaviewTime_+dtOut_, endTime_);
         deltaT = deltaOut;
     }
+    // When the timesteps are fixed at a constant rate, they may add to the output time-eps.
+    // The subsequent time-step then is only eps small, which is unstable. This prevents that scenario.
     else if(dtMin_ > 0.0 && deltaOut < deltaT + dtMin_)
     {
-        if(rank_ == 0)
-            std::cerr << "DeltaT was rounded up to the next output time\n";
+        //if(rank_ == 0)
+        //    std::cerr << "DeltaT was rounded up to the next output time\n";
         outputParaview = true;
         //! next output is either at the exact next whole number, or the end of the sim
         nextParaviewTime_ = std::min(nextParaviewTime_+dtOut_, endTime_);
@@ -159,7 +162,7 @@ std::pair<double, bool> DtCalculator::calculate(double simulationTime)
 
     if(dtMin_ > 0.0 && deltaT < dtMin_)
     {
-        if(rank_)
+        if(rank_ == 0)
             std::cerr << "\nDeltaT is smaller than the minimum deltaT, setting to minimum!\n\n";
         deltaT = dtMin_;
     }

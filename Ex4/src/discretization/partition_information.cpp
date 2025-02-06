@@ -26,7 +26,6 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     //determine best partition
     std::array<int, 3> bestPartitioning = {1,1,1};
     double partitioningSurface = nCellsGlobal[0]*nCellsGlobal[1]*nCellsGlobal[2];
-    std::cout << nCellsGlobal[0] << ", " << nCellsGlobal[1] << ", " << nCellsGlobal[2] << std::endl;
     for(int i=0; i<partitionings.size(); i++) {
         double iPartitioningSurface = 2*((double)nCellsGlobal[0]/partitionings[i][0]) * ((double)nCellsGlobal[1]/partitionings[i][1])   //bottom and top surface
         + 2*((double)nCellsGlobal[0]/partitionings[i][0]) *((double)nCellsGlobal[2]/partitionings[i][2])  //front and back surface
@@ -54,9 +53,6 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
             << nPartX << 'x' << nPartY << 'x' << nPartZ << " which does not multiply to nRanks.\n";
         throw std::runtime_error(str.str());
     }
-
-    if(rank_ == 0)
-        std::cout << "number of ranks:" << nRanks_ << " partitioning scheme: " << nPartX << 'x' << nPartY << std::endl;
 
     partPosX_ = rank_ % nPartX;
     partPosY_ = ((int)std::floor(rank_ / (nPartX))) % nPartY;

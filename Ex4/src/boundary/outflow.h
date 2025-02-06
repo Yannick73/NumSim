@@ -21,7 +21,7 @@ class OutflowRight : public DomainBoundary
 {
 public:
     OutflowRight(std::shared_ptr<Discretization> discretization) :
-                   DomainBoundary(discretization, BoundaryEdge::TOP) { };
+                   DomainBoundary(discretization, BoundaryEdge::RIGHT) { };
 
     void setUVW() override;
     void setFGH() override;

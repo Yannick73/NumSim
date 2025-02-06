@@ -24,7 +24,7 @@ class PressureRight : public DomainBoundary
 {
 public:
     PressureRight(std::shared_ptr<Discretization> discretization, double pBoundary) :
-                   DomainBoundary(discretization, BoundaryEdge::TOP), pBoundary_(pBoundary) { };
+                   DomainBoundary(discretization, BoundaryEdge::RIGHT), pBoundary_(pBoundary) { };
 
     void setUVW() override;
     void setFGH() override;

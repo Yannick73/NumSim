@@ -1,5 +1,5 @@
 #include "discretization/discretization.h"
-//#define DEBUG_VELMAX
+#define DEBUG_VELMAX
 
 Discretization::Discretization(PartitionInformation &pi, const Settings &settings) : 
                                StaggeredGrid(pi),

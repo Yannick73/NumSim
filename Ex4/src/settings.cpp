@@ -206,7 +206,11 @@ void Settings::printSettings()
             << "," << g[1] << "," << g[2] << "), tau: " << tau << ", minimum dt: " << minimumDt << ", maximum dt: " << maximumDt << ", output dt: " << outputDt
             << std::endl
 
-            << "  dirichletBC: bottom: (" << dirichletBcBottom[0] << ","
+            << "  boundary: top: " << boundaryTop << ", bottom: " << boundaryBottom
+            << ", left: " << boundaryLeft << ", right: " << boundaryRight
+            << ", hind: " << boundaryHind << ", front: " << boundaryFront << std::endl
+
+            /*<< "  dirichletBC: bottom: (" << dirichletBcBottom[0] << ","
             << dirichletBcBottom[1] << "," << dirichletBcBottom[2] << ")"
 
             << ", top: (" << dirichletBcTop[0] << "," << dirichletBcTop[1] << "," << dirichletBcTop[2]
@@ -222,7 +226,7 @@ void Settings::printSettings()
             << ")"
 
             << ", front: (" << dirichletBcFront[0] << "," << dirichletBcFront[1] << "," << dirichletBcFront[2]
-            << ")" << std::endl
+            << ")" << std::endl*/
 
             << "  useDonorCell: " << std::boolalpha << useDonorCell
             << ", alpha: " << alpha << std::endl

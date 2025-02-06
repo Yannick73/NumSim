@@ -58,3 +58,14 @@ protected:
     const int pjLen_;
     const int pkLen_;
 };
+
+
+//! Small class for abstraction of any domain boundary.
+class DomainBoundary : public Boundary
+{
+public:
+    using Boundary::Boundary;
+    virtual void setUVW() = 0;
+    virtual void setFGH() = 0;
+    virtual void setP() = 0;
+};

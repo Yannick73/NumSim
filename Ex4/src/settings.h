@@ -24,6 +24,20 @@ struct Settings
     bool useDonorCell = false; //< if the donor cell scheme schould be used
     double alpha = 0.5;        //< factor for donor-cell scheme
 
+    std::string boundaryTop = "Inflow"; //< boundary condition at the top of the domain
+    std::string boundaryBottom = "Inflow"; //< boundary condition at the bottom of the domain
+    std::string boundaryLeft = "Inflow"; //< boundary condition at the left of the domain
+    std::string boundaryRight = "Inflow"; //< boundary condition at the right of the domain
+    std::string boundaryFront = "Inflow"; //< boundary condition at the front of the domain
+    std::string boundaryHind = "Inflow"; //< boundary condition at the hind of the domain
+
+    double pressureTop = 0.; //< prescribed pressure at top of domain
+    double pressureBottom = 0.; //< prescribed pressure at bottom of domain
+    double pressureLeft = 0.; //< prescribed pressure at left of domain
+    double pressureRight = 0.; //< prescribed pressure at right of domain
+    double pressureFront = 0.; //< prescribed pressure at front of domain
+    double pressureHind = 0.; //< prescribed pressure at hind of domain
+
     std::array<double, 3>
         dirichletBcBottom{0., 0., 0.}; //< prescribed values of u,v at bottom of domain
     std::array<double, 3>

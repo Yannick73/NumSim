@@ -10,7 +10,23 @@
 #include "discretization/partition_information.h"
 #include "boundary/boundary.h"
 #include "boundary/dirichlet.h"
+#include "boundary/slip.h"
+#include "boundary/outflow.h"
+#include "boundary/pressure.h"
 #include "boundary/async_neighbour_boundary.h"
+
+std::shared_ptr<DomainBoundary> createTopBoundary(const std::shared_ptr<Discretization> discretization, 
+                                                  const Settings &settings);
+std::shared_ptr<DomainBoundary> createBottomBoundary(const std::shared_ptr<Discretization> discretization, 
+                                                  const Settings &settings);
+std::shared_ptr<DomainBoundary> createLeftBoundary(const std::shared_ptr<Discretization> discretization, 
+                                                  const Settings &settings);
+std::shared_ptr<DomainBoundary> createRightBoundary(const std::shared_ptr<Discretization> discretization, 
+                                                  const Settings &settings);
+std::shared_ptr<DomainBoundary> createHindBoundary(const std::shared_ptr<Discretization> discretization, 
+                                                  const Settings &settings);
+std::shared_ptr<DomainBoundary> createFrontoundary(const std::shared_ptr<Discretization> discretization, 
+                                                  const Settings &settings);
 
 //! Class to encapsulate the discretization and its boundaries
 class AsyncPartition : public PartitionShell

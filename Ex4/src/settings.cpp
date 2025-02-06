@@ -111,6 +111,30 @@ void Settings::setParameter(const std::string &name, const std::string &value) {
     minimumDt = std::stod(value);
   } else if (name == "outputDt") {
     outputDt = std::stod(value);
+  } else if(name == "boundaryTop") {
+    boundaryTop = value;
+  } else if(name == "boundaryBottom") {
+    boundaryBottom = value;
+  } else if(name == "boundaryLeft") {
+    boundaryLeft = value;
+  } else if(name == "boundaryRight") {
+    boundaryRight = value;
+  } else if(name == "boundaryHind") {
+    boundaryHind = value;
+  } else if(name == "boundaryFront") {
+    boundaryFront = value;
+  } else if(name == "pressureTop") {
+    pressureTop = std::stod(value);
+  } else if(name == "pressureBottom") {
+    pressureBottom = std::stod(value);
+  } else if(name == "pressureLeft") {
+    pressureLeft = std::stod(value);
+  } else if(name == "pressureRight") {
+    pressureRight = std::stod(value);
+  } else if(name == "pressureHind") {
+    pressureHind = std::stod(value);
+  } else if(name == "pressureFront") {
+    pressureFront = std::stod(value);
   } else if (name == "dirichletBottomX") {
     sscanf(value.c_str(), "%lf", &dirichletBcBottom[0]);
   } else if (name == "dirichletBottomY") {

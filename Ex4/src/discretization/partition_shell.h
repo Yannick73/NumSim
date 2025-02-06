@@ -39,8 +39,8 @@ public:
 
     inline void fixDirichletBoundary()
     {
-        for(std::shared_ptr<Dirichlet> fixBoundary : fixBoundaries_)
-            fixBoundary->setUVW();
+        for(std::shared_ptr<DomainBoundary> domainBoundary : domainBoundaries_)
+            domainBoundary->setUVW();
     }
 
     //! information relevant to the partition
@@ -55,5 +55,5 @@ protected:
     //! Internal discretization pointer with getter above, so it can be manipulated, but not re-allocated
     const std::shared_ptr<Discretization> discretization_;
     //! Every partition will always have some dirichlet-boundary condition to set
-    std::vector<std::shared_ptr<Dirichlet>> fixBoundaries_;
+    std::vector<std::shared_ptr<DomainBoundary>> domainBoundaries_;
 };

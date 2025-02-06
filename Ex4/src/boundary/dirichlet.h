@@ -5,12 +5,12 @@
 #include "discretization/discretization.h"
 #include "boundary/boundary.h"
 
-class Dirichlet : public Boundary
+class Dirichlet : public DomainBoundary
 {
 public:
     // additionall to the discretization and edge, it also requires the known velocities
     Dirichlet(std::shared_ptr<Discretization> discretization, BoundaryEdge edge, std::array<double, 3> vel) : 
-              Boundary(discretization, edge),
+              DomainBoundary(discretization, edge),
               velX_(vel[0]), velY_(vel[1]), velZ_(vel[2]) { }
     
     virtual void setUVW() = 0;

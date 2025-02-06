@@ -23,6 +23,9 @@ if(TEST)
     discretization/async_partition.cpp
     boundary/boundary.cpp
     boundary/dirichlet.cpp
+    boundary/slip.cpp
+    boundary/outflow.cpp
+    boundary/pressure.cpp
     boundary/async_neighbour_boundary.cpp
     output_writer/output_writer.cpp
     output_writer/output_writer_paraview_parallel.cpp
@@ -49,6 +52,9 @@ else()
     discretization/async_partition.cpp
     boundary/boundary.cpp
     boundary/dirichlet.cpp
+    boundary/slip.cpp
+    boundary/outflow.cpp
+    boundary/pressure.cpp
     boundary/async_neighbour_boundary.cpp
     output_writer/output_writer.cpp
     output_writer/output_writer_paraview_parallel.cpp

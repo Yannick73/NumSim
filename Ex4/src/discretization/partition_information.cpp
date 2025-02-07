@@ -55,8 +55,8 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     }
 
     partPosX_ = rank_ % nPartX;
-    partPosY_ = ((int)std::floor(rank_ / (nPartX))) % nPartY;
-    partPosZ_ = std::floor(rank_ / (nPartX*nPartY));
+    partPosY_ = (rank_ / nPartX) % nPartY;
+    partPosZ_ = rank_ / (nPartX*nPartY);
 
     if(partPosX_ > 0)        // not the left-most partition
     {
@@ -117,7 +117,7 @@ PartitionInformation::PartitionInformation(std::array<int, 3> nCellsGlobal,
     if(partPosZ_ > 0 && zPrevEnd > nodeOffset_[2])
     {
         std::cout << "R:" << rank << " overlap on hind boundary corrected\n";
-        nodeOffset_[1]++;
+        nodeOffset_[2]++;
         zCells--;
     }
 
